@@ -1,5 +1,109 @@
+<script setup>
+import Navbar from "../components/Navbar.vue"
+import Listings from "../components/HomeView/Listings.vue"
+import Footer from "../components/Footer.vue"
+</script>
+
 <template>
-  <main>
-    <h1>This is home page</h1>
-  </main>
+  <!-- Nav -->
+  <Navbar />
+
+  <!-- Header -->
+  <header class="mb-5">
+    <div class="general-container">
+      <div class="row">
+        <div class="col-md-7 text-center text-md-start">
+          <h1 class="fw-bold text-white mb-3 mb-md-2">Buy and Sell your property in one place!</h1>
+
+          <div class="header__subtitle mb-5 text-white-50">PropertyHub is an all-in-one property site that helps you find,
+            purchase and sell your home.</div>
+
+          <div class="header__search-container">
+            <div class="input-group">
+              <input type="text" class="form-control border border-0" placeholder="Search">
+
+              <button class="btn header__filter-btn" type="button">
+                <span class="material-symbols-outlined">tune</span>
+              </button>
+            </div>
+
+            <button class="btn btn-primary ms-5">
+              <span class="material-symbols-outlined">search</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Recently Added -->
+  <section class="mb-5">
+    <div class="general-container">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold m-0">Recently Added</h3>
+        <a class="view-all" href="#">View All</a>
+      </div>
+      <Listings />
+    </div>
+  </section>
+
+  <!-- Popular Listings -->
+  <section class="mb-5">
+    <div class="general-container">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold m-0">Popular Listings</h3>
+        <a class="view-all" href="#">View All</a>
+      </div>
+      <Listings />
+    </div>
+  </section>
+
+  <Footer></Footer>
+
 </template>
+
+<style scoped>
+  header {
+    height: 500px;
+    background-image: url("../assets/img/HomeView/jiachen-lin-AIk_5-M9Uho-unsplash.jpg");
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  header::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    background-color: black;
+    opacity: 0.7;
+  }
+
+  .header__search-container {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+  }
+
+  .header__filter-btn {
+    background-color: #f0f0f0;
+  }
+
+  .view-all {
+    text-decoration: none;
+    color: black;
+  }
+
+  @media (min-width: 768px) {
+    .header__search-container {
+      margin: 0;
+      width: 100%;
+      max-width: 500px;
+    }
+  }
+</style>
+
+
