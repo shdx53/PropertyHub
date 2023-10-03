@@ -1,7 +1,7 @@
 <script setup>
-import Navbar from "../components/Navbar.vue"
-import Listings from "../components/HomeView/Listings.vue"
-import Footer from "../components/Footer.vue"
+  import Navbar from "../components/Navbar.vue"
+  import Listings from "../components/HomeView/Listings.vue"
+  import Footer from "../components/Footer.vue"
 </script>
 
 <template>
@@ -58,6 +58,7 @@ import Footer from "../components/Footer.vue"
     </div>
   </section>
 
+  <!-- Footer -->
   <Footer></Footer>
 
 </template>
