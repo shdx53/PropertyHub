@@ -31,3 +31,4 @@ if u wanna make re-usable components
 </template>
 
 refer to src/components/WelcomeItem and src/components/TheWelcome
+

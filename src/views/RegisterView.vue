@@ -3,7 +3,7 @@
   <h1>Create an account</h1>
   <p><input type="text" placeholder="Email" v-model="email" /></p>
   <p><input type="text" placeholder="Password" v-model="password" /></p>
-  <p><button @click="register">Submit</button></p>
+  <p><button @click="register">Submit</button><button @click="login">Already Have an Account</button></p>
   <p><button @click="signInWithGoogle">Sign In With Google</button></p>
   </div>
 </template>
@@ -29,4 +29,7 @@ const register = () => {
     });
 };
 const signInWithGoogle = () => {};
+const login = ()=>{
+  router.push("/login");
+}
 </script>
