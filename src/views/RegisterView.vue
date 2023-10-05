@@ -15,7 +15,7 @@
   <!-- Navbar -->
   <Navbar></Navbar>
   <!--Sign up container-->
-  <div class="container">
+  <div class="container d-flex align-items-center">
     <div class="signup-form">
       <h2 class="text-center">Sign Up</h2>
       <form>
@@ -108,10 +108,12 @@ import Footer from "../components/Footer.vue";
 </script>
 
 <style scoped>
+.container {
+  height: calc(100vh - 65px - 87px);
+}
 .signup-form {
   max-width: 400px;
   margin: 0 auto;
-  margin-top: 50px;
 
   padding: 30px;
   border-radius: 5px;
