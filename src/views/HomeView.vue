@@ -1,7 +1,7 @@
 <script setup>
-  import Navbar from "../components/Navbar.vue"
-  import Listings from "../components/HomeView/Listings.vue"
-  import Footer from "../components/Footer.vue"
+import Navbar from "../components/Navbar.vue";
+import Listing from "../components/HomeView/Listing.vue";
+import Footer from "../components/Footer.vue";
 </script>
 
 <template>
@@ -43,7 +43,20 @@
         <h3 class="fw-bold m-0">Recently Added</h3>
         <a class="view-all" href="#">View All</a>
       </div>
-      <Listings />
+
+      <div class="row">
+        <div class="col-12 col-lg-4 mb-4">
+          <Listing></Listing>
+        </div>
+
+        <div class="col mb-4 col-lg-4 ">
+          <Listing></Listing>
+        </div>
+
+        <div class="col col-lg-4 ">
+          <Listing></Listing>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -54,13 +67,25 @@
         <h3 class="fw-bold m-0">Popular Listings</h3>
         <a class="view-all" href="#">View All</a>
       </div>
-      <Listings />
+
+      <div class="row">
+        <div class="col-12 col-lg-4 mb-4">
+          <Listing></Listing>
+        </div>
+
+        <div class="col mb-4 col-lg-4 ">
+          <Listing></Listing>
+        </div>
+
+        <div class="col col-lg-4 ">
+          <Listing></Listing>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- Footer -->
   <Footer></Footer>
-
 </template>
 
 <style scoped>

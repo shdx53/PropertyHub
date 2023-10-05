@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <footer class="py-5">
+  <footer>
     <div class="general-container">
       <div class="footer-flex">
         <div class="footer__logo mb-3 mb-md-0">
@@ -34,6 +34,7 @@
     background-color: black;
     color: white;
     text-align: center;
+    padding: 30px 0;
   }
 
   .footer__icon {

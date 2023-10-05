@@ -3,8 +3,8 @@
 </script>
 
 <template>
-  <nav class="navbar navbar-expand-sm fixed-top bg-black">
-    <div class="container-fluid general-container  px-0 py-2">
+  <nav class="navbar navbar-expand-sm sticky-top bg-black">
+    <div class="container-fluid general-container px-0">
       <a class="navbar-brand" href="#">
         <b>Property</b>Hub
       </a>
@@ -34,6 +34,9 @@
 </template>
 
 <style scoped>
+  .navbar {
+    height: 65px;
+  }
   .general-container {
     width: 90%;
   }

@@ -7,8 +7,9 @@
     <img src="../../assets/img/HomeView/Listings/hudson-graves-nOJagMqGCpA-unsplash.jpg" class="card-img-top card__img">
     <div class="card-body">
       <h5 class="card-title fw-bold mb-1">$530,000</h5>
-      <p class="card-text text-muted">936 Bedok Central</p>
+      <p class="card-text text-muted">220B Bedok Central</p>
       <hr>
+
       <div class="d-flex">
         <div class="me-3">
           <div class="d-flex">
@@ -17,6 +18,7 @@
           </div>
           <div class="listing-info text-muted">Bedrooms</div>
         </div>
+
         <div class="me-3">
           <div class="d-flex">
             <span class="material-symbols-outlined me-2">bathtub</span>
@@ -25,6 +27,7 @@
           <div class="listing-info text-muted">Bathrooms</div>
         </div>
         <div>
+          
           <div class="d-flex">
             <span class="material-symbols-outlined me-2">crop_square</span>
             <b>984 sqft</b>
