@@ -57,6 +57,16 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import("../views/RegisterView.vue"),
     },
+    {
+      path: "/forgotpassword",
+      name: "forgotpassword",
+      component: () => import("../views/ForgotPassword.vue"),
+    },
+    {
+      path: "/resetsuccess",
+      name: "resetsuccess",
+      component: () => import("../views/ResetSuccess.vue"),
+    }
   ],
 });
 
