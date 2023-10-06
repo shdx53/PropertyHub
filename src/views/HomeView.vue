@@ -2,6 +2,13 @@
 import Navbar from "../components/Navbar.vue";
 import Listing from "../components/HomeView/Listing.vue";
 import Footer from "../components/Footer.vue";
+import Filter from "../components/FIlter.vue"
+import { ref } from "vue";
+
+let isDisplayFilter = ref(false);
+function displayFilter() {
+  isDisplayFilter.value = isDisplayFilter.value ? false : true;
+};
 </script>
 
 <template>
@@ -22,7 +29,7 @@ import Footer from "../components/Footer.vue";
             <div class="input-group">
               <input type="text" class="form-control border border-0" placeholder="Search">
 
-              <button class="btn header__filter-btn" type="button">
+              <button @click="displayFilter" class="btn header__filter-btn" type="button">
                 <span class="material-symbols-outlined">tune</span>
               </button>
             </div>
@@ -84,52 +91,72 @@ import Footer from "../components/Footer.vue";
     </div>
   </section>
 
+  <!-- Filter Overlay -->
+  <section v-if="isDisplayFilter" class="filter-overlay">
+    <Filter :isDisplayFilter="isDisplayFilter" :displayFilter="displayFilter" />
+  </section>
+
   <!-- Footer -->
   <Footer></Footer>
 </template>
 
 <style scoped>
-  header {
-    height: 500px;
-    background-image: url("../assets/img/HomeView/jiachen-lin-AIk_5-M9Uho-unsplash.jpg");
-    background-position: center;
-    background-size: cover;
-    position: relative;
-    display: flex;
-    align-items: center;
-  }
+header {
+  height: 500px;
+  background-image: url("../assets/img/HomeView/jiachen-lin-AIk_5-M9Uho-unsplash.jpg");
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
 
-  header::before {
-    content: "";
-    position: absolute;
-    z-index: 1;
-    inset: 0;
-    background-color: black;
-    opacity: 0.7;
-  }
+header::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background-color: black;
+  opacity: 0.7;
+}
 
+.header__search-container {
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+}
+
+.header__filter-btn {
+  background-color: #f0f0f0;
+}
+
+.header__filter-btn:hover {
+  background-color: #f0f0f0;
+  opacity: 0.9;
+}
+
+.view-all {
+  text-decoration: none;
+  color: black;
+}
+
+/* Filter Overlay */
+.filter-overlay::before {
+  content: "";
+  position: fixed;
+  z-index: 3;
+  inset: 0;
+  background-color: black;
+  opacity: 0.7;
+}
+
+@media (min-width: 768px) {
   .header__search-container {
-    width: 80%;
-    margin: 0 auto;
-    display: flex;
+    margin: 0;
+    width: 100%;
+    max-width: 500px;
   }
-
-  .header__filter-btn {
-    background-color: #f0f0f0;
-  }
-
-  .view-all {
-    text-decoration: none;
-    color: black;
-  }
-
-  @media (min-width: 768px) {
-    .header__search-container {
-      margin: 0;
-      width: 100%;
-      max-width: 500px;
-    }
-  }
+}
 </style>
 
 

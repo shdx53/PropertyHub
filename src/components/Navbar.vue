@@ -36,6 +36,7 @@
 <style scoped>
   .navbar {
     height: 65px;
+    z-index: 3;
   }
   .general-container {
     width: 90%;

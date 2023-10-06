@@ -14,7 +14,7 @@ const loader = new Loader({
 });
 
 loader.load().then(async () => {
-  const { Map } = await google.maps.importLibrary("maps");
+  const { Map, InfoWindow } = await google.maps.importLibrary("maps");
   const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
   const mapInstance = new Map(gmap.value, {
@@ -28,9 +28,30 @@ loader.load().then(async () => {
     zoom: 10.5,
   });
 
+  const houseMarkerImg = document.createElement("img");
+  houseMarkerImg.src = "https://i.postimg.cc/Kz3vZ5fw/home-Custom.png";
+
+  const infoWindow = new InfoWindow({
+    content: `<div>
+      <img style="width: 100px; height: 75px; object-fit: cover;" src="https://i.postimg.cc/7ZcX1kJJ/hudson-graves-n-OJag-Mq-GCp-A-unsplash.jpg">
+      <div>
+        <div class="fw-bold mt-2 mb-1" style="font-size: 13px;">$530,000</div>
+        <div style="font-size: 11px;">220B Bedok Central</div>
+      </div>
+    </div>`,
+  });
+
   const houseMarker = new AdvancedMarkerElement({
     position: { lat: 1.3257004958559055, lng: 103.9339796539663 },
     map: mapInstance,
+    content: houseMarkerImg,
+  });
+
+  houseMarker.addListener("click", () => {
+    infoWindow.open({
+      anchor: houseMarker,
+      map: mapInstance,
+    })
   });
 });
 </script>
