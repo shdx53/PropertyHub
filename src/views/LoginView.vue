@@ -58,7 +58,7 @@
         </div>
         <!-- Forgot Password -->
         <div class="mt-1" style="font-size: 12px">
-          <a href="forgotpassword.html">Forgot Password?</a>
+          <span @click="forgotPassword" style="color: blue; text-decoration: none; cursor: pointer">Forgot Password</span>
         </div>
         <!-- Login button -->
         <div class="d-grid gap-2">
@@ -72,11 +72,7 @@
       <!-- Sign up link -->
       <p class="mt-3 text-center signup">
         Don't have an account?
-        <span
-          @click="handleRegi"
-          style="color: blue; text-decoration: underline; cursor: pointer"
-          >Sign up</span
-        >
+        <span @click="handleRegi" style="color: blue; text-decoration: underline; cursor: pointer">Sign up</span>
       </p>
     </div>
   </div>
@@ -132,6 +128,9 @@ const router = useRouter();
 const errMsg = ref("");
 const handleRegi = () => {
   router.push("/register");
+};
+const forgotPassword = () => {
+  router.push("/forgotpassword");
 };
 const signIn = () => {
   const auth = getAuth();
