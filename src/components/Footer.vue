@@ -30,44 +30,44 @@
 </template>
 
 <style scoped>
-  footer {
-    background-color: black;
-    color: white;
-    text-align: center;
-    padding: 30px 0;
+footer {
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding: 30px 0;
+}
+
+.footer__icon {
+  width: 22px;
+}
+
+.footer__logo {
+  font-size: 18px;
+}
+
+.footer__copyright {
+  font-size: 10px;
+}
+
+@media (min-width: 768px) {
+  .footer-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
-  .footer__icon {
-    width: 22px;
+  .footer__logo,
+  .footer__social-media {
+    width: 25%;
   }
 
   .footer__logo {
-    font-size: 18px;
+    text-align: start;
+    margin-bottom: 0;
   }
 
-  .footer__copyright {
-    font-size: 10px;
+  .footer__social-media {
+    text-align: end;
   }
-
-  @media (min-width: 768px) {
-    .footer-flex {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .footer__logo,
-    .footer__social-media {
-      width: 25%;
-    }
-
-    .footer__logo {
-      text-align: start;
-      margin-bottom: 0;
-    }
-
-    .footer__social-media {
-      text-align: end;
-    }
-  }
+}
 </style>

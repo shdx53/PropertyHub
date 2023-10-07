@@ -6,7 +6,7 @@
   <div class="card">
     <div class="row g-0">
       <div class="col-4">
-        <img src="../../assets/img/HomeView/Listings/hudson-graves-nOJagMqGCpA-unsplash.jpg"
+        <img src="../../assets/img/Listings/hudson-graves-nOJagMqGCpA-unsplash.jpg"
           class="card__img img-fluid rounded-start">
       </div>
 

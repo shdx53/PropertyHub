@@ -5,11 +5,12 @@
 <script setup>
 import { Loader } from "@googlemaps/js-api-loader";
 import { ref } from 'vue';
-
+import { mapsApiKey } from "../../config.js";
+ 
 let gmap = ref(null);
 
 const loader = new Loader({
-  apiKey: "AIzaSyAzAc8neGt4VVNELwvt4DSIFZeojas-syo",
+  apiKey: mapsApiKey,
   version: "weekly",
 });
 

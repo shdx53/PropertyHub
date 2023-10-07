@@ -1,15 +1,15 @@
 <script setup>
-  import Navbar from "../components/Navbar.vue";
-  import GoogleMaps from "../components/BuyView/GoogleMaps.vue";
-  import Footer from "../components/Footer.vue";
-  import Listing from "../components/BuyView/Listing.vue";
-  import Filter from "../components/FIlter.vue";
-  import { ref } from "vue";
+import Navbar from "../components/Navbar.vue";
+import GoogleMaps from "../components/BuyView/GoogleMaps.vue";
+import Footer from "../components/Footer.vue";
+import Listing from "../components/BuyView/Listing.vue";
+import Filter from "../components/FIlter.vue";
+import { ref } from "vue";
 
-  let isDisplayFilter = ref(false);
-  function displayFilter() {
-    isDisplayFilter.value = isDisplayFilter.value ? false : true;
-  };
+let isDisplayFilter = ref(false);
+function displayFilter() {
+  isDisplayFilter.value = isDisplayFilter.value ? false : true;
+};
 </script>
 
 <template>

@@ -101,62 +101,62 @@ function displayFilter() {
 </template>
 
 <style scoped>
-header {
-  height: 500px;
-  background-image: url("../assets/img/HomeView/jiachen-lin-AIk_5-M9Uho-unsplash.jpg");
-  background-position: center;
-  background-size: cover;
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-header::before {
-  content: "";
-  position: absolute;
-  z-index: 1;
-  inset: 0;
-  background-color: black;
-  opacity: 0.7;
-}
-
-.header__search-container {
-  width: 80%;
-  margin: 0 auto;
-  display: flex;
-}
-
-.header__filter-btn {
-  background-color: #f0f0f0;
-}
-
-.header__filter-btn:hover {
-  background-color: #f0f0f0;
-  opacity: 0.9;
-}
-
-.view-all {
-  text-decoration: none;
-  color: black;
-}
-
-/* Filter Overlay */
-.filter-overlay::before {
-  content: "";
-  position: fixed;
-  z-index: 3;
-  inset: 0;
-  background-color: black;
-  opacity: 0.7;
-}
-
-@media (min-width: 768px) {
-  .header__search-container {
-    margin: 0;
-    width: 100%;
-    max-width: 500px;
+  header {
+    height: 500px;
+    background-image: url("../assets/img/HomeView/jiachen-lin-AIk_5-M9Uho-unsplash.jpg");
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    display: flex;
+    align-items: center;
   }
-}
+
+  header::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    background-color: black;
+    opacity: 0.7;
+  }
+
+  .header__search-container {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+  }
+
+  .header__filter-btn {
+    background-color: #f0f0f0;
+  }
+
+  .header__filter-btn:hover {
+    background-color: #f0f0f0;
+    opacity: 0.9;
+  }
+
+  .view-all {
+    text-decoration: none;
+    color: black;
+  }
+
+  /* Filter Overlay */
+  .filter-overlay::before {
+    content: "";
+    position: fixed;
+    z-index: 3;
+    inset: 0;
+    background-color: black;
+    opacity: 0.7;
+  }
+
+  @media (min-width: 768px) {
+    .header__search-container {
+      margin: 0;
+      width: 100%;
+      max-width: 500px;
+    }
+  }
 </style>
 
 
