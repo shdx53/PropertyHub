@@ -72,6 +72,11 @@ const router = createRouter({
       name: "bookmarks",
       component: () => import("../views/Bookmarks.vue"),
     },
+    {
+      path: "/createlistings",
+      name: "createlistings",
+      component: () => import("../views/CreateListings.vue"),
+    },
   ],
 });
 
