@@ -1,4 +1,4 @@
-import {getAuth} from "firebase/auth"
+import { getAuth } from "firebase/auth";
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import SellView from "../views/SellView.vue";
@@ -66,7 +66,12 @@ const router = createRouter({
       path: "/resetsuccess",
       name: "resetsuccess",
       component: () => import("../views/ResetSuccess.vue"),
-    }
+    },
+    {
+      path: "/bookmarks",
+      name: "bookmarks",
+      component: () => import("../views/Bookmarks.vue"),
+    },
   ],
 });
 
@@ -74,7 +79,7 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (getAuth().currentUser) {
       next();
-    }else{
+    } else {
       alert("you dont have access!");
       next("/login");
     }
