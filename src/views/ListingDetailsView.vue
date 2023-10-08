@@ -54,12 +54,15 @@ import Footer from "../components/Footer.vue";
             <span class="visually-hidden">Next</span>
           </button>
         </div> <!-- End of custom-carousel -->
-      </div> <!-- end of column -->
-    </div> <!-- end of row -->
+      </div> <!-- End of column -->
+    </div> <!-- End of row -->
   </div>
+  
+  <!-- Property Overview | Seller Information -->
   <div class="container-sm">
     <div class="row">
-      <div class="col-lg-8 col-md-12">
+      <!-- Left column -->
+      <div class="col-lg-8 col-md-12 mt-5">
         <div class="property-overview-row">
           <div class="location-info">
             <h2 style="font-size: 60px"> Address</h2>
@@ -235,12 +238,193 @@ import Footer from "../components/Footer.vue";
 
           <div class="section-divider"></div>
 
+        </div>  
+      </div>
+      <!-- Right column -->
+      <div class="col-lg-4 col-md-12 mt-5 mb-5 h-75 border">
+        <!-- Seller information -->
+        <div class="container-fluid">
+          <div class="row mt-5 mb-5">
+            <div id="sellerPic" class="col-3 d-flex justify-content-center align-items-center">
+              <img class="rounded-circle" alt="avatar1" src="https://mdbcdn.b-cdn.net/img/new/avatars/9.webp" width="75"/>
+            </div>
+            <div class="col-9 d-flex flex-column justify-content-space-around">
+              <div class="fw-bold fs-5">
+                Koh Zhi Hui
+              </div>
+              <div>
+                CEA: R050662E / L3008022J
+              </div>
+              <div>
+                Phone Number
+              </div>
+            </div>
+          </div>
         </div>
 
+        <!-- button for purchaseModal -->
+        <div class="btn-container text-center d-flex flex-column my-4 ">
+          <button type="button" class="btn btn-light border border-muted" data-bs-toggle="modal" data-bs-target="#purchaseModal">
+            Purchase
+          </button>
+        </div>
+        <!-- purchaseModal -->
+        <div class="modal fade" id="purchaseModal" tabindex="-1" aria-labelledby="purchaseModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <!-- modal-header -->
+              <div class="modal-header">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-8 text-start">
+                      <p class="modal-title fs-2" id="purchaseModalLabel">Purchase</p>
+                    </div>
+                    <div class="col-4 text-end">
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                  </div>
+                  <div class="row text-start">
+                    <p class="modal-subheader fs-6">Submit bid to purchase unit</p>
+                  </div>
+                </div>
+              </div>
+              <!-- modal-body -->
+              <div class="modal-body">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-4 border border-start-0 border-top-0 border-bottom-0 text-center">
+                      <img src="https://source.unsplash.com/EsudwXe8rB4" class="rounded" alt="" width="120" height="150">
+                    </div>
+                    <div class="col-8 text-center d-flex flex-column justify-content-between">
+                      <div class="fs-4 text-start">
+                        936 Bedok Central
+                        <br>
+                        <!-- icons -->
+                        <div class="d-flex">
+                          <div class="me-3">
+                            <div class="d-flex">
+                              <span class="material-symbols-outlined me-2">bed</span>
+                              <b class="icon-text">3</b>
+                            </div>
+                            <div class="listing-info text-muted">Bedrooms</div>
+                          </div>
+                          <div class="me-3">
+                            <div class="d-flex">
+                              <span class="material-symbols-outlined me-2">bathtub</span>
+                              <b class="icon-text">2</b>
+                            </div>
+                            <div class="listing-info text-muted">Bathrooms</div>
+                          </div>
+                          <div>
+                            <div class="d-flex">
+                              <span class="material-symbols-outlined me-2">crop_square</span>
+                              <b class="icon-text">984 sqft</b>
+                            </div>
+                            <div class="listing-info text-muted">Living Area</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="input-group">
+                        <span class="input-group-text" id="basic-addon1">$</span>
+                        <input type="text" class="form-control" placeholder="Bid Price" aria-label="Bid Price" aria-describedby="basic-addon1">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+                  <p>Current Highest Bid to Beat: $ </p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Submit Bid</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- button for viewSlotsModal --> 
+        <div class="btn-container text-center d-flex flex-column my-4">
+          <button type="button" class="btn btn-light border border-muted" data-bs-toggle="modal" data-bs-target="#viewSlotsModal">
+            Viewing
+          </button>
+        </div>
+        <!-- viewSlotsModal -->
+        <div class="modal fade" id="viewSlotsModal" tabindex="-1" aria-labelledby="viewSlotsModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-8 text-start">
+                      <p class="modal-title fs-2" id="viewSlotsModalLabel">Viewing</p>
+                    </div>
+                    <div class="col-4 text-end">
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                  </div>
+                  <div class="row text-start">
+                    <p class="modal-subheader fs-6">Place deposit for timeslots</p>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-body">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-4 border border-start-0 border-top-0 border-bottom-0 text-center">
+                      <img src="https://source.unsplash.com/EsudwXe8rB4" class="rounded" alt="" width="120" height="150">
+                    </div>
+                    <div class="col-8 text-center d-flex flex-column justify-content-between">
+                      <div class="fs-4 text-start">
+                        936 Bedok Central
+                        <br>
+                        <!-- icons -->
+                        <div class="d-flex">
+                          <div class="me-3">
+                            <div class="d-flex">
+                              <span class="material-symbols-outlined me-2">bed</span>
+                              <b class="icon-text">3</b>
+                            </div>
+                            <div class="listing-info text-muted">Bedrooms</div>
+                          </div>
+
+                          <div class="me-3">
+                            <div class="d-flex">
+                              <span class="material-symbols-outlined me-2">bathtub</span>
+                              <b class="icon-text">2</b>
+                            </div>
+                            <div class="listing-info text-muted">Bathrooms</div>
+                          </div>
+                          <div>
+                            
+                            <div class="d-flex">
+                              <span class="material-symbols-outlined me-2">crop_square</span>
+                              <b class="icon-text">984 sqft</b>
+                            </div>
+                            <div class="listing-info text-muted">Living Area</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+                <!-- Form for TimeSlot -->
+                <select class="form-select" aria-label="Default select example"> 
+                  <option selected>Timeslots</option> 
+                  <option value="1" disabled>5th October 10am $100</option> 
+                  <option value="2">6th October 10am $90</option> 
+                  <option value="3">7th October 10am $80</option>
+                  <option value="2">8th October 10am $70</option> 
+                  <option value="3">9th October 10am $60</option> 
+                </select> 
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Submit Deposit</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-
     </div>
-
   </div>
 
   <!-- Footer -->
@@ -301,4 +485,15 @@ h1 {
 .nav-tabs a {
   margin-right: 20px;
 }
+
+
+/* ADDED */
+.listing-info {
+  font-size: 13px;
+}
+
+.icon-text {
+  font-size: large;
+}
+
 </style>
