@@ -20,21 +20,21 @@ import Navbar from "../components/Navbar.vue";
             <tbody>
                 <!--Row 1-->
                 <tr>
-                    <td><img src="..\assets\img\HomeView\Listings\tobi-Z72YrutFDak-unsplash.jpg" alt="" class="w-25"><span style="padding:25%">Data 1</span></td>
+                    <td><img src="..\assets\img\Listings\tobi-Z72YrutFDak-unsplash.jpg" alt="" class="w-25"><span style="padding:25%">Data 1</span></td>
                     <td class="d-none d-sm-table-cell">Data 2</td>
                     <td class="d-none d-sm-table-cell">Data 3</td>
                     <td class="d-none d-sm-table-cell">Data 4</td>
                 </tr>
                 <!--Row 2-->
                 <tr>
-                    <td><img src="..\assets\img\HomeView\Listings\tobi-Z72YrutFDak-unsplash.jpg" alt="" class="w-25"><span style="padding:25%">Data 1</span></td>
+                    <td><img src="..\assets\img\Listings\tobi-Z72YrutFDak-unsplash.jpg" alt="" class="w-25"><span style="padding:25%">Data 1</span></td>
                     <td class="d-none d-sm-table-cell">Data 2</td>
                     <td class="d-none d-sm-table-cell">Data 3</td>
                     <td class="d-none d-sm-table-cell">Data 4</td>
                 </tr>
                 <!--Row 3-->
                 <tr>
-                    <td><img src="..\assets\img\HomeView\Listings\tobi-Z72YrutFDak-unsplash.jpg" alt="" class="w-25"><span style="padding:25%">Data 1</span></td>
+                    <td><img src="..\assets\img\Listings\tobi-Z72YrutFDak-unsplash.jpg" alt="" class="w-25"><span style="padding:25%">Data 1</span></td>
                     <td class="d-none d-sm-table-cell">Data 2</td>
                     <td class="d-none d-sm-table-cell">Data 3</td>
                     <td class="d-none d-sm-table-cell">Data 4</td>

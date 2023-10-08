@@ -7,7 +7,7 @@
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <div class="col">
             <div class="card" data-bs-toggle="modal" data-bs-target="#ListingModal">
-                <img src="..\assets\img\HomeView\Listings\tobi-Z72YrutFDak-unsplash.jpg" class="card-img-top" alt="...">
+                <img src="..\assets\img\Listings\tobi-Z72YrutFDak-unsplash.jpg" class="card-img-top" alt="...">
                 <div class="card-body">
                 <h5 class="card-title">Card title</h5>
                 <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis eaque ad voluptatum dolorum itaque, quia repudiandae tenetur molestiae cum repellendus cupiditate quisquam. Ex iusto obcaecati, dolor vel nisi nihil? At!</p>
@@ -16,7 +16,7 @@
             </div>
             <div class="col">
             <div class="card" data-bs-toggle="modal" data-bs-target="#ListingModal">
-                <img src="..\assets\img\HomeView\Listings\tobi-Z72YrutFDak-unsplash.jpg" class="card-img-top" alt="...">
+                <img src="..\assets\img\Listings\tobi-Z72YrutFDak-unsplash.jpg" class="card-img-top" alt="...">
                 <div class="card-body">
                 <h5 class="card-title">Card title</h5>
                 <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut in dolor autem esse? Doloribus molestiae corporis nobis ab, sint deleniti dolores error ratione rem quo qui quas earum reprehenderit illum!</p>
@@ -25,7 +25,7 @@
             </div>
             <div class="col">
             <div class="card" data-bs-toggle="modal" data-bs-target="#ListingModal">
-                <img src="..\assets\img\HomeView\Listings\tobi-Z72YrutFDak-unsplash.jpg" class="card-img-top" alt="...">
+                <img src="..\assets\img\Listings\tobi-Z72YrutFDak-unsplash.jpg" class="card-img-top" alt="...">
                 <div class="card-body">
                 <h5 class="card-title">Card title</h5>
                 <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque reiciendis ducimus odio beatae veritatis maxime distinctio, adipisci quo iusto eos est soluta non voluptate, aliquam vel atque aliquid eligendi deserunt.</p>
@@ -34,7 +34,7 @@
             </div>
             <div class="col">
             <div class="card" data-bs-toggle="modal" data-bs-target="#ListingModal">
-                <img src="..\assets\img\HomeView\Listings\tobi-Z72YrutFDak-unsplash.jpg" class="card-img-top" alt="...">
+                <img src="..\assets\img\Listings\tobi-Z72YrutFDak-unsplash.jpg" class="card-img-top" alt="...">
                 <div class="card-body">
                 <h5 class="card-title">Card title</h5>
                 <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius consectetur aperiam incidunt. Saepe molestiae tempora praesentium necessitatibus, illum velit! Magnam itaque, alias illo deserunt rerum aliquam voluptatum natus laudantium blanditiis!</p>

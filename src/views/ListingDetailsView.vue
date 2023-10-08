@@ -33,7 +33,7 @@ import Footer from "../components/Footer.vue";
 
             <!-- Add more carousel items as needed -->
             <div class="carousel-item custom-carousel__item">
-              <img src="../../assets/img/Listings/hudson-graves-nOJagMqGCpA-unsplash.jpg" class="d-block w-100"
+              <img src="../assets/img/Listings/hudson-graves-nOJagMqGCpA-unsplash.jpg" class="d-block w-100"
                 alt="Slide 2">
               <div class="carousel-caption d-none d-md-block custom-carousel__caption">
                 <!-- Your caption content for Slide 2 -->
