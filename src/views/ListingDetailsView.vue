@@ -65,13 +65,42 @@ import Footer from "../components/Footer.vue";
       <div class="col-lg-8 col-md-12 mt-5">
         <div class="property-overview-row">
           <div class="location-info">
-            <h2 style="font-size: 60px"> Address</h2>
+            <h2 style="font-size: 50px; font-weight:bold">220B Bedok Central</h2>
           </div>
           <div class="price">
-            <p style="font-size:50px">$price</p>
+            <p style="font-size:40px">$530,000</p>
           </div>
           <div class="section-divider"></div>
 
+          <section class="overview-section">
+            <div class="d-flex">
+              <div class="me-3">
+                <div class="d-flex">
+                  <span class="material-symbols-outlined me-2">bed</span>
+                    <b>3</b>
+                </div>
+              <div class="listing-info text-muted">Bedrooms</div>
+            </div>
+
+            <div class="me-3">
+              <div class="d-flex">
+                <span class="material-symbols-outlined me-2">bathtub</span>
+                  <b>2</b>
+              </div>
+              <div class="listing-info text-muted">Bathrooms</div>
+            </div>
+            <div>
+              <div class="d-flex">
+                <span class="material-symbols-outlined me-2">crop_square</span>
+                  <b>984 sqft</b>
+            </div>
+              <div class="listing-info text-muted">Living Area</div>
+            </div>
+          </div>
+          </section>
+
+          <div class="section-divider"></div>
+          
           <section class="about-section">
             <div class="description-block">
               <h2 class="title">More about the property</h2> <br>
@@ -88,9 +117,9 @@ import Footer from "../components/Footer.vue";
             </div>
           </section>
           <div class="section-divider"></div>
+            
 
           <section class="details-section">
-
             <div class="meta-table-root">
               <div class="row">
                 <h2 class="meta-table_title col">More details</h2>
@@ -141,47 +170,6 @@ import Footer from "../components/Footer.vue";
                       <div class="meta-table_item">
                         <div class="row">
                           <div class="meta-table_item_label col-md-12 col-5">
-                            PSF
-                          </div>
-                          <div class="meta-table_item_value col-md-12 col-7">
-                            S$ XXX
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr class="row">
-                    <td class="meta-table_item wrapper col-md-6 col-12">
-                      <div class="meta-table_item">
-                        <div class="row">
-                          <div class="meta-table_item_label col-md-12 col-5">
-                            Currently Tenated
-                          </div>
-                          <div class="meta-table_item_value col-md-12 col-7">
-                            Yes/No
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="meta-table_item wrapper col-md-6 col-12">
-                      <div class="meta-table_item">
-                        <div class="row">
-                          <div class="meta-table_item_label col-md-12 col-5">
-                            Developer
-                          </div>
-                          <div class="meta-table_item_value col-md-12 col-7">
-                            Housing & Development Board (HDB)
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-
-                  <tr class="row">
-                    <td class="meta-table_item wrapper col-md-6 col-12">
-                      <div class="meta-table_item">
-                        <div class="row">
-                          <div class="meta-table_item_label col-md-12 col-5">
                             Listed On
                           </div>
                           <div class="meta-table_item_value col-md-12 col-7">
@@ -190,19 +178,8 @@ import Footer from "../components/Footer.vue";
                         </div>
                       </div>
                     </td>
-                    <td class="meta-table_item wrapper col-md-6 col-12">
-                      <div class="meta-table_item">
-                        <div class="row">
-                          <div class="meta-table_item_label col-md-12 col-5">
-                            Listing ID
-                          </div>
-                          <div class="meta-table_item_value col-md-12 col-7">
-                            123456
-                          </div>
-                        </div>
-                      </div>
-                    </td>
                   </tr>
+
                 </tbody>
               </table>
             </div>
@@ -227,17 +204,6 @@ import Footer from "../components/Footer.vue";
           </section>
           <div class="section-divider"></div>
 
-          <section class="price-insights-section">
-            <div class="price-insights-root">
-              <h2 class="section-title">Price Insights</h2>
-              <div class="price-graph">
-                <p class="price-data">Insert chart</p>
-              </div>
-            </div>
-          </section>
-
-          <div class="section-divider"></div>
-
         </div>  
       </div>
       <!-- Right column -->
@@ -250,7 +216,7 @@ import Footer from "../components/Footer.vue";
             </div>
             <div class="col-9 d-flex flex-column justify-content-space-around">
               <div class="fw-bold fs-5">
-                Koh Zhi Hui
+                JER JER YEO
               </div>
               <div>
                 CEA: R050662E / L3008022J
@@ -459,10 +425,28 @@ h1 {
   text-align: center;
 }
 
+h2{
+  font-weight:bold;
+}
+
 .main_information {
   display: flex;
   margin: 20px
 }
+
+
+.material-symbols-outlined {
+  font-size: 50px;
+}
+
+b {
+  font-size: 30px;
+}
+
+.listing-info {
+  font-size: 20px;
+}
+
 
 .price {
   display: flex;
@@ -473,12 +457,12 @@ h1 {
 }
 
 .section-divider {
-  margin-top: 60px;
-  margin-bottom: 60px;
+  margin-top: 40px;
+  margin-bottom: 40px;
   border-bottom: 1px solid grey;
 }
 
-.meta-table_item_value {
+.meta-table_item_label {
   font-weight: bold;
 }
 
@@ -488,9 +472,7 @@ h1 {
 
 
 /* ADDED */
-.listing-info {
-  font-size: 13px;
-}
+
 
 .icon-text {
   font-size: large;
