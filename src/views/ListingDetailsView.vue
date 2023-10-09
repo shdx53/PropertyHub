@@ -65,12 +65,12 @@ import Footer from "../components/Footer.vue";
       <div class="col-lg-8 col-md-12 mt-5">
         <div class="property-overview-row">
           <div class="location-info">
-            <h2 style="font-size: 50px; font-weight:bold">220B Bedok Central</h2>
+            <h2 style="font-size: 45px; font-weight:bold">220B Bedok Central</h2> 
           </div>
           <div class="price">
-            <p style="font-size:40px">$530,000</p>
+            <p style="font-size:35px">$530,000</p>
           </div>
-          <div class="section-divider"></div>
+
 
           <section class="overview-section">
             <div class="d-flex">
@@ -104,15 +104,20 @@ import Footer from "../components/Footer.vue";
           <section class="about-section">
             <div class="description-block">
               <h2 class="title">More about the property</h2> <br>
-              <h4 class="subtitle">New sale listing! Renovated House , High level</h4>
+              <h4 class="subtitle">New Sale Listing! Renovated House with High-Level Elegance and Unblock Views</h4>
               <p class="text">
-                This is a description about this house. Features include:
+                Discover a remarkable opportunity with this newly listed property, offering a host of captivating features that define luxury living:
                 <br>
                 -High Floor
                 <br>
                 -Two lifts
                 <br>
                 -Unblock view
+                <br>
+                -Modern Renovations
+                <br>
+                -Spacious Layout
+                <br>
               </p>
             </div>
           </section>
@@ -143,10 +148,10 @@ import Footer from "../components/Footer.vue";
                       <div class="meta-table_item">
                         <div class="row">
                           <div class="meta-table_item_label col-md-12 col-5">
-                            Floor Size
+                            Balcony
                           </div>
                           <div class="meta-table_item_value col-md-12 col-7">
-                            xx sqft
+                            Yes/No
                           </div>
                         </div>
                       </div>
@@ -459,7 +464,7 @@ b {
 .section-divider {
   margin-top: 40px;
   margin-bottom: 40px;
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid lightgrey;
 }
 
 .meta-table_item_label {
