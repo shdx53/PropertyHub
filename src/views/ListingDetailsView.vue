@@ -239,7 +239,7 @@ import Footer from "../components/Footer.vue";
             </button>
           </div>
           <!-- viewSlotsModal -->
-          <div class="modal fade" id="viewSlotsModal" tabindex="-1" aria-labelledby="viewSlotsModalLabel" aria-hidden="true">
+          <div class="modal fade" id="viewSlotsModal" tabindex="-1" aria-labelledby="viewSlotsModalLabel" aria-hidden="true" style="display:none">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
                 <div class="modal-header">
@@ -476,11 +476,15 @@ b {
 }
 
 
-/* ADDED */
-
-
 .icon-text {
   font-size: large;
+}
+
+.modal {
+  z-index: 1050;
+}
+.modal-backdrop {
+  z-index: 1040;
 }
 
 </style>
