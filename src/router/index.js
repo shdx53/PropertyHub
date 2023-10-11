@@ -79,10 +79,10 @@ const router = createRouter({
       component: () => import("../views/Bookmarks.vue"),
     },
     {
-      path: "/createlistings",
-      name: "createlistings",
-      component: () => import("../views/CreateListings.vue"),
-    },
+      path: "/createlistingpage",
+      name: "createlistingpage",
+      component: () => import("../views/CreateListingPage.vue"),
+    }
   ],
 });
 
