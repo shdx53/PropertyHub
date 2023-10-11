@@ -82,7 +82,12 @@ const router = createRouter({
       path: "/createlistingpage",
       name: "createlistingpage",
       component: () => import("../views/CreateListingPage.vue"),
-    }
+    },
+    {
+      path: "/createlisting",
+      name: "createlisting",
+      component: () => import("../views/CreateListing.vue"),
+    },
   ],
 });
 
