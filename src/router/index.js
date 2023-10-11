@@ -93,6 +93,11 @@ const router = createRouter({
       name: "ownlistings",
       component: () => import("../views/OwnListings.vue"),
     },
+    {
+      path: "/editlisting",
+      name: "editlisting",
+      component: () => import("../views/EditListing.vue"),
+    },
   ],
 });
 
