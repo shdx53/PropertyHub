@@ -72,7 +72,7 @@
       <!-- Sign up link -->
       <p class="mt-3 text-center signup mx-auto">
         Don't have an account?
-        <span @click="handleRegi" style="color: #0275d8; text-decoration: none; cursor: pointer">Sign up</span>
+        <span @click="handleRegi" style="color: #0d6efd; text-decoration: none; cursor: pointer">Sign up</span>
       </p>
     </div>
   </div>
