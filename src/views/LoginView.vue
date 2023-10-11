@@ -29,14 +29,14 @@
         alt="Vector Image"
       />
     </div>
-    <div style="width: 40%; max-width: 400px; min-width: 300px">
+    <div class="w-60">
       <!-- Login Form on right -->
       <div class="login-form">
-        <h2 class="text-center mb-4">Login</h2>
+        <h2 class="mb-4 fw-bold">Login</h2>
 
         <!-- Email -->
         <div class="form-group">
-          <label for="email">Email:</label>
+          <label for="email" class="py-2 fw-bold">Email:</label>
           <input
             type="email"
             class="form-control"
@@ -47,7 +47,7 @@
         </div>
         <!-- Password -->
         <div class="form-group">
-          <label for="password">Password:</label>
+          <label for="password" class="py-2 fw-bold">Password:</label>
           <input
             type="password"
             class="form-control"
@@ -57,12 +57,12 @@
           />
         </div>
         <!-- Forgot Password -->
-        <div class="mt-1" style="font-size: 12px">
-          <span @click="forgotPassword" style="color: blue; text-decoration: none; cursor: pointer">Forgot Password</span>
+        <div class="mt-1 py-2" style="font-size: 12px">
+          <span @click="forgotPassword" style="color: #0275d8; text-decoration: none; cursor: pointer">Forgot Password</span>
         </div>
         <!-- Login button -->
         <div class="d-grid gap-2">
-          <button type="submit" class="btn btn-primary mt-3" @click="signIn">
+          <button type="submit" class="btn btn-primary mt-1" @click="signIn">
             Login
           </button>
         </div>
@@ -70,9 +70,9 @@
         <p>{{ errMsg }}</p>
       </div>
       <!-- Sign up link -->
-      <p class="mt-3 text-center signup">
+      <p class="mt-3 text-center signup mx-auto">
         Don't have an account?
-        <span @click="handleRegi" style="color: blue; text-decoration: underline; cursor: pointer">Sign up</span>
+        <span @click="handleRegi" style="color: #0275d8; text-decoration: none; cursor: pointer">Sign up</span>
       </p>
     </div>
   </div>
@@ -85,7 +85,8 @@
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  height: 100vh;
+  height: 84vh;
+  
 }
 
 .login-image {
@@ -94,12 +95,10 @@
 }
 
 .login-form {
-  width: 40%;
-  max-width: 400px;
-  min-width: 300px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+
+  min-width: 400px;
+
+ 
 }
 .signup {
   width: 40%;
@@ -107,10 +106,8 @@
   min-width: 300px;
   text-align: center;
 }
-a {
-  text-decoration: none;
-}
-@media only screen and (max-width: 876px) {
+
+@media only screen and (max-width: 768px) {
   .login-image {
     display: none;
   }
