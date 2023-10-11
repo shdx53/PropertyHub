@@ -88,6 +88,11 @@ const router = createRouter({
       name: "createlisting",
       component: () => import("../views/CreateListing.vue"),
     },
+    {
+      path: "/ownlistings",
+      name: "ownlistings",
+      component: () => import("../views/OwnListings.vue"),
+    },
   ],
 });
 
