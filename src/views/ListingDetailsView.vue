@@ -57,8 +57,8 @@ import Footer from "../components/Footer.vue";
       </div> <!-- End of column -->
     </div> <!-- End of row -->
   
-    <!-- Property Overview | Seller Information -->
     <div class="container-sm">
+      <!-- Property Overview | Seller Information -->
       <div class="row justify-content-between">
         <!-- Left column -->
         <div class="col-lg-7 col-md-12 my-5 px-3">
@@ -211,7 +211,8 @@ import Footer from "../components/Footer.vue";
           </div>  
         </div>
         <!-- Right column -->
-        <div class="col-lg-4 col-md-12 my-5 px-4 pb-3 h-75 border">
+        <div class="col-lg-4 col-md-8 mx-auto my-5 px-4 pb-3 h-75 border">
+
           <!-- Seller information -->
           <div class="container-fluid my-5 d-flex justify-content-center">
             <div class="row">
@@ -231,173 +232,179 @@ import Footer from "../components/Footer.vue";
               </div>
             </div>
           </div>
-
           <!-- button for viewSlotsModal --> 
           <div class="btn-container d-flex justify-content-center my-2">
             <button type="button" class="btn w-50 btn-primary border border-muted" data-bs-toggle="modal" data-bs-target="#viewSlotsModal">
               Viewing
+              <!-- How to add icons beside CTA? 
+                <span class="material-symbols-outlined" style="font-size:20px;">schedule_send</span> -->
             </button>
           </div>
-          <!-- viewSlotsModal -->
-          <div class="modal fade" id="viewSlotsModal" tabindex="-1" aria-labelledby="viewSlotsModalLabel" aria-hidden="true" style="display:none">
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <div class="container-fluid">
-                    <div class="row">
-                      <div class="col-8 text-start">
-                        <p class="modal-title fs-2" id="viewSlotsModalLabel">Viewing</p>
-                      </div>
-                      <div class="col-4 text-end">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                    </div>
-                    <div class="row text-start">
-                      <p class="modal-subheader fs-6">Place deposit for timeslots</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="modal-body">
-                  <div class="container-fluid">
-                    <div class="row">
-                      <div class="col-4 border border-start-0 border-top-0 border-bottom-0 text-center">
-                        <img src="https://source.unsplash.com/EsudwXe8rB4" class="rounded" alt="" width="120" height="150">
-                      </div>
-                      <div class="col-8 text-center d-flex flex-column justify-content-between">
-                        <div class="fs-4 text-start">
-                          936 Bedok Central
-                          <br>
-                          <!-- icons -->
-                          <div class="d-flex">
-                            <div class="me-3">
-                              <div class="d-flex">
-                                <span class="material-symbols-outlined me-2">bed</span>
-                                <b class="icon-text">3</b>
-                              </div>
-                              <div class="listing-info text-muted">Bedrooms</div>
-                            </div>
-
-                            <div class="me-3">
-                              <div class="d-flex">
-                                <span class="material-symbols-outlined me-2">bathtub</span>
-                                <b class="icon-text">2</b>
-                              </div>
-                              <div class="listing-info text-muted">Bathrooms</div>
-                            </div>
-                            <div>
-                              
-                              <div class="d-flex">
-                                <span class="material-symbols-outlined me-2">crop_square</span>
-                                <b class="icon-text">984 sqft</b>
-                              </div>
-                              <div class="listing-info text-muted">Living Area</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <hr>
-                  <!-- Form for TimeSlot -->
-                  <select class="form-select" aria-label="Default select example"> 
-                    <option selected>Timeslots</option> 
-                    <option value="1" disabled>5th October 10am $100</option> 
-                    <option value="2">6th October 10am $90</option> 
-                    <option value="3">7th October 10am $80</option>
-                    <option value="2">8th October 10am $70</option> 
-                    <option value="3">9th October 10am $60</option> 
-                  </select> 
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-primary">Submit Deposit</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <!-- button for purchaseModal -->
           <div class="btn-container d-flex justify-content-center my-2">
             <button type="button" class="btn w-50 btn-primary border border-muted" data-bs-toggle="modal" data-bs-target="#purchaseModal">
               Purchase
             </button>
           </div>
-          <!-- purchaseModal -->
-          <div class="modal fade" id="purchaseModal" tabindex="-1" aria-labelledby="purchaseModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <!-- modal-header -->
-                <div class="modal-header">
-                  <div class="container-fluid">
-                    <div class="row">
-                      <div class="col-8 text-start">
-                        <p class="modal-title fs-2" id="purchaseModalLabel">Purchase</p>
-                      </div>
-                      <div class="col-4 text-end">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                    </div>
-                    <div class="row text-start">
-                      <p class="modal-subheader fs-6">Submit bid to purchase unit</p>
-                    </div>
-                  </div>
-                </div>
-                <!-- modal-body -->
-                <div class="modal-body">
-                  <div class="container-fluid">
-                    <div class="row">
-                      <div class="col-4 border border-start-0 border-top-0 border-bottom-0 text-center">
-                        <img src="https://source.unsplash.com/EsudwXe8rB4" class="rounded" alt="" width="120" height="150">
-                      </div>
-                      <div class="col-8 text-center d-flex flex-column justify-content-between">
-                        <div class="fs-4 text-start">
-                          936 Bedok Central
-                          <br>
-                          <!-- icons -->
-                          <div class="d-flex">
-                            <div class="me-3">
-                              <div class="d-flex">
-                                <span class="material-symbols-outlined me-2">bed</span>
-                                <b class="icon-text">3</b>
-                              </div>
-                              <div class="listing-info text-muted">Bedrooms</div>
-                            </div>
-                            <div class="me-3">
-                              <div class="d-flex">
-                                <span class="material-symbols-outlined me-2">bathtub</span>
-                                <b class="icon-text">2</b>
-                              </div>
-                              <div class="listing-info text-muted">Bathrooms</div>
-                            </div>
-                            <div>
-                              <div class="d-flex">
-                                <span class="material-symbols-outlined me-2">crop_square</span>
-                                <b class="icon-text">984 sqft</b>
-                              </div>
-                              <div class="listing-info text-muted">Living Area</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="input-group">
-                          <span class="input-group-text" id="basic-addon1">$</span>
-                          <input type="text" class="form-control" placeholder="Bid Price" aria-label="Bid Price" aria-describedby="basic-addon1">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <hr>
-                    <p>Current Highest Bid to Beat: $ </p>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-primary">Submit Bid</button>
-                </div>
-              </div>
-            </div>
-          </div>
 
-        </div>
-      </div>
-    </div> <!-- End of general container  -->
-  </div>
+        </div> <!-- End of right col -->
+      </div> <!-- End of row -->
+    </div> <!-- End of container-sm -->
+  </div> <!-- End of general container  -->
+
+  <!-- viewSlotsModal -->
+	<div class="modal fade" id="viewSlotsModal" tabindex="-1" aria-labelledby="viewSlotsModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-8 text-start">
+								<b class="modal-title fs-2" id="viewSlotsModalLabel">Viewing</b>
+							</div>
+							<div class="col-4 text-end">
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+						</div>
+						<div class="row text-start">
+							<p class="modal-subheader fs-6 mb-0">Place deposit for timeslots</p>
+						</div>
+					</div>
+				</div>
+				<div class="modal-body">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-4 border border-start-0 border-top-0 border-bottom-0 text-center d-flex justify-content-center align-items-center">
+								<img src="https://source.unsplash.com/EsudwXe8rB4" class="rounded" alt="" width="130" height="150">
+							</div>
+							<div class="col-8 text-center d-flex flex-column justify-content-between">
+								<div class="text-start" style="font-size:24px ;font-weight: bold;">
+									936 Bedok Central
+									<br>
+									<!-- icons -->
+									<div class="d-flex">
+										<div class="me-3">
+											<div class="d-flex">
+												<span class="material-symbols-outlined me-2" style="font-size:24px">bed</span>
+												<p class="icon-text">3</p>
+											</div>
+											<div class="listing-info text-muted" style="font-size:12px">Bedrooms</div>
+										</div>
+
+										<div class="me-3">
+											<div class="d-flex">
+												<span class="material-symbols-outlined me-2" style="font-size:24px">bathtub</span>
+												<p class="icon-text">2</p>
+											</div>
+											<div class="listing-info text-muted" style="font-size:12px">Bathrooms</div>
+										</div>
+
+										<div>
+											<div class="d-flex">
+												<span class="material-symbols-outlined me-2" style="font-size:24px">crop_square</span>
+												<p class="icon-text">984 sqft</p>
+											</div>
+											<div class="listing-info text-muted" style="font-size:12px">Living Area</div>
+										</div>
+									</div>
+                  <br>
+                  <!-- Form for TimeSlot -->
+                  <select class="form-select" aria-label="Default select example"> 
+                      <option selected>Timeslots</option> 
+                      <option value="1" disabled>5th October, 10am - $100</option> 
+                      <option value="2">6th October, 10am - $90</option> 
+                      <option value="3">7th October, 10am - $80</option>
+                      <option value="2">8th October, 10am - $70</option> 
+                      <option value="3">9th October, 10am - $60</option> 
+                    </select> 
+								</div>
+							</div>
+						</div>
+					</div>					
+				</div>
+				<div class="modal-footer justify-content-center">
+					<button type="button" class="btn btn-primary">Submit Deposit</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+  <!-- purchaseModal -->
+	<div class="modal fade" id="purchaseModal" tabindex="-1" aria-labelledby="purchaseModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<!-- modal-header -->
+				<div class="modal-header">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-8 text-start">
+								<b class="modal-title fs-2" id="purchaseModalLabel">Purchase</b>
+							</div>
+							<div class="col-4 text-end">
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+						</div>
+						<div class="row text-start">
+							<p class="modal-subheader fs-6 mb-0">Submit bid to purchase unit</p>
+						</div>
+					</div>
+				</div>
+				<!-- modal-body -->
+				<div class="modal-body">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-4 border border-start-0 border-top-0 border-bottom-0 text-center d-flex justify-content-center align-items-center my-auto">
+								<img src="https://source.unsplash.com/EsudwXe8rB4" class="rounded" alt="" width="130" height="150">
+							</div>
+							<div class="col-8 text-center d-flex flex-column justify-content-between">
+                <div class="text-start" style="font-size:24px ;font-weight: bold;">
+									936 Bedok Central
+									<br>
+									<!-- icons -->
+									<div class="d-flex">
+										<div class="me-3">
+											<div class="d-flex">
+												<span class="material-symbols-outlined me-2" style="font-size:24px">bed</span>
+												<p class="icon-text">3</p>
+											</div>
+											<div class="listing-info text-muted" style="font-size:12px">Bedrooms</div>
+										</div>
+
+										<div class="me-3">
+											<div class="d-flex">
+												<span class="material-symbols-outlined me-2" style="font-size:24px">bathtub</span>
+												<p class="icon-text">2</p>
+											</div>
+											<div class="listing-info text-muted" style="font-size:12px">Bathrooms</div>
+										</div>
+
+
+										<div>
+											<div class="d-flex">
+												<span class="material-symbols-outlined me-2" style="font-size:24px">crop_square</span>
+												<p class="icon-text">984 sqft</p>
+											</div>
+											<div class="listing-info text-muted" style="font-size:12px">Living Area</div>
+										</div>
+									</div>
+								</div>
+                <br>
+								<div class="input-group">
+									<span class="input-group-text" id="basic-addon1">$</span>
+									<input type="text" class="form-control" placeholder="Bid Price" aria-label="Bid Price" aria-describedby="basic-addon1">
+								</div>
+                <br>
+                <p class="text-start">Current Highest Bid to Beat: $ </p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer justify-content-center">
+					<button type="button" class="btn btn-primary">Submit Bid</button>
+				</div> 
+			</div>
+		</div>
+	</div>
 
   <!-- Footer -->
   <Footer></Footer>
@@ -440,7 +447,6 @@ h2{
   margin: 20px
 }
 
-
 .material-symbols-outlined {
   font-size: 50px;
 }
@@ -475,16 +481,9 @@ b {
   margin-right: 20px;
 }
 
-
 .icon-text {
   font-size: large;
 }
 
-.modal {
-  z-index: 1050;
-}
-.modal-backdrop {
-  z-index: 1040;
-}
 
 </style>
