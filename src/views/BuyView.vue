@@ -16,9 +16,9 @@ function displayFilter() {
   <!-- Nav -->
   <Navbar />
 
-  <main class="general-container">
+  <main class="general__container">
     <!-- Search -->
-    <section class="search-container">
+    <section class="search__container">
       <div class="input-group">
         <input type="text" class="form-control border border-light-subtle" placeholder="Search">
 
@@ -69,7 +69,7 @@ function displayFilter() {
 
 <style scoped>
 /* Search */
-.search-container {
+.search__container {
   display: flex;
   justify-content: center;
   padding: 30px 0;

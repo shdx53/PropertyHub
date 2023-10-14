@@ -4,7 +4,7 @@
 
 <template>
   <footer>
-    <div class="general-container">
+    <div class="general__container">
       <div class="footer-flex">
         <div class="footer__logo mb-3 mb-md-0">
           <b>Property</b>Hub

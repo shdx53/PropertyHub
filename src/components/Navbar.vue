@@ -4,8 +4,8 @@
 
 <template>
   <nav class="navbar navbar-expand-sm sticky-top bg-black">
-    <div class="container-fluid general-container px-0">
-      <a class="navbar-brand" href="./">
+    <div class="container-fluid general__container px-0">
+      <a class="navbar-brand" href="./home">
         <b>Property</b>Hub
       </a>
       
@@ -38,7 +38,7 @@
     padding: 18px 0 17px 0;
     z-index: 3;
   }
-  .general-container {
+  .general__container {
     width: 90%;
   }
 

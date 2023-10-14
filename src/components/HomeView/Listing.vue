@@ -17,10 +17,10 @@ function handleFavorite() {
           <h5 class="card-title fw-bold mb-1">220B Bedok Central</h5>
           <button 
             @click="handleFavorite" 
-            class="favorite-icon-btn"
-            :class="{ 'favorite-icon-btn-active': isFavorited }"
+            class="card__favorite-btn"
+            :class="{ 'card__favorite-btn-active': isFavorited }"
           >
-            <img class="favorite-icon" src="../../assets/img/Listings/favorite_FILL1_wght400_GRAD0_opsz24.png">
+            <img class="card__favorite-icon" src="../../assets/img/Listings/favorite_FILL1_wght400_GRAD0_opsz24.png">
           </button>
         </div>
 
@@ -31,28 +31,28 @@ function handleFavorite() {
           <div class="me-3">
             <div class="d-flex">
               <span class="material-symbols-outlined me-2">bed</span>
-              <b class="listing-info-value">3</b>
+              <b>3</b>
             </div>
 
-            <div class="listing-info-description text-muted">Bedrooms</div>
+            <div class="card__property text-muted">Bedrooms</div>
           </div>
 
           <div class="me-3">
             <div class="d-flex">
               <span class="material-symbols-outlined me-2">bathtub</span>
-              <b class="listing-info-value">2</b>
+              <b>2</b>
             </div>
 
-            <div class="listing-info-description text-muted">Bathrooms</div>
+            <div class="card__property text-muted">Bathrooms</div>
           </div>
           <div>
 
             <div class="d-flex">
               <span class="material-symbols-outlined me-2">crop_square</span>
-              <b class="listing-info-value">984 sqft</b>
+              <b>984 <span class="card__unit">sqft</span></b>
             </div>
 
-            <div class="listing-info-description text-muted">Living Area</div>
+            <div class="card__property text-muted">Living Area</div>
           </div>
         </div>
       </div>
@@ -70,18 +70,18 @@ a {
   object-fit: cover;
 }
 
-.favorite-icon-btn {
+.card__favorite-btn {
   background-color: transparent;
   border: 1px solid #f0f0f0;
   border-radius: 5px;
   padding: 1px 5px;
 }
 
-.favorite-icon-btn-active {
+.card__favorite-btn-active {
   background-color: red;
 }
 
-.favorite-icon {
+.card__favorite-icon {
   width: 18px;
 }
 
@@ -89,7 +89,11 @@ a {
   font-size: 16px;
 }
 
-.listing-info-description {
+.card__unit {
+  font-size: 14px;
+}
+
+.card__property {
   font-size: 13px;
 }
 </style>

@@ -18,15 +18,15 @@ function handleFavorite() {
 
       <div class="col-8">
         <div class="card-body d-flex flex-column justify-content-center h-100">
-          <div class="d-flex justify-content-between">
+          <div class="d-flex justify-content-between align-items-center">
             <h5 class="card-title fw-bold mb-1">220B Bedok Central</h5>
 
             <button
               @click="handleFavorite" 
-              class="favorite-icon-btn"
-              :class="{ 'favorite-icon-btn-active': isFavorited }"
+              class="card__favorite-btn"
+              :class="{ 'card__favorite-btn-active': isFavorited }"
             >
-              <img class="favorite-icon" src="../../assets/img/Listings/favorite_FILL1_wght400_GRAD0_opsz24.png">
+              <img class="card__favorite-icon" src="../../assets/img/Listings/favorite_FILL1_wght400_GRAD0_opsz24.png">
             </button>
           </div>
 
@@ -53,7 +53,7 @@ function handleFavorite() {
             <div>
               <div class="d-flex">
                 <span class="material-symbols-outlined me-1">crop_square</span>
-                <b class="card__value">984 <span class="unit">sqft</span></b>
+                <b class="card__value">984 <span class="card__unit">sqft</span></b>
               </div>
               <div class="d-none d-sm-block text-muted card__property">Living Area</div>
             </div>
@@ -70,22 +70,22 @@ function handleFavorite() {
 }
 
 .card-title {
-  font-size: 15px;
+  font-size: 14px;
 }
 
-.favorite-icon-btn {
+.card__favorite-btn {
   background-color: transparent;
   border: 1px solid #f0f0f0;
   border-radius: 5px;
   padding: 1px 5px;
 }
 
-.favorite-icon-btn-active {
+.card__favorite-btn-active {
   background-color: red;
 }
 
-.favorite-icon {
-  width: 18px;
+.card__favorite-icon {
+  width: 12px;
 }
 
 .card-text,
@@ -97,19 +97,18 @@ function handleFavorite() {
   font-size: 16px;
 }
 
-.unit {
+.card__unit {
   font-size: 10px;
 }
 
 .card__property {
-  font-size: 11px;
+  font-size: 10px;
 }
 
 @media (min-width: 470px) {
-
   .card-title,
   .material-symbols-outlined {
-    font-size: 17px;
+    font-size: 16px;
   }
 
   .card-text,
@@ -117,7 +116,7 @@ function handleFavorite() {
     font-size: 14px;
   }
 
-  .unit {
+  .card__unit {
     font-size: 12px;
   }
 }
@@ -126,37 +125,44 @@ function handleFavorite() {
 
   .card-title,
   .material-symbols-outlined {
-    font-size: 20px;
+    font-size: 18px;
+  }
+
+  .card__favorite-icon {
+    width: 14px;
   }
 
   .card-text,
   .card__value {
-    font-size: 15px;
+    font-size: 16px;
   }
 
-  .unit {
+  .card__unit {
     font-size: 14px;
   }
 }
 
 @media (min-width: 700px) {
-
   .card-title,
   .material-symbols-outlined {
-    font-size: 24px;
+    font-size: 20px;
+  }
+
+  .card__favorite-icon {
+    width: 16px;
   }
 
   .card-text,
   .card__value {
-    font-size: 20px;
-  }
-
-  .unit {
     font-size: 18px;
   }
 
+  .card__unit {
+    font-size: 16px;
+  }
+
   .card__property {
-    font-size: 15px;
+    font-size: 12px;
   }
 }
 
@@ -182,7 +188,7 @@ function handleFavorite() {
     font-size: 16px;
   }
 
-  .unit {
+  .card__unit {
     font-size: 14px;
   }
 

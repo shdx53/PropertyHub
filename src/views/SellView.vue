@@ -9,7 +9,7 @@ import Footer from "../components/Footer.vue";
 
   <!-- Header -->
   <header class="mb-5">
-    <div class="general-container text-center">
+    <div class="general__container text-center">
       <h1 class="fw-bold text-white mb-2">Selling your home?</h1>
       <h2 class="text-white-50 mb-4 fs-3">Let us help you find the perfect buyer</h2>
       <button class="btn btn-primary">Get started</button>
@@ -17,7 +17,7 @@ import Footer from "../components/Footer.vue";
   </header>
 
   <!-- Benefits -->
-  <section class="general-container mb-5">
+  <section class="general__container mb-5">
     <div class="card__container d-sm-flex">
       <img src="../assets/img/SellView/christin-hume-Hcfwew744z4-unsplash.jpg" class="card__img mb-4 mb-sm-0">
 
@@ -60,7 +60,7 @@ import Footer from "../components/Footer.vue";
   <!-- FAQ -->
   <section class="mb-5">
     <h3 class="fw-bold text-center faq__title">Frequently Asked Questions</h3>
-    <div class="general-container accordion accordion-flush" id="accordionFlushExample">
+    <div class="general__container accordion accordion-flush" id="accordionFlushExample">
       <div class="accordion-item">
         <h2 class="accordion-header">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"

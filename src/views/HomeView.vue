@@ -2,7 +2,7 @@
 import Navbar from "../components/Navbar.vue";
 import Listing from "../components/HomeView/Listing.vue";
 import Footer from "../components/Footer.vue";
-import Filter from "../components/FIlter.vue"
+import Filter from "../components/Filter.vue"
 import { ref } from "vue";
 
 let isDisplayFilter = ref(false);
@@ -17,7 +17,7 @@ function displayFilter() {
 
   <!-- Header -->
   <header class="mb-5">
-    <div class="general-container">
+    <div class="general__container">
       <div class="row">
         <div class="col-md-7 text-center text-md-start">
           <h1 class="fw-bold text-white mb-3 mb-md-2">Buy and Sell your property in one place!</h1>
@@ -45,10 +45,10 @@ function displayFilter() {
 
   <!-- Recently Added -->
   <section class="mb-5">
-    <div class="general-container">
+    <div class="general__container">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="fw-bold m-0">Recently Added</h3>
-        <a class="view-all" href="#">View All</a>
+        <a class="view-all" href="./buy">View All</a>
       </div>
 
       <div class="row">
@@ -69,10 +69,10 @@ function displayFilter() {
 
   <!-- Popular Listings -->
   <section class="mb-5">
-    <div class="general-container">
+    <div class="general__container">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="fw-bold m-0">Popular Listings</h3>
-        <a class="view-all" href="#">View All</a>
+        <a class="view-all" href="./buy">View All</a>
       </div>
 
       <div class="row">
