@@ -58,7 +58,7 @@ const props = defineProps({
         <hr>
         <div class="d-flex flex-column flex-xxl-row">
           <div class="form__north-container mb-2 me-xxl-2">
-            <h3 class="form__title form__title--area">North Towns:</h3>
+            <h3 class="form__title form__title--area">North:</h3>
 
             <div v-for="town in townArr.north" class="form-check mb-2">
               <input class="form-check-input" type="checkbox" :value="town" id="flexCheckDefault">
@@ -69,7 +69,7 @@ const props = defineProps({
           </div>
 
           <div class="form__northeast-container mb-2 me-xxl-2">
-            <h3 class="form__title form__title--area">NorthEast Towns:</h3>
+            <h3 class="form__title form__title--area">NorthEast:</h3>
 
             <div v-for="town in townArr.northEast" class="form-check mb-2 d-md-none d-xxl-block">
               <input class="form-check-input" type="checkbox" :value="town" id="flexCheckDefault">
@@ -102,7 +102,7 @@ const props = defineProps({
           </div>
 
           <div class="form__east-container mb-2 me-xxl-2">
-            <h3 class="form__title form__title--area">East Towns:</h3>
+            <h3 class="form__title form__title--area">East:</h3>
 
             <div v-for="town in townArr.east" class="form-check mb-2">
               <input class="form-check-input" type="checkbox" :value="town" id="flexCheckDefault">
@@ -113,7 +113,7 @@ const props = defineProps({
           </div>
 
           <div class="form__west-container mb-2 me-xxl-2">
-            <h3 class="form__title form__title--area">West Towns:</h3>
+            <h3 class="form__title form__title--area">West:</h3>
 
             <div v-for="town in townArr.west" class="form-check mb-2 d-md-none d-xxl-block">
               <input class="form-check-input" type="checkbox" :value="town" id="flexCheckDefault">
@@ -155,7 +155,7 @@ const props = defineProps({
           </div>
 
           <div class="form__central-container mb-4">
-            <h3 class="form__title form__title--area">Central Towns:</h3>
+            <h3 class="form__title form__title--area">Central:</h3>
 
             <div v-for="town in townArr.central" class="form-check mb-2 d-md-none d-xxl-block">
               <input class="form-check-input" type="checkbox" :value="town" id="flexCheckDefault">
@@ -199,15 +199,15 @@ const props = defineProps({
       </div>
 
       <!-- Max Price -->
-      <div class="d-md-flex mb-4">
+      <div class="d-md-flex mb-4 align-items-center">
         <label for="maxPrice" class="form-label form__title form__title2">Max Price:</label>
         <input type="number" id="maxPrice" class="form-control input-price">
       </div>
 
       <!-- Bedrooms -->
       <div class="d-md-flex mb-5 align-items-center">
-        <span class="form__title form__title2">Bedrooms:</span>
-        <div class="mt-2">
+        <div class="form__title form__title2">Bedrooms:</div>
+        <div>
           <button class="btn btn-dark me-1 me-sm-2">1</button>
           <button class="btn btn-dark me-1 me-sm-2">2</button>
           <button class="btn btn-dark me-1 me-sm-2">3</button>
@@ -230,7 +230,7 @@ const props = defineProps({
 }
 
 form {
-  position: absolute;
+  position: fixed;
   z-index: 4;
   inset: 15%;
   max-width: 880px;
@@ -249,15 +249,16 @@ form {
 
 hr {
   margin: 10px 0;
+  color: #dee2e6;
 }
 
 .form__title {
   font-weight: bold;
-  font-size: 17px;
+  font-size: 16px;
 }
 
-.form__title--area {
-  font-size: 16px;
+.form__title2 {
+  margin-bottom: 5px;
 }
 
 .input-price {
@@ -283,6 +284,7 @@ hr {
   .form__title2 {
     width: 25%;
     max-width: 120px;
+    margin-bottom: 0;
   }
 }
 

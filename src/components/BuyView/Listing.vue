@@ -1,5 +1,11 @@
 <script setup>
+import { ref } from "vue";
+let isFavorited = ref(false)
 
+function handleFavorite() {
+  event.preventDefault()
+  isFavorited.value = !isFavorited.value
+}
 </script>
 
 <template>
@@ -12,10 +18,21 @@
 
       <div class="col-8">
         <div class="card-body d-flex flex-column justify-content-center h-100">
-          <h5 class="card-title fw-bold mb-1">$530,000</h5>
-          <p class="card-text text-muted mb-0">220B Bedok Central</p>
-          <hr>
-        
+          <div class="d-flex justify-content-between">
+            <h5 class="card-title fw-bold mb-1">220B Bedok Central</h5>
+
+            <button
+              @click="handleFavorite" 
+              class="favorite-icon-btn"
+              :class="{ 'favorite-icon-btn-active': isFavorited }"
+            >
+              <img class="favorite-icon" src="../../assets/img/Listings/favorite_FILL1_wght400_GRAD0_opsz24.png">
+            </button>
+          </div>
+
+          <p class="card-text text-muted mb-0">$530,000</p>
+          <hr class="text-black-50">
+
           <div class="d-flex">
             <div class="me-2 me-lg-3">
               <div class="d-flex">
@@ -49,11 +66,26 @@
 
 <style scoped>
 .card {
-  margin-bottom: 20px;  
+  margin-bottom: 20px;
 }
 
 .card-title {
   font-size: 15px;
+}
+
+.favorite-icon-btn {
+  background-color: transparent;
+  border: 1px solid #f0f0f0;
+  border-radius: 5px;
+  padding: 1px 5px;
+}
+
+.favorite-icon-btn-active {
+  background-color: red;
+}
+
+.favorite-icon {
+  width: 18px;
 }
 
 .card-text,
@@ -74,6 +106,7 @@
 }
 
 @media (min-width: 470px) {
+
   .card-title,
   .material-symbols-outlined {
     font-size: 17px;
@@ -90,6 +123,7 @@
 }
 
 @media (min-width: 576px) {
+
   .card-title,
   .material-symbols-outlined {
     font-size: 20px;
@@ -106,6 +140,7 @@
 }
 
 @media (min-width: 700px) {
+
   .card-title,
   .material-symbols-outlined {
     font-size: 24px;

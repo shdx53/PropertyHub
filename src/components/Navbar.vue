@@ -5,7 +5,7 @@
 <template>
   <nav class="navbar navbar-expand-sm sticky-top bg-black">
     <div class="container-fluid general-container px-0">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="./">
         <b>Property</b>Hub
       </a>
       
@@ -17,10 +17,10 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav w-100">
           <li class="nav-item">
-            <a class="nav-link" href="#">Buy</a>
+            <a class="nav-link" href="./buy">Buy</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Sell</a>
+            <a class="nav-link" href="./sell">Sell</a>
           </li>
           <div class="d-sm-flex w-100 justify-content-end">
             <li class="nav-item">
@@ -35,7 +35,7 @@
 
 <style scoped>
   .navbar {
-    height: 65px;
+    padding: 18px 0 17px 0;
     z-index: 3;
   }
   .general-container {

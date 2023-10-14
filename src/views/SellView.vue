@@ -138,9 +138,17 @@ header::before {
   object-fit: cover;
 }
 
+.card__title--bid {
+  font-size: 22px;
+}
+
 .card__subtitle {
   letter-spacing: 3px;
   text-transform: uppercase;
+}
+
+.card__subtitle--bid {
+  font-size: 14px;
 }
 
 .faq__title {
@@ -172,25 +180,55 @@ header::before {
     justify-content: center;
   }
   .card__title--bid {
-    font-size: 20px;
+    font-size: 17px;
   }
 
-  .card__subtitle--bid {
-    font-size: 16px;
+  .card__subtitle {
+    font-size: 14px;
+  }
+
+  .card__text {
+    font-size: 12px;
   }
 
   .faq__title {
-    font-size: 22px;
+    font-size: 20px;
   }
 }
 
 @media (min-width: 768px) {
   .card__title {
+    font-size: 28px;
+  }
+
+  .card__title--bid {
+    font-size: 24px;
+  }
+
+  .card__subtitle {
+    font-size: 16px;
+  }
+
+  .card__subtitle--bid {
+    font-size: 15px;
+  }
+
+  .card__text {
+    font-size: 16px;
+  }
+
+  .faq__title {
+    font-size: 26px;
+  }
+}
+
+@media (min-width: 992px) {
+  .card__title {
     font-size: 30px;
   }
 
   .card__title--bid {
-    font-size: 28px;
+    font-size: 26px;
   }
 
   .card__subtitle {
@@ -198,25 +236,25 @@ header::before {
   }
 
   .card__subtitle--bid {
-    font-size: 16px;
-  }
-
-  .card__text {
     font-size: 17px;
   }
 
+  .card__text {
+    font-size: 18px;
+  }
+
   .faq__title {
-    font-size: 24px;
+    font-size: 28px;
   }
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1400px) {
   .card__title {
-    font-size: 35px;
+    font-size: 34px;
   }
 
   .card__title--bid {
-    font-size: 33px;
+    font-size: 30px;
   }
 
   .card__subtitle {
@@ -224,7 +262,7 @@ header::before {
   }
 
   .card__subtitle--bid {
-    font-size: 20px;
+    font-size: 21px;
   }
 
   .card__text {
@@ -232,6 +270,6 @@ header::before {
   }
 
   .faq__title {
-    font-size: 27px;
+    font-size: 32px;
   }
 }</style>
