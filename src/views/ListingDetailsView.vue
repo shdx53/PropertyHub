@@ -146,8 +146,8 @@ function handleFavorite() {
 
               <div class="col-md-6 mb-2">
                 <div class="row">
-                  <div class="col-6 col-md-12 fw-bold">Property Type</div>
-                  <div class="col-6 col-md-12">5-room HDB</div>
+                  <div class="col-6 col-md-12 fw-bold">Level</div>
+                  <div class="col-6 col-md-12">8</div>
                 </div>
               </div>
 
