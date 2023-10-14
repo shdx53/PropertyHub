@@ -1,10 +1,10 @@
 <script setup>
 import { ref } from "vue";
-let isFavorited = ref(false)
+let isFavorited = ref(false);
 
 function handleFavorite() {
-  event.preventDefault()
-  isFavorited.value = !isFavorited.value
+  event.preventDefault();
+  isFavorited.value = !isFavorited.value;
 }
 </script>
 

@@ -1,6 +1,15 @@
 <script setup>
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
+import GoogleMaps from "../components/ListingDetailsView/GoogleMaps.vue";
+
+import { ref } from "vue";
+let isFavorited = ref(false);
+
+function handleFavorite() {
+  event.preventDefault();
+  isFavorited.value = !isFavorited.value;
+}
 </script>
 
 <template>
@@ -55,7 +64,17 @@ import Footer from "../components/Footer.vue";
       <!-- Left column -->
       <div>
         <div class="property-overview-row">
-          <h2 style="font-size: 30px; margin-bottom: 5px;">220B Bedok Central</h2>
+          <div class="d-flex justify-content-between align-items-center">
+            <h2 style="font-size: 30px; margin-bottom: 5px;">220B Bedok Central</h2>
+            <button
+              @click="handleFavorite" 
+              class="favorite-btn"
+              :class="{ 'favorite-btn-active': isFavorited }"
+            >
+              <img class="favorite-icon" src="../assets/img/Listings/favorite_FILL1_wght400_GRAD0_opsz24.png">
+            </button>
+          </div>
+
           <div class="text-muted" style="font-size: 26px;">$530,000</div>
 
           <div class="section-divider"></div>
@@ -94,7 +113,7 @@ import Footer from "../components/Footer.vue";
 
           <section class="about-section">
             <div class="description-block">
-              <h2>About the property</h2>
+              <h2>About the Property</h2>
               <p class="text">
                 Discover a remarkable opportunity with this newly listed property, offering a host of captivating
                 features that define luxury living:
@@ -116,7 +135,7 @@ import Footer from "../components/Footer.vue";
           <div class="section-divider"></div>
 
           <section class="details-section">
-            <h2>More details</h2>
+            <h2>More Details</h2>
             <div class="row">
               <div class="col-md-6 mb-2">
                 <div class="row">
@@ -164,18 +183,10 @@ import Footer from "../components/Footer.vue";
 
           <div class="section-divider"></div>
 
-          <section class="location-section">
-            <div class="listing-location-section-root">
-              <h2>About the Location</h2>
-              <div class="listing-location">
-                <!-- nav bar -->
-                <!-- <nav class="nav-tabs">
-                  <a role="button" class="nav-commute">Commute</a>
-                  <a role="button" class="nav-school">Schools</a>
-                  <a role="button" class="nav-family-living">Family Living</a>
-                  <a role="button" class="nav-lifestyle">Lifestyle</a>
-                </nav> -->
-              </div>
+          <section class="mb-5">
+            <div>
+              <h2>Nearby Amenities</h2>
+              <GoogleMaps />
             </div>
           </section>
         </div>
@@ -427,6 +438,21 @@ h2 {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.favorite-btn {
+  background-color: transparent;
+  border: 1px solid #f0f0f0;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.favorite-btn-active {
+  background-color: red;
+}
+
+.favorite-icon {
+  width: 20px;
 }
 
 .overview__value {

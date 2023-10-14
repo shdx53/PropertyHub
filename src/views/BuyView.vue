@@ -124,7 +124,7 @@ a {
 }
 
 @media (min-width: 992px) {
-  .general-container {
+  .general__container {
     height: calc(100vh - 65px - 87px);
   }
 

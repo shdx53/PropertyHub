@@ -1,5 +1,5 @@
 <template>
-  <div ref="gmap" class="map"></div>
+  <div ref="gmap" class="map rounded"></div>
 </template>
 
 <script setup>
@@ -17,6 +17,7 @@ const loader = new Loader({
 loader.load().then(async () => {
   const { Map, InfoWindow } = await google.maps.importLibrary("maps");
   const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+  const { PlacesService } = await google.maps.importLibrary("places");
 
   const mapInstance = new Map(gmap.value, {
     mapId: "b9bac48230daafe7",
@@ -36,8 +37,8 @@ loader.load().then(async () => {
     content: `<div>
       <img style="width: 100px; height: 75px; object-fit: cover;" src="https://i.postimg.cc/7ZcX1kJJ/hudson-graves-n-OJag-Mq-GCp-A-unsplash.jpg">
       <div>
-        <div class="fw-bold mt-2 mb-1" style="font-size: 13px;">$530,000</div>
-        <div style="font-size: 11px;">220B Bedok Central</div>
+        <div class="fw-bold my-1" style="font-size: 10px;">220B Bedok Central</div>
+        <div style="font-size: 9px;">$530,000</div>
       </div>
     </div>`,
   });

@@ -21,7 +21,7 @@
   <!-- Navbar -->
   <Navbar></Navbar>
 
-  <div class="container-fluid login-container">
+  <div class="login-container">
     <!-- Login Image on left side -->
     <div class="login-image">
       <img
@@ -35,7 +35,7 @@
         <h2 class="mb-4 fw-bold">Login</h2>
 
         <!-- Email -->
-        <div class="form-group">
+        <div class="form-group mb-2">
           <label for="email" class="py-2 fw-bold">Email:</label>
           <input
             type="email"
@@ -57,8 +57,8 @@
           />
         </div>
         <!-- Forgot Password -->
-        <div class="mt-1 py-2" style="font-size: 12px">
-          <span @click="forgotPassword" style="color: #0275d8; text-decoration: none; cursor: pointer">Forgot Password</span>
+        <div class="mt-1 mb-4 py-2" style="font-size: 12px">
+          <span @click="forgotPassword" style="color: #0275d8; text-decoration: none; cursor: pointer">Forgot Password?</span>
         </div>
         <!-- Login button -->
         <div class="d-grid gap-2">
@@ -67,7 +67,7 @@
           </button>
         </div>
 
-        <p>{{ errMsg }}</p>
+        <p class="my-2 text-danger text-center">{{ errMsg }}</p>
       </div>
       <!-- Sign up link -->
       <p class="mt-3 text-center signup mx-auto">
@@ -85,8 +85,9 @@
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  height: 84vh;
-  
+  height: calc(100vh - 65px - 87px);
+  width: 90%;
+  margin: 0 auto;
 }
 
 .login-image {
@@ -95,11 +96,9 @@
 }
 
 .login-form {
-
   min-width: 400px;
-
- 
 }
+
 .signup {
   width: 40%;
   max-width: 400px;
@@ -107,7 +106,7 @@
   text-align: center;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 992px) {
   .login-image {
     display: none;
   }
@@ -141,7 +140,7 @@ const signIn = () => {
       console.log(error.code);
       switch (error.code) {
         case "auth/invalid-email":
-          errMsg.value = "invalid email";
+          errMsg.value = "Invalid email";
           break;
         case "auth/user-not-found":
           errMsg.value = "No account witht that email was found";

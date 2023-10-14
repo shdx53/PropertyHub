@@ -6,8 +6,8 @@ import Listing from "../components/BuyView/Listing.vue";
 
 <template>
     <Navbar/>
-    <div class="container">
-        <h2 class="mb-5 fw-bold">Bookmarks</h2>
+    <div class="container mx-auto my-5">
+        <h2 class="mb-4 fw-bold">Bookmarks</h2>
         <Listing></Listing>
         <Listing></Listing>
         <Listing></Listing>
@@ -20,9 +20,7 @@ import Listing from "../components/BuyView/Listing.vue";
 <style scoped>
 .container{
     width: 80%;
-    margin: auto;
-    margin-top: 5%;
-
+    max-width: 850px;
 }
 </style>
 

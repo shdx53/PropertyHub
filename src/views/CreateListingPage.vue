@@ -11,9 +11,11 @@ const createlisting = () => {
 
 <template>
     <Navbar/>
-    <div class="container">
-        <h2 class="mb-4 fw-bold">Listings</h2>
-        <button @click="createlisting" type="button" class="mb-4 btn btn-primary createbtn">Create Listing</button>
+    <div class="container mx-auto my-5">
+        <div class="d-flex justify-content-between">
+            <h2 class="mb-4 fw-bold">Listings</h2>
+            <button @click="createlisting" type="button" class="mb-4 btn btn-primary createbtn">Create Listing</button>
+        </div>
         <Listing></Listing>
         <Listing></Listing>
         <Listing></Listing>
@@ -26,9 +28,7 @@ const createlisting = () => {
 <style scoped>
 .container{
     width: 80%;
-    margin: auto;
-    margin-top: 5%;
-
+    max-width: 850px;
 }
 .createbtn:hover{
     background-color: transparent;
