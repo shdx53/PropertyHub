@@ -37,7 +37,7 @@ function handleFavorite() {
 
         <!-- Add more carousel items as needed -->
         <div class="carousel-item custom-carousel__item">
-          <img src="../assets/img/Listings/hudson-graves-nOJagMqGCpA-unsplash.jpg" class="d-block w-100" alt="Slide 2">
+          <img src="../assets/img/Listings/hudson-graves-nOJagMqGCpA-unsplash.jpg" class="d-block w-100 rounded" alt="Slide 2">
         </div>
       </div>
 
@@ -256,7 +256,7 @@ function handleFavorite() {
               <div class="col-8 text-center">
                 <div class="text-start d-flex flex-column justify-content-between h-100">
                   <div>
-                    <span style="font-size:18px ;font-weight: bold;">936 Bedok Central</span>
+                    <span style="font-size:18px ;font-weight: bold;">220B Bedok Central</span>
 
                     <!-- icons -->
                     <div class="d-flex mt-2">
@@ -337,7 +337,7 @@ function handleFavorite() {
               <div class="col-8 text-center">
                 <div class="text-start d-flex flex-column justify-content-between h-100">
                   <div>
-                    <span style="font-size:18px ;font-weight: bold;">936 Bedok Central</span>
+                    <span style="font-size:18px ;font-weight: bold;">220B Bedok Central</span>
 
                     <!-- icons -->
                     <div class="d-flex mt-2">

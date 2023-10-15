@@ -20,7 +20,8 @@ function handleFavorite() {
             class="card__favorite-btn"
             :class="{ 'card__favorite-btn-active': isFavorited }"
           >
-            <img class="card__favorite-icon" src="../../assets/img/Listings/favorite_FILL1_wght400_GRAD0_opsz24.png">
+            <img class="card__favorite-icon me-1" src="../../assets/img/Listings/favorite_FILL1_wght400_GRAD0_opsz24.png">
+            <span class="text-body-tertiary fw-bold" :class="{ 'card__favorite-qty': isFavorited }">10</span>
           </button>
         </div>
 
@@ -45,8 +46,8 @@ function handleFavorite() {
 
             <div class="card__property text-muted">Bathrooms</div>
           </div>
+          
           <div>
-
             <div class="d-flex">
               <span class="material-symbols-outlined me-2">crop_square</span>
               <b>984 <span class="card__unit">sqft</span></b>
@@ -85,6 +86,10 @@ a {
 
 .card__favorite-icon {
   width: 18px;
+}
+
+.card__favorite-qty {
+  color: white !important; 
 }
 
 .card-text {

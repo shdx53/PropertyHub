@@ -17,7 +17,6 @@ const loader = new Loader({
 loader.load().then(async () => {
   const { Map, InfoWindow } = await google.maps.importLibrary("maps");
   const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-  const { PlacesService } = await google.maps.importLibrary("places");
 
   const mapInstance = new Map(gmap.value, {
     mapId: "b9bac48230daafe7",

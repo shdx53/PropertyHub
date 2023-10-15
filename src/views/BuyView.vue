@@ -5,6 +5,7 @@ import Footer from "../components/Footer.vue";
 import Listing from "../components/BuyView/Listing.vue";
 import Filter from "../components/FIlter.vue";
 import { ref } from "vue";
+import Autocomplete from "../components/Autocomplete.vue";
 
 let isDisplayFilter = ref(false);
 function displayFilter() {
@@ -20,7 +21,7 @@ function displayFilter() {
     <!-- Search -->
     <section class="search__container">
       <div class="input-group">
-        <input type="text" class="form-control border border-light-subtle" placeholder="Search">
+        <Autocomplete />
 
         <button @click="displayFilter" class="btn header__filter-btn" type="button">
           <span class="material-symbols-outlined">tune</span>

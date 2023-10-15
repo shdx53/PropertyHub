@@ -26,7 +26,8 @@ function handleFavorite() {
               class="card__favorite-btn"
               :class="{ 'card__favorite-btn-active': isFavorited }"
             >
-              <img class="card__favorite-icon" src="../../assets/img/Listings/favorite_FILL1_wght400_GRAD0_opsz24.png">
+              <img class="card__favorite-icon me-1" src="../../assets/img/Listings/favorite_FILL1_wght400_GRAD0_opsz24.png">
+              <span class="text-body-tertiary fw-bold" :class="{ 'card__favorite-qty': isFavorited }">10</span>
             </button>
           </div>
 
@@ -91,6 +92,10 @@ function handleFavorite() {
 
 .card__favorite-icon {
   width: 12px;
+}
+
+.card__favorite-qty {
+  color: white !important; 
 }
 
 .card-text,
