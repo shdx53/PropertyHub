@@ -95,7 +95,8 @@ function displayFilter() {
 
 /* Search Results */
 .search-results__container {
-  max-width: 1200px;
+  width: 95%;
+  max-width: 440px;
   margin: 0 auto;
 }
 
@@ -110,10 +111,6 @@ function displayFilter() {
   margin: 0 auto;
 }
 
-.search-results__listing-container {
-  width: 75%;
-}
-
 a {
   color: black;
   text-decoration: none;
@@ -126,6 +123,10 @@ a {
 @media (min-width: 992px) {
   .general__container {
     height: calc(100vh - 65px - 87px);
+  }
+
+  .search-results__container {
+    max-width: 1200px;
   }
 
   .search-results__flex {

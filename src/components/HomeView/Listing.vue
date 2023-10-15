@@ -66,7 +66,9 @@ a {
 }
 
 .card__img {
-  height: 350px;
+  width: 100%;
+  max-height: 550px;
+  aspect-ratio: 1.5 / 1.1;
   object-fit: cover;
 }
 

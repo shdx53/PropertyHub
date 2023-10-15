@@ -39,7 +39,7 @@ function handleFavorite() {
                 <span class="material-symbols-outlined me-1">bed</span>
                 <b class="card__value">3</b>
               </div>
-              <div class="d-none d-sm-block text-muted card__property">Bedrooms</div>
+              <div class="text-muted card__property">Bedrooms</div>
             </div>
 
             <div class="me-2 me-lg-3">
@@ -47,7 +47,7 @@ function handleFavorite() {
                 <span class="material-symbols-outlined me-1">bathtub</span>
                 <b class="card__value">2</b>
               </div>
-              <div class="d-none d-sm-block text-muted card__property">Bathrooms</div>
+              <div class="text-muted card__property">Bathrooms</div>
             </div>
 
             <div>
@@ -55,7 +55,7 @@ function handleFavorite() {
                 <span class="material-symbols-outlined me-1">crop_square</span>
                 <b class="card__value">984 <span class="card__unit">sqft</span></b>
               </div>
-              <div class="d-none d-sm-block text-muted card__property">Living Area</div>
+              <div class="text-muted card__property">Living Area</div>
             </div>
           </div>
         </div>
@@ -67,6 +67,11 @@ function handleFavorite() {
 <style scoped>
 .card {
   margin-bottom: 20px;
+}
+
+.card__img {
+  aspect-ratio: 1 / 1.1;
+  object-fit: cover;
 }
 
 .card-title {
@@ -102,6 +107,7 @@ function handleFavorite() {
 }
 
 .card__property {
+  display: none;
   font-size: 10px;
 }
 
@@ -119,10 +125,38 @@ function handleFavorite() {
   .card__unit {
     font-size: 12px;
   }
+
+  .card__property {
+    display: block;
+  }
 }
 
 @media (min-width: 576px) {
 
+  .card-title,
+  .material-symbols-outlined {
+    font-size: 17px;
+  }
+
+  .card__favorite-icon {
+    width: 13px;
+  }
+
+  .card-text,
+  .card__value {
+    font-size: 15px;
+  }
+
+  .card__unit {
+    font-size: 13px;
+  }
+
+  .card__property {
+    font-size: 11px;
+  }
+}
+
+@media (min-width: 700px) {
   .card-title,
   .material-symbols-outlined {
     font-size: 18px;
@@ -140,26 +174,6 @@ function handleFavorite() {
   .card__unit {
     font-size: 14px;
   }
-}
-
-@media (min-width: 700px) {
-  .card-title,
-  .material-symbols-outlined {
-    font-size: 20px;
-  }
-
-  .card__favorite-icon {
-    width: 16px;
-  }
-
-  .card-text,
-  .card__value {
-    font-size: 18px;
-  }
-
-  .card__unit {
-    font-size: 16px;
-  }
 
   .card__property {
     font-size: 12px;
@@ -175,25 +189,6 @@ function handleFavorite() {
   .card__img {
     width: 100%;
     height: 180px;
-    object-fit: cover;
-  }
-
-  .card-title,
-  .material-symbols-outlined {
-    font-size: 20px;
-  }
-
-  .card-text,
-  .card__value {
-    font-size: 16px;
-  }
-
-  .card__unit {
-    font-size: 14px;
-  }
-
-  .card__property {
-    font-size: 12px;
   }
 }
 </style>
