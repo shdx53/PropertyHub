@@ -2,16 +2,14 @@
 import Navbar from "../components/Navbar.vue";
 import Listing from "../components/HomeView/Listing.vue";
 import Footer from "../components/Footer.vue";
-import Filter from "../components/Filter.vue"
-import Autocomplete from "../components/Autocomplete.vue"
+import Filter from "../components/Filter.vue";
+import Autocomplete from "../components/Autocomplete.vue";
 import { ref } from "vue";
-
 
 let isDisplayFilter = ref(false);
 function displayFilter() {
   isDisplayFilter.value = isDisplayFilter.value ? false : true;
 };
-
 </script>
 
 <template>

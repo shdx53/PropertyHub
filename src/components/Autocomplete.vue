@@ -17,7 +17,7 @@ onMounted(() => {
 
     const options = {
       componentRestrictions: { country: "sg" },
-      types: ["street_address"],
+      types: ["address"],
       fields: ["address_components"]
     };
 

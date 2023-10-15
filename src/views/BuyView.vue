@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar.vue";
 import GoogleMaps from "../components/BuyView/GoogleMaps.vue";
 import Footer from "../components/Footer.vue";
 import Listing from "../components/BuyView/Listing.vue";
-import Filter from "../components/FIlter.vue";
+import Filter from "../components/Filter.vue";
 import { ref } from "vue";
 import Autocomplete from "../components/Autocomplete.vue";
 
