@@ -27,6 +27,7 @@ import { RouterLink, RouterView } from "vue-router";
 import { useRouter } from "vue-router";
 import { onMounted, ref } from "vue";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import {db} from '@/firebase'
 const router = useRouter();
 const isLoggedIn = ref(false);
 let auth;

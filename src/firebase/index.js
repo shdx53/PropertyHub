@@ -1,13 +1,8 @@
-import "./assets/main.css"
-import { createApp } from "vue";
-import App from "./App.vue";
-import router from "./router";
-import { apiKey,messagingSenderId,appId,measurementId } from "./config";
+
+
+import { apiKey, messagingSenderId, appId, measurementId } from "../config.js";
 import firebase from "firebase/compat/app";
 
-// Bootstrap
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -20,7 +15,6 @@ import { getFirestore } from "firebase/firestore";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 // require("dotenv").config();
 
-
 const firebaseConfig = {
   apiKey: apiKey,
   authDomain: "wad2-f67fb.firebaseapp.com",
@@ -31,11 +25,6 @@ const firebaseConfig = {
   measurementId: measurementId,
 };
 
-initializeApp(firebaseConfig);
-
-const app = createApp(App);
-
-
-app.use(router);
-
-app.mount("#app");
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+export { db };
