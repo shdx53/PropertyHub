@@ -95,8 +95,7 @@ function displayFilter() {
 
 /* Search Results */
 .search-results__container {
-  width: 95%;
-  max-width: 440px;
+  max-width: 600px;
   margin: 0 auto;
 }
 
@@ -126,7 +125,7 @@ a {
   }
 
   .search-results__container {
-    max-width: 1200px;
+    max-width: 1000px;
   }
 
   .search-results__flex {
