@@ -18,42 +18,36 @@ function handleFavorite() {
 
   <div class="general__container">
     <!-- Block: custom-carousel -->
-    <div id="carouselExampleCaptions" class="carousel slide mx-auto custom-carousel mt-4">
+    <div id="imgCarousel" class="carousel slide mx-auto mt-4">
       <!-- Elements: custom-carousel__indicators -->
-      <ol class="carousel-indicators custom-carousel__indicators">
-        <li data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true"
-          aria-label="Slide 1"></li>
-        <li data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></li>
-      </ol>
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#imgCarousel" data-bs-slide-to="0" class="active"
+          aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#imgCarousel" data-bs-slide-to="1"
+          aria-label="Slide 2"></button>
+      </div>
 
       <!-- Block: custom-carousel__inner -->
-      <div class="carousel-inner custom-carousel__inner">
+      <div class="carousel-inner">
         <!-- Elements: custom-carousel__item -->
         <div class="carousel-item active custom-carousel__item">
           <img src="../assets/img/Listings/hudson-graves-nOJagMqGCpA-unsplash.jpg" class="d-block w-100 rounded"
             alt="Slide 1">
-          <!-- Elements: custom-carousel__caption -->
-          <div class="carousel-caption d-none d-md-block custom-carousel__caption">
-            <!-- Your caption content -->
-          </div>
         </div>
 
         <!-- Add more carousel items as needed -->
         <div class="carousel-item custom-carousel__item">
           <img src="../assets/img/Listings/hudson-graves-nOJagMqGCpA-unsplash.jpg" class="d-block w-100" alt="Slide 2">
-          <div class="carousel-caption d-none d-md-block custom-carousel__caption">
-            <!-- Your caption content for Slide 2 -->
-          </div>
         </div>
       </div>
 
       <!-- Controls -->
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+      <button class="carousel-control-prev" type="button" data-bs-target="#imgCarousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
       </button>
 
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+      <button class="carousel-control-next" type="button" data-bs-target="#imgCarousel" data-bs-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
@@ -66,11 +60,7 @@ function handleFavorite() {
         <div class="property-overview-row">
           <div class="d-flex justify-content-between align-items-center">
             <h2 style="font-size: 30px; margin-bottom: 5px;">220B Bedok Central</h2>
-            <button
-              @click="handleFavorite" 
-              class="favorite-btn"
-              :class="{ 'favorite-btn-active': isFavorited }"
-            >
+            <button @click="handleFavorite" class="favorite-btn" :class="{ 'favorite-btn-active': isFavorited }">
               <img class="favorite-icon" src="../assets/img/Listings/favorite_FILL1_wght400_GRAD0_opsz24.png">
             </button>
           </div>
@@ -428,7 +418,7 @@ h2 {
   /* Your styling for carousel images */
   width: 100%;
   /* Adjust this width as needed */
-  height: 450px;
+  aspect-ratio: 1.5 / 1;
   /* Adjust this height as needed */
   object-fit: cover;
   /* Maintain aspect ratio and cover the entire space */
