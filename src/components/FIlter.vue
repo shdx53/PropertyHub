@@ -201,8 +201,15 @@ const props = defineProps({
       <!-- Max Price -->
       <div class="d-md-flex mb-4 align-items-center">
         <label for="maxPrice" class="form-label form__title form__title2">Max Price:</label>
-        <input type="number" id="maxPrice" class="form-control input-price">
+        <!-- <input type="number" id="maxPrice" class="form-control input-price"> -->
+        <div class="input-group input-price__container">
+          <span class="input-group-text" id="basic-addon1">$</span>
+          <input type="number" class="form-control" placeholder="Bid Price" aria-label="Bid Price"
+            aria-describedby="basic-addon1">
+        </div>
       </div>
+
+
 
       <!-- Bedrooms -->
       <div class="d-md-flex mb-5 align-items-center">
@@ -261,7 +268,7 @@ hr {
   margin-bottom: 5px;
 }
 
-.input-price {
+.input-price__container {
   width: 206px;
 }
 

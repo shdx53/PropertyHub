@@ -370,7 +370,7 @@ function handleFavorite() {
                   <div>
                     <div class="input-group">
                       <span class="input-group-text" id="basic-addon1">$</span>
-                      <input type="text" class="form-control" placeholder="Bid Price" aria-label="Bid Price"
+                      <input type="number" class="form-control" placeholder="Bid Price" aria-label="Bid Price"
                         aria-describedby="basic-addon1">
                     </div>
                     <div class="text-start" style="font-size: 10px;">Current Highest Bid to Beat: $ </div>
@@ -418,10 +418,11 @@ h2 {
   /* Your styling for carousel images */
   width: 100%;
   /* Adjust this width as needed */
-  aspect-ratio: 1.5 / 1;
+  max-height: 450px;
   /* Adjust this height as needed */
   object-fit: cover;
   /* Maintain aspect ratio and cover the entire space */
+  aspect-ratio: 1.5 / 1;
 }
 
 .property-info__container {
