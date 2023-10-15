@@ -10,6 +10,19 @@ let isDisplayFilter = ref(false);
 function displayFilter() {
   isDisplayFilter.value = isDisplayFilter.value ? false : true;
 };
+
+//getting data from firestore
+// import { doc, getDoc } from "firebase/firestore";
+
+// const docRef = doc(db, "listings", "SF");
+// const docSnap = await getDoc(docRef);
+
+// if (docSnap.exists()) {
+//   console.log("Document data:", docSnap.data());
+// } else {
+//   // docSnap.data() will be undefined in this case
+//   console.log("No such document!");
+// }
 </script>
 
 <template>
