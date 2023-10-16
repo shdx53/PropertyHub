@@ -203,9 +203,8 @@ const props = defineProps({
         <label for="maxPrice" class="form-label form__title form__title2">Max Price:</label>
         <!-- <input type="number" id="maxPrice" class="form-control input-price"> -->
         <div class="input-group input-price__container">
-          <span class="input-group-text" id="basic-addon1">$</span>
-          <input type="number" class="form-control" placeholder="Bid Price" aria-label="Bid Price"
-            aria-describedby="basic-addon1">
+          <span class="input-group-text">$</span>
+          <input type="number" class="form-control" placeholder="Price">
         </div>
       </div>
 
