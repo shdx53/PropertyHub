@@ -1,14 +1,12 @@
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { Loader } from "@googlemaps/js-api-loader";
-import { mapsApiKey } from "../config.js";
-import { ref } from "vue";
 
 let addressInput = ref(null);
 
 onMounted(() => {
   const loader = new Loader({
-    apiKey: mapsApiKey,
+    apiKey: import.meta.env.VITE_MAPS_API_KEY,
     version: "weekly",
   });
 

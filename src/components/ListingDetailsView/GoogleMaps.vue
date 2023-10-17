@@ -25,7 +25,7 @@
 <script setup>
 import { Loader } from "@googlemaps/js-api-loader";
 import { ref, onMounted } from 'vue';
-import { mapsApiKey } from "../../config.js";
+// import { mapsApiKey } from "../../config.js";
 
 let gmap = ref(null);
 let isTrainActive = ref(true);
@@ -34,7 +34,7 @@ let isSchoolActive = ref(false);
 let amenities = ref([]);
 
 const loader = new Loader({
-  apiKey: mapsApiKey,
+  apiKey: import.meta.env.VITE_MAPS_API_KEY,
   version: "weekly",
 });
 

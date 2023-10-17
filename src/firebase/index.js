@@ -1,4 +1,4 @@
-import { apiKey, messagingSenderId, appId, measurementId } from "../config.js";
+// import { apiKey, messagingSenderId, appId, measurementId } from "../config.js";
 import "firebase/firestore";
 
 // Import the functions you need from the SDKs you need
