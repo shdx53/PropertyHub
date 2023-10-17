@@ -4,13 +4,15 @@ import App from "./App.vue";
 import router from "./router";
 import { apiKey,messagingSenderId,appId,measurementId } from "./config";
 import firebase from "firebase/compat/app";
+import { getApps ,initializeApp} from "firebase/app";
+// import { getAuth,onAuthStateChange } from "firebase/auth";
 
 // Bootstrap
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
+
 
 import { getFirestore } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use

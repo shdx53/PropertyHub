@@ -8,7 +8,8 @@ import { ref } from "vue";
 
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
-import {db}  from "../firebase/index.js";
+import {db,getCurrentUser}  from "../firebase/index.js";
+
 
 const auth = getAuth();
 var shownBalance = ref(null);
@@ -28,20 +29,20 @@ async function getBalance(email) {
 
 
 }
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    email.value = user.email;
-    // console.log(email.value);
+
+getCurrentUser()
+  .then(user => {
+    if (user) {
+      email.value = user.email;
+//     // console.log(email.value);
     getBalance(email.value);
-    // console.log(getBalance(email.value));
-    
-  } else {
-    // User is signed out
-    // ...
-  }
-});
-
-
+    } else {
+      console.log("No user is currently logged in.");
+    }
+  })
+  .catch(error => {
+    console.error("Error getting current user:", error);
+  });
 function add(value){
 
 }
