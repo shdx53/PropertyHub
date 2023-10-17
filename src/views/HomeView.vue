@@ -18,7 +18,7 @@ function displayFilter() {
 
   <!-- Header -->
   <header class="mb-5">
-    <div class="general__container general__container--home">
+    <div class="general__container">
       <div class="row">
         <div class="col-md-7 text-center text-md-start">
           <h1 class="fw-bold text-white mb-3 mb-md-2">Buy and Sell your property in one place!</h1>
@@ -46,7 +46,7 @@ function displayFilter() {
 
   <!-- Recently Added -->
   <section class="mb-5">
-    <div class="general__container general__container--home">
+    <div class="general__container">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="fw-bold m-0">Recently Added</h3>
         <a class="view-all" href="./buy">View All</a>
@@ -70,7 +70,7 @@ function displayFilter() {
 
   <!-- Popular Listings -->
   <section class="mb-5">
-    <div class="general__container general__container--home">
+    <div class="general__container">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="fw-bold m-0">Popular Listings</h3>
         <a class="view-all" href="./buy">View All</a>
@@ -134,10 +134,6 @@ header::before {
 .header__filter-btn:hover {
   background-color: #f0f0f0;
   opacity: 0.9;
-}
-
-.general__container--home {
-  max-width: 1400px;
 }
 
 .view-all {
