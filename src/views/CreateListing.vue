@@ -8,7 +8,8 @@ import Footer from "../components/Footer.vue";
     <Navbar></Navbar>
   
     <div class="editform">
-        
+        <h2>Listing Details</h2>
+        <br>
         <div class="mb-3">
             <label for="address" class="col-form-label fw-bold">Address:</label>
             <input type="text" class="form-control" id="address">
@@ -57,9 +58,21 @@ import Footer from "../components/Footer.vue";
             <label for="bathroom" class="col-form-label fw-bold">Number of Bathrooms:</label>
             <input type="number" min="1" max="5" class="form-control" id="bathroom">
         </div>
+        <br>
+        <hr>
+        <h2>Customize viewing window</h2>
+        <br>
+        <div class="mb-3">
+            <label for="startdate" class="col-form-label fw-bold">Start Date:</label>
+            <input type="date" class="form-control" id="startdate">
+        </div>
+        <div class="mb-3">
+            <label for="enddate" class="col-form-label fw-bold">End Date:</label>
+            <input type="date" class="form-control" id="enddate">
+        </div>
         
     <div class="buttongrp">
-        <button type="button" class="btn btn-primary">Save Changes</button>
+        <button type="button" class="btn btn-primary">Create Listing</button>
         <button type="button" class="btn btn-secondary mx-2">Cancel</button>
     </div>
     </div>
@@ -88,6 +101,10 @@ import Footer from "../components/Footer.vue";
 .buttongrp{
     margin-top:20px;
     margin-bottom: 40px;
+}
+
+h2{
+    font-weight: 900;
 }
   </style>
   
