@@ -7,7 +7,7 @@ import Listing from "../components/BuyView/Listing.vue";
 <template>
     <Navbar/>
     <div class="container mx-auto my-5">
-        <h2 class="mb-4 fw-bold">Bookmarks</h2>
+        <h2 class="mb-4 fw-bold">Liked Listings</h2>
         <Listing></Listing>
         <Listing></Listing>
         <Listing></Listing>

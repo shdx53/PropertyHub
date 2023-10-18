@@ -74,9 +74,9 @@ const router = createRouter({
       component: () => import("../views/ResetSuccess.vue"),
     },
     {
-      path: "/bookmarks",
-      name: "bookmarks",
-      component: () => import("../views/Bookmarks.vue"),
+      path: "/likedlistings",
+      name: "likedlistings",
+      component: () => import("../views/LikedListings.vue"),
     },
     {
       path: "/createlistingpage",
