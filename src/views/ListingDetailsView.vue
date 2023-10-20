@@ -10,6 +10,45 @@ function handleFavorite() {
   event.preventDefault();
   isFavorited.value = !isFavorited.value;
 }
+
+// firebase 
+// import { getAuth, onAuthStateChanged } from "firebase/auth";
+// import { doc, getDoc } from "firebase/firestore";
+// import {db,getCurrentUser}  from "../firebase/index.js";
+
+// const auth = getAuth();
+// var shownBalance = ref(null);
+// var email = ref(null);
+// async function getBalance(email) {
+//   const docRef = doc(db, "balance", email);
+//   const docSnap = await getDoc(docRef);
+
+//   if (docSnap.exists()) {
+//     console.log("Document data:", docSnap.data());
+//     console.log(docSnap.data().balance);
+//     shownBalance.value = docSnap.data().balance;
+//   } else {
+//     // docSnap.data() will be undefined in this case
+//     console.log("No such document!");
+//   }
+
+
+// }
+
+// getCurrentUser()
+//   .then(user => {
+//     if (user) {
+//       email.value = user.email;
+// //     // console.log(email.value);
+//     getBalance(email.value);
+//     } else {
+//       console.log("No user is currently logged in.");
+//     }
+//   })
+//   .catch(error => {
+//     console.error("Error getting current user:", error);
+//   });
+
 </script>
 
 <template>
@@ -58,20 +97,20 @@ function handleFavorite() {
       <!-- Left column -->
       <div>
         <div class="property-overview-row">
-          <div class="d-flex justify-content-between align-items-center">
-            <h2 style="font-size: 30px; margin-bottom: 5px;">220B Bedok Central</h2>
+          <div class="property-header">
+            <h2 class="property-title">220B Bedok Central</h2>
             <button @click="handleFavorite" class="favorite-btn" :class="{ 'favorite-btn-active': isFavorited }">
               <img class="favorite-icon" src="../assets/img/Listings/favorite_FILL1_wght400_GRAD0_opsz24.png">
             </button>
           </div>
 
-          <div class="text-muted" style="font-size: 26px;">$530,000</div>
+          <div class="property-price text-muted">$530,000</div>
 
           <div class="section-divider"></div>
 
           <section class="overview-section">
             <div class="d-flex justify-content-center">
-              <div class="me-5">
+              <div class="mx-3 text-center">
                 <div class="overview__description">Bedrooms</div>
                 <div class="d-flex justify-content-center">
                   <span class="material-symbols-outlined me-2">bed</span>
@@ -79,7 +118,7 @@ function handleFavorite() {
                 </div>
               </div>
 
-              <div class="me-5">
+              <div class="mx-3 text-center">
                 <div class="overview__description">Bathrooms</div>
                 <div class="d-flex justify-content-center">
                   <span class="material-symbols-outlined me-2">bathtub</span>
@@ -87,8 +126,8 @@ function handleFavorite() {
                 </div>
               </div>
 
-              <div>
-                <div class="overview__description text-center">Living Area</div>
+              <div class="mx-3 text-center">
+                <div class="overview__description">Living Area</div>
                 <div class="d-flex justify-content-center">
                   <span class="material-symbols-outlined me-2">crop_square</span>
                   <span class="overview__value">
@@ -183,12 +222,12 @@ function handleFavorite() {
       </div>
 
       <!-- Right column -->
-      <div class="seller__container w-75 py-4 ms-lg-4 border rounded">
+      <div class="seller__container py-4 ms-lg-4 border rounded">
         <!-- Seller information -->
         <div class="container-fluid d-flex justify-content-center">
           <div class="row justify-content-between mb-4">
-            <div id="sellerPic" class="col-3 d-flex justify-content-center align-items-center">
-              <img class="rounded-circle d-flex object-fit-cover shadow-sm" alt="avatar1"
+            <div class="col-3 d-flex justify-content-center align-items-center">
+              <img id="seller-picture" class="rounded-circle d-flex object-fit-cover shadow-sm" alt="avatar1"
                 src="https://source.unsplash.com/g0zwKn5vslI" width="90" height="90" />
             </div>
             <div class="col-8 d-flex flex-column justify-content-around align-items-start">
@@ -256,24 +295,24 @@ function handleFavorite() {
               <div class="col-8 text-center">
                 <div class="text-start d-flex flex-column justify-content-between h-100">
                   <div>
-                    <span style="font-size:18px ;font-weight: bold;">220B Bedok Central</span>
+                    <span id="modal-property-title">220B Bedok Central</span>
 
                     <!-- icons -->
-                    <div class="d-flex mt-2">
-                      <div class="me-3">
+                    <div id="modal-icons" class="d-flex mt-2">
+                      <div class="me-3 icon-container">
                         <div class="d-flex align-items-center">
                           <span class="material-symbols-outlined me-2" style="font-size:24px">bed</span>
                           <div class="icon-text">3</div>
                         </div>
-                        <div class="listing-info text-muted" style="font-size:12px">Bedrooms</div>
+                        <div class="listing-info text-muted">Bedrooms</div>
                       </div>
 
-                      <div class="me-3">
+                      <div class="me-3 icon-container">
                         <div class="d-flex align-items-center">
                           <span class="material-symbols-outlined me-2" style="font-size:24px">bathtub</span>
                           <div class="icon-text">2</div>
                         </div>
-                        <div class="listing-info text-muted" style="font-size:12px">Bathrooms</div>
+                        <div class="listing-info text-muted">Bathrooms</div>
                       </div>
 
                       <div>
@@ -281,7 +320,7 @@ function handleFavorite() {
                           <span class="material-symbols-outlined me-2" style="font-size:24px">crop_square</span>
                           <div class="icon-text">984 sqft</div>
                         </div>
-                        <div class="listing-info text-muted" style="font-size:12px">Living Area</div>
+                        <div class="listing-info text-muted">Living Area</div>
                       </div>
                     </div>
                   </div>
@@ -337,24 +376,24 @@ function handleFavorite() {
               <div class="col-8 text-center">
                 <div class="text-start d-flex flex-column justify-content-between h-100">
                   <div>
-                    <span style="font-size:18px ;font-weight: bold;">220B Bedok Central</span>
+                    <span id="modal-property-title">220B Bedok Central</span>
 
                     <!-- icons -->
-                    <div class="d-flex mt-2">
-                      <div class="me-3">
+                    <div id="modal-icons" class="d-flex mt-2">
+                      <div class="me-3 icon-container">
                         <div class="d-flex align-items-center">
                           <span class="material-symbols-outlined me-2" style="font-size:24px">bed</span>
                           <div class="icon-text">3</div>
                         </div>
-                        <div class="listing-info text-muted" style="font-size:12px">Bedrooms</div>
+                        <div class="listing-info text-muted">Bedrooms</div>
                       </div>
 
-                      <div class="me-3">
+                      <div class="me-3 icon-container">
                         <div class="d-flex align-items-center">
                           <span class="material-symbols-outlined me-2" style="font-size:24px">bathtub</span>
                           <div class="icon-text">2</div>
                         </div>
-                        <div class="listing-info text-muted" style="font-size:12px">Bathrooms</div>
+                        <div class="listing-info text-muted">Bathrooms</div>
                       </div>
 
                       <div>
@@ -362,12 +401,12 @@ function handleFavorite() {
                           <span class="material-symbols-outlined me-2" style="font-size:24px">crop_square</span>
                           <div class="icon-text">984 sqft</div>
                         </div>
-                        <div class="listing-info text-muted" style="font-size:12px">Living Area</div>
+                        <div class="listing-info text-muted">Living Area</div>
                       </div>
                     </div>
                   </div>
 
-                  <div>
+                  <div class="input-div">
                     <div class="input-group">
                       <span class="input-group-text" id="basic-addon1">$</span>
                       <input type="number" class="form-control" placeholder="Bid Price" aria-label="Bid Price"
@@ -408,11 +447,6 @@ h1 {
   text-align: center;
 }
 
-h2 {
-  font-weight: bold;
-  font-size: 24px;
-  margin-bottom: 15px;
-}
 
 .custom-carousel__item img {
   /* Your styling for carousel images */
@@ -426,9 +460,32 @@ h2 {
 }
 
 .property-info__container {
+  width: 80vw;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.property-header{
+  display:flex;
+  justify-content:space-between;
+}
+
+.property-price{
+  font-size: 22px;
+}
+
+.property-title{
+  font-size: 25px;
+  margin-bottom: auto;
+  margin-top:auto;  
+  text-align: center;
+}
+
+h2 {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 12px;
 }
 
 .favorite-btn {
@@ -448,6 +505,7 @@ h2 {
 
 .overview__value {
   font-size: 20px;
+  align-self: center;
 }
 
 .overview__unit {
@@ -466,7 +524,7 @@ h2 {
 }
 
 .seller__container {
-  width: 75%;
+  width: 80vw;
   max-width: 400px;
 }
 
@@ -474,14 +532,92 @@ h2 {
   border: none;
 }
 
+.modal-body #modal-property-title{
+  font-size:18px ;
+  font-weight: bold;
+}
+
+.modal-body .listing-info {
+    font-size: 12px;
+  }
+
 .icon-text {
   font-size: 16px;
 }
 
+/* responsiveness */
 @media (min-width: 1150px) {
   .property-info__container {
     flex-direction: row;
     align-items: start;
   }
+
+  h2 {
+  font-weight: bold;
+  font-size: 24px;
+  margin-bottom: 15px;
+  }
+
+  .property-title{
+  font-size: 30px;
+  margin-bottom: auto;  
+  }
+
+  .property-price{
+  font-size: 26px;
+  }
+
 }
+
+@media (max-width: 585px){
+  /* div.property-info__container{
+    width: 80%;
+    margin:auto;
+    align-items: center;
+  } */
+  .overview__description {
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .overview__value {
+    font-size: 15px;
+  }
+
+  .overview__unit {
+    font-size: 15px;
+  }
+
+  .modal-dialog {
+    width:80vw;
+    margin:auto;
+  }
+
+  #modal-icons {
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal-body .icon-text {
+    font-size: 13px;
+  }
+
+  .modal-body .icon-container{
+    margin-left: 1rem
+  }
+  .modal-body .input-group{
+    justify-content: center;
+  }
+
+
+  .modal-body #modal-property-title{
+    font-size:16px ;
+    display: flex;
+    justify-content: center;
+  }
+
+  .modal-body .listing-info {
+    font-size: 10px;
+  }
+}
+
 </style>
