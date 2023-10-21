@@ -163,17 +163,31 @@ a {
   }
 }
 
-@media (min-width: 1400px) {
+@media (min-width: 992px) and (min-height: 900px) {
   .search-results__container {
-    max-width: 850px;
+    max-width: 800px;
   }
 
   .search-results__map-container {
-    height: calc(501px - 15px);
+    height: calc(514.59px - 15px);
   }
 
   .page-num {
     font-size: 12px;
+  }
+}
+
+@media (min-width: 1400px) and (min-height: 900px) {
+  .search-results__container {
+    max-width: 900px;
+  }
+
+  .search-results__map-container {
+    height: calc(575.11px - 15px);
+  }
+
+  .page-num {
+    font-size: 14px;
   }
 }
 </style>
