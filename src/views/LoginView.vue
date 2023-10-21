@@ -29,46 +29,45 @@
         alt="Vector Image"
       />
     </div>
-    <div class="w-60">
-      <!-- Login Form on right -->
-      <div class="login-form">
-        <h2 class="mb-4 fw-bold">Login</h2>
+    <!-- Login Form on right -->
+    <div class="login-form">
+      <h2 class="mb-4 fw-bold">Login</h2>
 
-        <!-- Email -->
-        <div class="form-group mb-2">
-          <label for="email" class="py-2 fw-bold">Email:</label>
-          <input
-            type="email"
-            class="form-control"
-            id="email"
-            placeholder="Enter your email"
-            v-model="email"
-          />
-        </div>
-        <!-- Password -->
-        <div class="form-group">
-          <label for="password" class="py-2 fw-bold">Password:</label>
-          <input
-            type="password"
-            class="form-control"
-            id="password"
-            placeholder="Enter your password"
-            v-model="password"
-          />
-        </div>
-        <!-- Forgot Password -->
-        <div class="mt-1 mb-4 py-2" style="font-size: 12px">
-          <span @click="forgotPassword" style="color: #0275d8; text-decoration: none; cursor: pointer">Forgot Password?</span>
-        </div>
-        <!-- Login button -->
-        <div class="d-grid gap-2">
-          <button type="submit" class="btn btn-primary mt-1" @click="signIn">
-            Login
-          </button>
-        </div>
-
-        <p class="my-2 text-danger text-center">{{ errMsg }}</p>
+      <!-- Email -->
+      <div class="form-group mb-2">
+        <label for="email" class="py-2 fw-bold">Email:</label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          placeholder="Enter your email"
+          v-model="email"
+        />
       </div>
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password" class="py-2 fw-bold">Password:</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          placeholder="Enter your password"
+          v-model="password"
+        />
+      </div>
+      <!-- Forgot Password -->
+      <div class="mt-1 mb-4 py-2" style="font-size: 12px">
+        <span @click="forgotPassword" style="color: #0275d8; text-decoration: none; cursor: pointer">Forgot Password?</span>
+      </div>
+      <!-- Login button -->
+      <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary mt-1" @click="signIn">
+          Login
+        </button>
+      </div>
+
+      <p class="my-2 text-danger text-center">{{ errMsg }}</p>
+
       <!-- Sign up link -->
       <p class="mt-3 text-center signup mx-auto">
         Don't have an account?
@@ -92,11 +91,12 @@
 
 .login-image {
   width: 60%;
-  max-width: 500px;
+  max-width: 550px;
 }
 
 .login-form {
-  min-width: 400px;
+  width: 40%;
+  max-width: 400px;
 }
 
 .signup {
