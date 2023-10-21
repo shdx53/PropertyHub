@@ -92,7 +92,7 @@
 
 .login-image {
   width: 60%;
-  max-width: 700px;
+  max-width: 500px;
 }
 
 .login-form {
@@ -143,13 +143,13 @@ const signIn = () => {
           errMsg.value = "Invalid email";
           break;
         case "auth/user-not-found":
-          errMsg.value = "No account witht that email was found";
+          errMsg.value = "No account within that email was found";
           break;
         case "auth/wrong-password":
           errMsg.value = "Incorrect Password";
           break;
         default:
-          errMsg.value = "Email or password incorrect";
+          errMsg.value = "Incorrect email or password";
           break;
       }
     });
