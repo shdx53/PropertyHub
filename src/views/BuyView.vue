@@ -51,7 +51,7 @@ function displayFilter() {
       <div class="search-results__qty mb-2">200 listings found</div>
 
       <div class="search-results__flex">
-        <div class="search-results__listing-container me-lg-5">
+        <div class="search-results__listing-container">
           <Listing></Listing>
           <Listing></Listing>
           <Listing></Listing>
@@ -62,11 +62,11 @@ function displayFilter() {
         </div>
       </div>
 
-      <div class="text-center mb-5 mb-lg-0">
-        <a class="me-3" href="#">1</a>
-        <a class="me-3" href="#">2</a>
-        <a class="me-3" href="#">3</a>
-        <span class="me-3">. . .</span>
+      <div class="page-num text-center mb-5 mb-lg-0">
+        <a class="me-2" href="#">1</a>
+        <a class="me-2" href="#">2</a>
+        <a class="me-2" href="#">3</a>
+        <span class="me-2">. . .</span>
         <a href="#">20</a>
       </div>
     </section>
@@ -74,7 +74,7 @@ function displayFilter() {
 
   <!-- Filter Overlay -->
   <section v-if="isDisplayFilter" class="filter-overlay">
-    <Filter :isDisplayFilter="isDisplayFilter" :displayFilter="displayFilter"/>
+    <Filter :isDisplayFilter="isDisplayFilter" :displayFilter="displayFilter" />
   </section>
 
   <!-- Footer -->
@@ -86,7 +86,7 @@ function displayFilter() {
 .search__container {
   display: flex;
   justify-content: center;
-  padding: 30px 0;
+  padding: 25px 0;
 }
 
 .input-group {
@@ -124,6 +124,10 @@ function displayFilter() {
   margin: 0 auto;
 }
 
+.page-num {
+  font-size: 8px;
+}
+
 a {
   color: black;
   text-decoration: none;
@@ -139,7 +143,7 @@ a {
   }
 
   .search-results__container {
-    max-width: 1000px;
+    max-width: 700px;
   }
 
   .search-results__flex {
@@ -148,13 +152,42 @@ a {
   }
 
   .search-results__listing-container {
-    width: 60%;
+    width: 55%;
+    margin-right: 30px;
   }
 
   .search-results__map-container {
     display: block;
-    width: 442px;
-    height: 570px;
+    width: 45%;
+    height: calc(417.47px - 15px);
+  }
+}
+
+@media (min-width: 992px) and (min-height: 900px) {
+  .search-results__container {
+    max-width: 800px;
+  }
+
+  .search-results__map-container {
+    height: calc(514.59px - 15px);
+  }
+
+  .page-num {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 1400px) and (min-height: 900px) {
+  .search-results__container {
+    max-width: 900px;
+  }
+
+  .search-results__map-container {
+    height: calc(575.11px - 15px);
+  }
+
+  .page-num {
+    font-size: 14px;
   }
 }
 </style>
