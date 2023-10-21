@@ -24,10 +24,7 @@
   <div class="login-container">
     <!-- Login Image on left side -->
     <div class="login-image">
-      <img
-        src="../assets/img/LoginView/apartmentvector.svg"
-        alt="Vector Image"
-      />
+      <img src="../assets/img/LoginView/apartmentvector.svg" alt="Vector Image" />
     </div>
     <!-- Login Form on right -->
     <div class="login-form">
@@ -36,28 +33,17 @@
       <!-- Email -->
       <div class="form-group mb-2">
         <label for="email" class="py-2 fw-bold">Email:</label>
-        <input
-          type="email"
-          class="form-control"
-          id="email"
-          placeholder="Enter your email"
-          v-model="email"
-        />
+        <input type="email" class="form-control" id="email" placeholder="Enter your email" v-model="email" />
       </div>
       <!-- Password -->
       <div class="form-group">
         <label for="password" class="py-2 fw-bold">Password:</label>
-        <input
-          type="password"
-          class="form-control"
-          id="password"
-          placeholder="Enter your password"
-          v-model="password"
-        />
+        <input type="password" class="form-control" id="password" placeholder="Enter your password" v-model="password" />
       </div>
       <!-- Forgot Password -->
       <div class="mt-1 mb-4 py-2" style="font-size: 12px">
-        <span @click="forgotPassword" style="color: #0275d8; text-decoration: none; cursor: pointer">Forgot Password?</span>
+        <span @click="forgotPassword" style="color: #0275d8; text-decoration: none; cursor: pointer">Forgot
+          Password?</span>
       </div>
       <!-- Login button -->
       <div class="d-grid gap-2">
@@ -84,31 +70,47 @@
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  height: calc(100vh - 65px - 84px);
+  height: calc(100vh - 67px - 87px);
   width: 90%;
   margin: 0 auto;
 }
 
 .login-image {
   width: 60%;
-  max-width: 550px;
+  max-width: 530px;
 }
 
 .login-form {
-  width: 40%;
-  max-width: 400px;
+  min-width: 400px;
 }
 
 .signup {
-  width: 40%;
-  max-width: 400px;
+  width: 80%;
+  /* max-width: 400px;
   min-width: 300px;
-  text-align: center;
+  text-align: center; */
+}
+
+input::placeholder {
+  font-size: 12px;
+  color: darkgray;
 }
 
 @media only screen and (max-width: 992px) {
   .login-image {
     display: none;
+  }
+
+  .login-form {
+    width: 60%;
+    max-width: 350px;
+    min-width: unset;
+  }
+}
+
+@media (max-width: 600px) {
+  .login-form {
+    width: 70%;
   }
 }
 </style>
@@ -149,12 +151,12 @@ const signIn = () => {
           errMsg.value = "Incorrect Password";
           break;
         default:
-          errMsg.value = "Incorrect email or password";
+          errMsg.value = "Incorrect email or password ";
           break;
       }
     });
 };
-const signInWithGoogle = () => {};
+const signInWithGoogle = () => { };
 
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
