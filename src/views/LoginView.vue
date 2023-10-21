@@ -33,7 +33,7 @@
       <!-- Email -->
       <div class="form-group mb-2">
         <label for="email" class="py-2 fw-bold">Email:</label>
-        <input type="email" class="form-control" id="email" placeholder="Enter your email" v-model="email" />
+        <input type="email" class="form-control" id="email" placeholder="Enter your email" v-model="email"/>
       </div>
       <!-- Password -->
       <div class="form-group">
@@ -93,8 +93,12 @@
   text-align: center; */
 }
 
+input {
+  padding: 10px;
+}
+
 input::placeholder {
-  font-size: 12px;
+  font-size: 16px;
   color: darkgray;
 }
 
@@ -154,8 +158,10 @@ const handleRegi = () => {
 const forgotPassword = () => {
   router.push("/forgotpassword");
 };
+
 const signIn = () => {
   const auth = getAuth();
+  console.log(auth.currentUser)
   signInWithEmailAndPassword(auth, email.value, password.value)
     .then((data) => {
       console.log("successfully logged in");

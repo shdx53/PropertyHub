@@ -20,7 +20,7 @@ import Navbar from "../components/Navbar.vue";
 
       <!-- Password -->
       <div class="form-group mb-2">
-        <label for="password" class="py-2 fw-bold">Password:</label>
+        <label for="password" class="py-2 fw-bold">New Password:</label>
         <input
           type="password"
           class="form-control"
@@ -78,8 +78,12 @@ import Navbar from "../components/Navbar.vue";
   max-width: 400px;
 }
 
+input {
+  padding: 10px;
+}
+
 input::placeholder {
-  font-size: 12px;
+  font-size: 16px;
   color: darkgray;
 }
 

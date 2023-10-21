@@ -38,7 +38,7 @@ footer {
 }
 
 .footer__icon {
-  width: 20px;
+  width: 21px;
 }
 
 .footer__logo {
@@ -46,7 +46,7 @@ footer {
 }
 
 .footer__copyright {
-  font-size: 8px;
+  font-size: 10px;
 }
 
 @media (min-width: 768px) {

@@ -255,7 +255,7 @@ form {
 
 hr {
   margin: 10px 0;
-  color: #dee2e6;
+  color: darkgray;
 }
 
 .form__title {

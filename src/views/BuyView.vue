@@ -62,13 +62,31 @@ function displayFilter() {
         </div>
       </div>
 
-      <div class="page-num text-center mb-5 mb-lg-0">
+      <!-- <div class="page-num text-center mb-5 mb-lg-0">
         <a class="me-2" href="#">1</a>
         <a class="me-2" href="#">2</a>
         <a class="me-2" href="#">3</a>
         <span class="me-2">. . .</span>
         <a href="#">20</a>
-      </div>
+      </div> -->
+
+      <nav aria-label="Page navigation" class="mb-5 mg-lg-0">
+        <ul class="pagination justify-content-center">
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </section>
   </main>
 
@@ -130,8 +148,8 @@ function displayFilter() {
   margin: 0 auto;
 }
 
-.page-num {
-  font-size: 12px;
+.search-results__map-container {
+  display: none;
 }
 
 a {
@@ -139,12 +157,17 @@ a {
   text-decoration: none;
 }
 
-.search-results__map-container {
-  display: none;
+.page-link {
+  border: 0;
+  font-size: 12px;
+}
+
+.page-link:hover {
+  color: black;
 }
 
 @media (min-width: 576px) {
-  .page-num {
+  .page-link {
     font-size: 14px;
   }
 }
@@ -190,7 +213,7 @@ a {
     height: calc(417.47px - 15px);
   }
 
-  .page-num {
+  .page-link {
     font-size: 10px;
   }
 }
@@ -199,6 +222,7 @@ a {
   .search__container {
     padding: 25px 0;
   }
+
   .search-results__container {
     max-width: 850px;
   }
@@ -207,7 +231,7 @@ a {
     height: calc(544.83px - 15px);
   }
 
-  .page-num {
+  .page-link {
     font-size: 12px;
   }
 }
@@ -221,7 +245,7 @@ a {
     height: calc(575.11px - 15px);
   }
 
-  .page-num {
+  .page-link {
     font-size: 14px;
   }
 }

@@ -93,8 +93,12 @@ button {
   font-size: 14px;
 }
 
+input {
+  padding: 10px; 
+}
+
 input::placeholder {
-  font-size: 12px;
+  font-size: 16px;
   color: darkgray;
 }
 

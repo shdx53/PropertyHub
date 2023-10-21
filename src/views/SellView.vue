@@ -1,6 +1,15 @@
 <script setup>
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
+import { ref } from 'vue';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
+const auth = getAuth();
+let isSignedIn = ref(false);
+
+onAuthStateChanged(auth, (user) => {
+  isSignedIn.value = user ? true : false;
+})
 </script>
 
 <template>
@@ -12,7 +21,8 @@ import Footer from "../components/Footer.vue";
     <div class="general__container text-center">
       <h1 class="fw-bold text-white mb-2">Selling your home?</h1>
       <h2 class="text-white-50 mb-4 fs-3">Let us help you find the perfect buyer</h2>
-      <button class="btn btn-primary">Get started</button>
+      <a v-if="isSignedIn" class="get-started-btn bg-primary" href="#">Get started</a>
+      <a v-else class="get-started-btn bg-primary" href="/login">Get started</a>
     </div>
   </header>
 
@@ -121,6 +131,13 @@ header::before {
   inset: 0;
   background-color: black;
   opacity: 0.7;
+}
+
+.get-started-btn {
+  text-decoration: none;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
 }
 
 .card__container {

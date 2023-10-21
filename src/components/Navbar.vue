@@ -1,8 +1,18 @@
 <script setup>
 import { ref } from 'vue';
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+
+const auth = getAuth();
+let isSignedIn = ref(false);
+let isAuthLoading = ref(true);
 
 let isNavExpanded = ref(false);
 let isUserExpanded = ref(false);
+
+onAuthStateChanged(auth, (user) => {
+  isSignedIn.value = user ? true : false;
+  isAuthLoading.value = false;
+})
 
 function handleNavToggle() {
   isNavExpanded.value = !isNavExpanded.value;
@@ -11,6 +21,11 @@ function handleNavToggle() {
 function handleUserToggle() {
   isUserExpanded.value = !isUserExpanded.value;
 }
+
+function handleLogout() {
+  signOut(auth)
+}
+
 </script>
 
 <template>
@@ -40,24 +55,21 @@ function handleUserToggle() {
           <hr class="text-white-50">
 
           <div class="d-md-flex w-100 justify-content-end">
-            <!-- <li class="nav-item">
-              <a class="nav-link pe-0" href="#">Sign In</a>
-            </li> -->
-
-            <div class="d-md-none">
+            <div v-if="isSignedIn && !isAuthLoading" class="d-md-none">
               <div class="d-flex justify-content-between">
-                <button class="btn p-0" data-bs-toggle="collapse" href="#userCollpase" role="button" aria-expanded="false" aria-controls="userCollapse">
-                    <img class="nav__user-img rounded-circle me-3 me-md-1" src="https://source.unsplash.com/g0zwKn5vslI" />
-                    <span class="text-white fw-bold pe-0 me-3">Chason Jui</span>
+                <button class="btn p-0 border-0" data-bs-toggle="collapse" href="#userCollpase" role="button" aria-expanded="false"
+                  aria-controls="userCollapse">
+                  <img class="nav__user-img rounded-circle me-3 me-md-1" src="https://source.unsplash.com/g0zwKn5vslI" />
+                  <span class="text-white fw-bold pe-0 me-3">Chason Jui</span>
                 </button>
 
                 <li class="nav-item">
-                  <a class="nav-link" href="#">
+                  <a @click="handleLogout" class="nav-link" href="#">
                     <img class="nav__logout-icon" src="../assets/img/Navbar/logout.png" />
                   </a>
                 </li>
               </div>
-              
+
               <div class="collapse mt-2" id="userCollpase">
                 <li class="nav-item">
                   <a href="#" class="nav-link">Profile</a>
@@ -71,23 +83,25 @@ function handleUserToggle() {
               </div>
             </div>
 
-            <li class="nav-item user__container d-none d-md-block">
+            <div v-if="isSignedIn && !isAuthLoading" class="nav-item user__container d-none d-md-block">
               <button @click="handleUserToggle" class="btn p-0" type="button">
                 <img class="nav__user-img rounded-circle" src="https://source.unsplash.com/g0zwKn5vslI" />
               </button>
 
               <div v-if="isUserExpanded" class="user__collapse p-3">
                 <div class="d-flex justify-content-between align-items-center">
-                  <button class="btn p-0" data-bs-toggle="collapse" href="#userCollpase" role="button" aria-expanded="false" aria-controls="userCollapse">
-                    <img class="nav__user-img--collapse rounded-circle me-3" src="https://source.unsplash.com/g0zwKn5vslI" />
+                  <button class="btn p-0 border-0" data-bs-toggle="collapse" href="#userCollpase" role="button"
+                    aria-expanded="false" aria-controls="userCollapse">
+                    <img class="nav__user-img--collapse rounded-circle me-3"
+                      src="https://source.unsplash.com/g0zwKn5vslI" />
                     <span class="user__name text-black fw-bold pe-0">Chason Jui</span>
                   </button>
 
-                  <a href="#">
+                  <a @click="handleLogout" href="#">
                     <img class="nav__logout-icon" src="../assets/img/Navbar/logout2.png" />
                   </a>
                 </div>
-               
+
                 <div class="collapse mt-2" id="userCollpase">
                   <li class="nav-item">
                     <a href="#" class="nav-link user-collapse__item text-black">Profile</a>
@@ -100,6 +114,10 @@ function handleUserToggle() {
                   </li>
                 </div>
               </div>
+            </div>
+
+            <li v-if="!isAuthLoading && !isSignedIn" class="nav-item">
+              <a class="nav-link nav-link--login pe-0" href="/login">Login</a>
             </li>
           </div>
         </ul>
@@ -186,6 +204,10 @@ function handleUserToggle() {
   opacity: 0.8;
 }
 
+.nav-link--login {
+  padding: 6px 0;
+}
+
 @media (min-width: 992px) {
   .nav__logout-icon {
     width: 26px;
@@ -193,7 +215,7 @@ function handleUserToggle() {
   }
 
   .user-collapse__item {
-    font-size: 12px; 
+    font-size: 12px;
   }
 }
 
