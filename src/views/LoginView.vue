@@ -85,7 +85,7 @@
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  height: calc(100vh - 65px - 87px);
+  height: calc(100vh - 65px - 84px);
   width: 90%;
   margin: 0 auto;
 }
