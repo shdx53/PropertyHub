@@ -1,71 +1,192 @@
 <template>
-  <div class="container text-center">
-    <h1>Create an account</h1>
-    <p><input type="text" placeholder="Email" v-model="email" /></p>
-    <p><input type="text" placeholder="Password" v-model="password" /></p>
-    <p>
-      <button @click="register">Submit</button
-      ><button @click="login">Already Have an Account</button>
-    </p>
-    <p><button @click="signInWithGoogle">Sign In With Google</button></p>
+  <!-- Navbar -->
+  <Navbar></Navbar>
+
+  <div class="register-container">
+    <!-- Login Image on left side -->
+    <div class="login-image">
+      <img
+        src="../assets/img/LoginView/apartmentvector.svg"
+        alt="Vector Image"
+      />
+    </div>
+    <div class="w-60">
+      <!-- Login Form on right -->
+      <div class="login-form">
+        <h2 class="mb-4 fw-bold">Sign Up</h2>
+        
+        <!-- Name -->
+        <div class="form-group mb-2">
+          <label for="name" class="py-2 fw-bold">Name:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            placeholder="Enter your name"
+            v-model="name"
+          />
+        </div>
+        <!-- Phone Number -->
+        <div class="form-group mb-2">
+          <label for="phoneno" class="py-2 fw-bold">Phone Number:</label>
+          <input
+            type="number"
+            class="form-control"
+            id="phoneno"
+            placeholder="Enter your phone number"
+            v-model="phoneno"
+          />
+        </div>
+        <!-- Email -->
+        <div class="form-group mb-2">
+          <label for="email" class="py-2 fw-bold">Email:</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            placeholder="Enter your email"
+            v-model="email"
+          />
+        </div>
+        <!-- Password -->
+        <div class="form-group">
+          <label for="password" class="py-2 fw-bold">Password:</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            placeholder="Enter your password"
+            v-model="password"
+          />
+        </div>
+        <!-- Sign up button -->
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-primary mt-1" @click="register">
+            Sign Up
+          </button>
+        </div>
+
+        <p class="my-2 text-danger text-center">{{ errMsg }}</p>
+      </div>
+      <!-- Sign up link -->
+      <p class="mt-3 text-center login mx-auto">
+        Already have an account?
+        <span @click="handleLogin" style="color: #0d6efd; text-decoration: none; cursor: pointer;">Login</span>
+      </p>
+    </div>
   </div>
+  <!-- Footer -->
+  <Footer></Footer>
 </template>
+
+
+<style scoped>
+.register-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-evenly;
+  /* height: calc(100vh - 65px - 87px); */
+  width: 90%;
+  margin: 0 auto;
+}
+
+.login-image {
+  width: 50%;
+  max-width: 700px;
+}
+
+.login-form {
+  min-width: 400px;
+  margin-top: 35px;
+}
+
+.login-form .btn {
+  margin-top: 25px !important;
+}
+
+.login {
+  width: 40%;
+  max-width: 400px;
+  min-width: 300px;
+  text-align: center;
+}
+
+@media only screen and (max-width: 992px) {
+  .login-image {
+    display: none;
+  }
+}
+</style>
 
 <script setup>
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import {db}  from "../firebase/index.js";
-import { addDoc,collection,setDoc,doc } from "firebase/firestore";
+import { db } from "../firebase/index.js";
+import { addDoc, collection, setDoc, doc } from "firebase/firestore";
 
 const email = ref("");
 const password = ref("");
-const phone = ref("");
+const phoneno = ref("");
 const name = ref("");
 const router = useRouter();
-async function createUserDocument(email,id){
-  docRef = await setDoc(doc(db,"balance",email),{
-    email:email,
-    id:id,
-    balance:0
+const errMsg = ref("");
+
+const handleLogin = () => {
+  router.push("/login");
+};
+
+async function createUserDocument(email, id, name, phoneno) {
+  docRef = await setDoc(doc(db, "balance", email), {
+    email: email,
+    id: id,
+    balance: 0,
+    phone: phoneno,
+    name: name
   })
-    return docRef;
+  return docRef;
 
 }
 const register = () => {
+  // Name and phone number validation before creating user
+  if (!name.value) {
+    errMsg.value = "Enter name";
+    return;
+  }
+  if (!phoneno.value) {
+    errMsg.value = "Enter phone number";
+    return;
+  }
+
   createUserWithEmailAndPassword(getAuth(), email.value, password.value)
     .then((data) => {
-      console.log(email.value,data.user.uid);
-      let newDoc = createUserDocument(email.value,data.user.uid);
-      // console.log(getAuth());
+      console.log(email.value, data.user.uid);
+      createUserDocument(email.value, data.user.uid, name.value, phoneno.value);
       console.log("successfully registered");
       router.push("/home");
     })
     .catch((error) => {
       console.log(error.code);
-      alert(error.message);
+      switch (error.code) {
+        case "auth/missing-email":
+        errMsg.value = "Enter email";
+          break;
+        case "auth/invalid-email":
+          errMsg.value = "Invalid email";
+          break;
+        case "auth/missing-password":
+          errMsg.value = "Enter password";
+          break;
+        case "auth/weak-password":
+          errMsg.value = "Password should be at least 6 characters";
+          break;
+      }
     });
 };
-const signInWithGoogle = () => {};
-const login = () => {
-  router.push("/login");
-};
+const signInWithGoogle = () => { };
+
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
 
 // Add a new document in collection "cities"
 </script>
-
-<style scoped>
-.container {
-  height: calc(100vh - 65px - 87px);
-}
-.signup-form {
-  max-width: 400px;
-  margin: 0 auto;
-
-  padding: 30px;
-  border-radius: 5px;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-}
-</style>
