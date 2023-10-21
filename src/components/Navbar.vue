@@ -80,7 +80,7 @@ function handleUserToggle() {
 
 <style scoped>
 .navbar {
-  padding: 18px 0 17px 0;
+  padding: 16px 0 16px 0;
   z-index: 3;
 }
 
@@ -136,10 +136,31 @@ function handleUserToggle() {
   align-items: center;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
+  .navbar-brand,
+  .nav-link {
+    font-size: 14px;
+  }
+
   .nav__user-img {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (min-width: 992px) and (min-height: 900px) {
+  .navbar {
+    padding: 15px 0 16px 0;
+  }
+
+  .navbar-brand,
+  .nav-link {
+    font-size: 16px;
+  }
+  
+  .nav__user-img {
+    width: 32px;
+    height: 32px;
   }
 }
 </style>

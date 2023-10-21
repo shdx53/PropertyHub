@@ -30,6 +30,7 @@ loader.load().then(async () => {
   });
 
   const houseMarkerImg = document.createElement("img");
+  houseMarkerImg.style = "width: 25px; height: 25px;";
   houseMarkerImg.src = "https://i.postimg.cc/Kz3vZ5fw/home-Custom.png";
 
   const infoWindow = new InfoWindow({

@@ -70,4 +70,32 @@ footer {
     text-align: end;
   }
 }
+
+@media (min-width: 992px) {
+  .footer__logo {
+    font-size: 14px;
+  }
+
+  .footer__copyright {
+    font-size: 8px;
+  }
+
+  .footer__icon {
+    width: 20px;
+  }
+}
+
+@media (min-width: 992px) and (min-height: 900px) {
+  .footer__logo {
+    font-size: 16px;
+  }
+
+  .footer__copyright {
+    font-size: 10px;
+  }
+
+  .footer__icon {
+    width: 22px;
+  }
+}
 </style>

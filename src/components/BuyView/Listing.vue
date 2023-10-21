@@ -17,22 +17,21 @@ function handleFavorite() {
       </div>
 
       <div class="col-8">
-        <div class="card-body d-flex flex-column justify-content-center h-100 px-3 py-2">
+        <div class="card-body d-flex flex-column justify-content-center h-100 p-2 px-3  py-lg-2">
           <div class="d-flex justify-content-between align-items-center">
             <h5 class="card-title fw-bold mb-0">220B Bedok Central</h5>
 
-            <button
-              @click="handleFavorite" 
-              class="card__favorite-btn"
-              :class="{ 'card__favorite-btn-active': isFavorited }"
-            >
-              <img class="card__favorite-icon me-1" src="../../assets/img/Listings/favorite_FILL1_wght400_GRAD0_opsz24.png">
-              <span class="card__favorite-qty text-body-tertiary fw-bold" :class="{ 'card__favorite-qty--active': isFavorited }">10</span>
+            <button @click="handleFavorite" class="card__favorite-btn"
+              :class="{ 'card__favorite-btn-active': isFavorited }">
+              <img class="card__favorite-icon me-1"
+                src="../../assets/img/Listings/favorite_FILL1_wght400_GRAD0_opsz24.png">
+              <span class="card__favorite-qty text-body-tertiary fw-bold"
+                :class="{ 'card__favorite-qty--active': isFavorited }">10</span>
             </button>
           </div>
 
           <p class="card-text text-muted mb-0">$530,000</p>
-          <hr class="text-black-50 my-3">
+          <hr class="text-black-50 my-3 my-sm-4 my-lg-3">
 
           <div class="d-flex">
             <div class="me-2 me-lg-3">
@@ -76,7 +75,7 @@ function handleFavorite() {
 }
 
 .card-title {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .card__favorite-btn {
@@ -91,16 +90,20 @@ function handleFavorite() {
 }
 
 .card__favorite-icon {
-  width: 12px;
+  width: 9px;
+}
+
+.card__favorite-qty {
+  font-size: 10px;
 }
 
 .card__favorite-qty--active {
-  color: white !important; 
+  color: white !important;
 }
 
 .card-text,
 .card__value {
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .material-symbols-outlined {
@@ -108,7 +111,7 @@ function handleFavorite() {
 }
 
 .card__unit {
-  font-size: 10px;
+  font-size: 8px;
 }
 
 .card__property {
@@ -117,18 +120,27 @@ function handleFavorite() {
 }
 
 @media (min-width: 470px) {
+
   .card-title,
   .material-symbols-outlined {
-    font-size: 16px;
+    font-size: 15px;
+  }
+
+  .card__favorite-icon {
+    width: 12px;
+  }
+
+  .card__favorite-qty {
+    font-size: 13px;
   }
 
   .card-text,
   .card__value {
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .card__unit {
-    font-size: 12px;
+    font-size: 11px;
   }
 
   .card__property {
@@ -137,6 +149,7 @@ function handleFavorite() {
 }
 
 @media (min-width: 576px) {
+
   .card-title,
   .material-symbols-outlined {
     font-size: 17px;
@@ -161,6 +174,7 @@ function handleFavorite() {
 }
 
 @media (min-width: 700px) {
+
   .card-title,
   .material-symbols-outlined {
     font-size: 18px;
@@ -199,11 +213,11 @@ function handleFavorite() {
   }
 
   .card__favorite-icon {
-    width: 8px;
+    width: 10px;
   }
 
   .card__favorite-qty {
-    font-size: 10px;
+    font-size: 12px;
   }
 
   .card-text,
@@ -216,7 +230,7 @@ function handleFavorite() {
   }
 
   .card__property {
-    font-size: 6px;
+    font-size: 8px;
   }
 }
 
@@ -253,6 +267,7 @@ function handleFavorite() {
 }
 
 @media (min-width: 1400px) and (min-height: 900px) {
+
   .card-title,
   .material-symbols-outlined {
     font-size: 16px;
@@ -278,5 +293,4 @@ function handleFavorite() {
   .card__property {
     font-size: 10px;
   }
-}
-</style>
+}</style>
