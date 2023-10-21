@@ -84,18 +84,4 @@ footer {
     width: 20px;
   }
 }
-
-@media (min-width: 992px) and (min-height: 900px) {
-  .footer__logo {
-    font-size: 18px;
-  }
-
-  .footer__copyright {
-    font-size: 10px;
-  }
-
-  .footer__icon {
-    width: 22px;
-  }
-}
 </style>

@@ -203,15 +203,6 @@ function handleUserToggle() {
 }
 
 @media (min-width: 992px) and (min-height: 900px) {
-  .navbar {
-    padding: 15px 0 16px 0;
-  }
-
-  .navbar-brand,
-  .nav-link {
-    font-size: 18px;
-  }
-
   .user__collapse {
     width: 210px;
   }

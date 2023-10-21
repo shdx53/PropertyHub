@@ -70,7 +70,7 @@
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  height: calc(100vh - 67px - 87px);
+  height: calc(100vh - 68px - 84px);
   width: 90%;
   margin: 0 auto;
 }
@@ -85,7 +85,7 @@
 }
 
 .signup {
-  width: 80%;
+  width: 90%;
   /* max-width: 400px;
   min-width: 300px;
   text-align: center; */
@@ -111,6 +111,18 @@ input::placeholder {
 @media (max-width: 600px) {
   .login-form {
     width: 70%;
+  }
+}
+
+@media (max-width: 510px) {
+  .signup {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 420px) {
+  .signup {
+    font-size: 12px;
   }
 }
 </style>

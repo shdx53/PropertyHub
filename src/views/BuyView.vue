@@ -196,10 +196,6 @@ a {
 }
 
 @media (min-width: 992px) and (min-height: 900px) {
-  .general__container {
-    height: calc(100vh - 67px - 87px);
-  }
-
   .search__container {
     padding: 25px 0;
   }
