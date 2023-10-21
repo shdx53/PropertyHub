@@ -17,9 +17,9 @@ function handleFavorite() {
       </div>
 
       <div class="col-8">
-        <div class="card-body d-flex flex-column justify-content-center h-100">
+        <div class="card-body d-flex flex-column justify-content-center h-100 px-3 py-2">
           <div class="d-flex justify-content-between align-items-center">
-            <h5 class="card-title fw-bold mb-1">220B Bedok Central</h5>
+            <h5 class="card-title fw-bold mb-0">220B Bedok Central</h5>
 
             <button
               @click="handleFavorite" 
@@ -27,12 +27,12 @@ function handleFavorite() {
               :class="{ 'card__favorite-btn-active': isFavorited }"
             >
               <img class="card__favorite-icon me-1" src="../../assets/img/Listings/favorite_FILL1_wght400_GRAD0_opsz24.png">
-              <span class="text-body-tertiary fw-bold" :class="{ 'card__favorite-qty': isFavorited }">10</span>
+              <span class="card__favorite-qty text-body-tertiary fw-bold" :class="{ 'card__favorite-qty--active': isFavorited }">10</span>
             </button>
           </div>
 
           <p class="card-text text-muted mb-0">$530,000</p>
-          <hr class="text-black-50">
+          <hr class="text-black-50 my-3">
 
           <div class="d-flex">
             <div class="me-2 me-lg-3">
@@ -71,7 +71,7 @@ function handleFavorite() {
 }
 
 .card__img {
-  aspect-ratio: 1 / 1.1;
+  aspect-ratio: 1 ;
   object-fit: cover;
 }
 
@@ -94,7 +94,7 @@ function handleFavorite() {
   width: 12px;
 }
 
-.card__favorite-qty {
+.card__favorite-qty--active {
   color: white !important; 
 }
 
@@ -187,13 +187,65 @@ function handleFavorite() {
 
 @media (min-width: 992px) {
   .card {
-    height: 180px;
     margin-bottom: 15px;
   }
 
   .card__img {
     width: 100%;
-    height: 180px;
+  }
+
+  .card-title,
+  .material-symbols-outlined {
+    font-size: 12px;
+  }
+
+  .card__favorite-icon {
+    width: 8px;
+  }
+
+  .card__favorite-qty {
+    font-size: 10px;
+  }
+
+  .card-text,
+  .card__value {
+    font-size: 10px;
+  }
+
+  .card__unit {
+    font-size: 8px;
+  }
+
+  .card__property {
+    font-size: 6px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .card-title,
+  .material-symbols-outlined {
+    font-size: 14px;
+  }
+
+  .card__favorite-icon {
+    width: 10px;
+  }
+
+  .card__favorite-qty {
+    font-size: 12px;
+  }
+
+  .card-text,
+  .card__value {
+    font-size: 12px;
+  }
+
+  .card__unit {
+    font-size: 10px;
+  }
+
+  .card__property {
+    font-size: 8px;
   }
 }
 </style>
