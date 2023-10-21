@@ -10,67 +10,80 @@
         </ul>
     </div>
 
-    <div class="container-fluid d-flex justify-content-left tab-content">
-        <div class="tab-pane fade" id="view" v-if="activeTab == 'view'">
-            <h3>View Page</h3>
-            <!-- First set of content for the "View" tab -->
+    <div class="container-fluid buyer__info">
+        <div v-if="activeTab == 'view'">
+            <h3>Viewer's profile</h3>
             <div class="row">
-                <!-- user picture -->
-                <div class="col-3 d-flex justify-content-center align-items-center">
-                    <img id="viewer-picture" class="rounded-circle d-flex object-fit-cover shadow-sm" alt="avatar1"
-                        src="https://source.unsplash.com/g0zwKn5vslI" width="90" height="90" />
+                <!-- First set of content for the "View" tab -->
+                <div class="user__profile">
+                    <!-- date and time -->
+                    <div class="bid__date-time">
+                        30 Oct 2023, 20:00
+                    </div>
+
+                    <!-- user picture -->
+                    <div class="d-flex justify-content-left align-items-center">
+                        <img id="viewer-picture" class="rounded-circle d-flex object-fit-cover shadow-sm" alt="avatar1"
+                            src="https://source.unsplash.com/g0zwKn5vslI" width="50" height="50" />
+                            <!-- name of bidder  -->
+                            <span class="bidder__name">Jason</span>
+                    </div>
                 </div>
-                <!-- name of bidder -->
-                <div class="bidder__name">
-                    Jason
-                </div>
-                <!-- offered price -->
-                <div class="bid__price">
-                    $550000
-                </div>
-            </div>
-            
-            <!-- Second set of content for the "View" tab -->
-            <div class="row">
-                <!-- user picture -->
-                <div class="col-3 d-flex justify-content-center align-items-center">
-                    <img id="viewer-picture" class="rounded-circle d-flex object-fit-cover shadow-sm" alt="avatar1"
-                        src="https://source.unsplash.com/g0zwKn5vslI" width="90" height="90" />
-                </div>
-                <!-- name of bidder -->
-                <div class="bidder__name">
-                    Jason
-                </div>
-                <!-- offered price -->
-                <div class="bid__price">
-                    $550000
+                <div class="user__profile">
+                    <!-- date and time -->
+                    <div class="bid__date-time">
+                        30 Oct 2023, 21:00
+                    </div>
+
+                    <!-- user picture -->
+                    <div class="d-flex justify-content-left align-items-center">
+                        <img id="viewer-picture" class="rounded-circle d-flex object-fit-cover shadow-sm" alt="avatar1"
+                            src="https://source.unsplash.com/g0zwKn5vslI" width="50" height="50" />
+                            <!-- name of bidder  -->
+                            <span class="bidder__name">Shi Da</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="tab-pane fade" id="purchase" v-else>
-            <h3>Purchase Page</h3>
-            <!-- First set of content for the "View" tab -->
+
+        <div v-else>
+            <h3>Bidder's profile</h3>
+            <!-- First set of content for the "Purchase" tab -->
             <div class="row">
-                <div class="bid__date__time">
-                    30 Oct 2023, 20:00
+                <!-- First set of content for the "Purchase" tab -->
+                <div class="user__profile">
+                    <!-- user picture -->
+                    <div class="d-flex justify-content-left align-items-center">
+                        <img id="viewer-picture" class="rounded-circle d-flex object-fit-cover shadow-sm" alt="avatar1"
+                            src="https://source.unsplash.com/g0zwKn5vslI" width="50" height="50" />
+                            <!-- name of bidder  -->
+                            <span class="bidder__name">Jason</span>
+                            <span class="bidder__phone">81234567</span>
+                    </div>
+
+                    <div class="bid__price">
+                        Bid Price: $550000
+                    </div>
                 </div>
-                <!-- user picture -->
-                <div class="col-3 d-flex justify-content-center align-items-center">
-                    <img id="viewer-picture" class="rounded-circle d-flex object-fit-cover shadow-sm" alt="avatar1"
-                        src="https://source.unsplash.com/g0zwKn5vslI" width="90" height="90" />
-                </div>
-                <!-- name of bidder -->
-                <div class="bidder__name">
-                    Jason
-                </div>
-                <!-- offered price -->
-                <div class="bidder__phone"> 
-                    81234567
+                <div class="user__profile">
+                    <!-- user picture -->
+                    <div class="d-flex justify-content-left align-items-center">
+                        <img id="viewer-picture" class="rounded-circle d-flex object-fit-cover shadow-sm" alt="avatar1"
+                            src="https://source.unsplash.com/g0zwKn5vslI" width="50" height="50" />
+                            <!-- name of bidder  -->
+                            <span class="bidder__name">Shi Da</span>
+                            <span class="bidder__phone">81234567</span>
+                    </div>
+
+                    <div class="bid__price">
+                        Bid Price: $550000
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 </template>
 
   
@@ -90,6 +103,41 @@ function handleActiveTab(tab) {
   
 <style scoped>
   /* to add css */
+  .bid__date-time{
+    font-weight:bold;
+    font-size:20px;
+    padding:10px;
+  }
+  .user__profile {
+    display: flex;
+    flex-direction: column;
+    width:100%;
+    border: 1px solid lightgrey; 
+    border-radius: 8px; 
+    padding: 10px; 
+}
+.bidder__name, .bidder__phone{
+    font-size:20px;
+    margin:10px;
+
+}
+.bid__price{
+    padding:10px;
+    color:black;
+    font-size:20px;
+    font-weight:bold;
+}
+
+@media (max-width:800px){
+    .nav__bar{
+        justify-content:start;
+    }
+    .buyer__info{
+        justify-content:center;
+    }
+}
 
 </style>
   
+
+
