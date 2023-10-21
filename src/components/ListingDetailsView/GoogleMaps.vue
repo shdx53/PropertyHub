@@ -7,7 +7,7 @@
       <a class="nav-link" :class="{ active: isMallActive }">Shopping Malls</a>
     </li>
     <li class="nav-item" @click="handleMap('school')">
-      <a class="nav-link" :class="{ active: isSchoolActive }">Schools</a>
+      <a class="nav-link" :class="{ active: isSchoolActive }">Education</a>
     </li>
   </ul>
 
