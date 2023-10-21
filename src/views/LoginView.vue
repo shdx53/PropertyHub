@@ -69,9 +69,10 @@
 .login-container {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
   height: calc(100vh - 68px - 84px);
-  width: 90%;
+  width: 85%;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
@@ -81,7 +82,8 @@
 }
 
 .login-form {
-  min-width: 400px;
+  width: 40%;
+  max-width: 400px;
 }
 
 .signup {
@@ -97,6 +99,10 @@ input::placeholder {
 }
 
 @media only screen and (max-width: 992px) {
+  .login-container {
+    justify-content: center;
+  }
+  
   .login-image {
     display: none;
   }
@@ -105,6 +111,12 @@ input::placeholder {
     width: 60%;
     max-width: 350px;
     min-width: unset;
+  }
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    height: calc(100vh - 68px - 152px);
   }
 }
 

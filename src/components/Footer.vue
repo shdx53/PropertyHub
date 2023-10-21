@@ -38,15 +38,15 @@ footer {
 }
 
 .footer__icon {
-  width: 22px;
+  width: 20px;
 }
 
 .footer__logo {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .footer__copyright {
-  font-size: 10px;
+  font-size: 8px;
 }
 
 @media (min-width: 768px) {
@@ -68,20 +68,6 @@ footer {
 
   .footer__social-media {
     text-align: end;
-  }
-}
-
-@media (min-width: 992px) {
-  .footer__logo {
-    font-size: 16px;
-  }
-
-  .footer__copyright {
-    font-size: 8px;
-  }
-
-  .footer__icon {
-    width: 20px;
   }
 }
 </style>
