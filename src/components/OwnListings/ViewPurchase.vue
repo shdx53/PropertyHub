@@ -2,16 +2,16 @@
     <div class="nav__bar">
         <ul class="nav nav-tabs mb-3">
             <li class="nav-item">
-                <a class="nav-link" @click="activeTab = 'view'" :class="{ active: activeTab === 'view' }">View</a>
+                <a class="nav-link fw-bold" @click="handleActiveTab('view')"    :class="{ active: activeTab == 'view' }">View</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" @click="activeTab = 'purchase'" :class="{ active: activeTab === 'purchase' }">Purchase</a>
+            <li class="nav-item fw-bold">
+                <a class="nav-link" @click="handleActiveTab('purchase')"     :class="{ active: activeTab == 'purchase' }">Purchase</a>
             </li>
         </ul>
     </div>
 
     <div class="container-fluid d-flex justify-content-left tab-content">
-        <div class="tab-pane fade" id="view" v-if="activeTab === 'view'">
+        <div class="tab-pane fade" id="view" v-if="activeTab == 'view'">
             <h3>View Page</h3>
             <!-- First set of content for the "View" tab -->
             <div class="row">
@@ -48,7 +48,7 @@
             </div>
         </div>
 
-        <div class="tab-pane fade" id="purchase" v-if="activeTab === 'purchase'">
+        <div class="tab-pane fade" id="purchase" v-else>
             <h3>Purchase Page</h3>
             <!-- First set of content for the "View" tab -->
             <div class="row">
@@ -74,17 +74,22 @@
 </template>
 
   
-  <script>
-  export default {
-    data() {
-      return {
-        activeTab: 'view', // Initialize with 'view' as the active tab
-      };
-    },
-  };
+<script setup>
+import { ref } from 'vue';
+
+let activeTab = ref("view");
+
+function handleActiveTab(tab) {
+    if (tab == "view") {
+        activeTab.value = "view";
+    } else {
+        activeTab.value = "purchase";
+    }
+}
 </script>
   
 <style scoped>
   /* to add css */
+
 </style>
   
