@@ -73,7 +73,7 @@ footer {
 
 @media (min-width: 992px) {
   .footer__logo {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .footer__copyright {
@@ -87,7 +87,7 @@ footer {
 
 @media (min-width: 992px) and (min-height: 900px) {
   .footer__logo {
-    font-size: 16px;
+    font-size: 18px;
   }
 
   .footer__copyright {

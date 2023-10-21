@@ -99,6 +99,10 @@ function displayFilter() {
   background-color: #f0f0f0;
 }
 
+.header__filter-btn:hover {
+  background-color: lightgray;
+}
+
 /* Filter Overlay */
 .filter-overlay::before {
   content: "";
@@ -147,7 +151,7 @@ a {
 
 @media (min-width: 992px) {
   .general__container {
-    height: calc(100vh - 65px - 84px);
+    height: calc(100vh - 68px - 84px);
   }
 
   .search__container {
@@ -192,6 +196,10 @@ a {
 }
 
 @media (min-width: 992px) and (min-height: 900px) {
+  .general__container {
+    height: calc(100vh - 67px - 87px);
+  }
+
   .search__container {
     padding: 25px 0;
   }

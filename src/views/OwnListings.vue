@@ -224,7 +224,7 @@ function handleFavorite() {
       </div>
 
       <!-- Right column -->
-      <div class="seller__container py-4 ms-lg-4 border rounded">
+      <div class="seller__container ms-lg-4 rounded">
         <div class="view__purchase">
           <ViewPurchase/>
         </div>
@@ -256,7 +256,6 @@ h1 {
   text-align: center;
 }
 
-
 .custom-carousel__item img {
   /* Your styling for carousel images */
   width: 100%;
@@ -269,7 +268,6 @@ h1 {
 }
 
 .property-info__container {
-  width: 80vw;
   display: flex;
   flex-direction: column;
   align-items: center;

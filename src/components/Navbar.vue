@@ -44,16 +44,32 @@ function handleUserToggle() {
               <a class="nav-link pe-0" href="#">Sign In</a>
             </li> -->
 
-            <li class="nav-item d-flex justify-content-between d-md-none">
-              <a class="nav-link pe-0" href="#">
-                <img class="nav__user-img rounded-circle me-3 me-sm-1" src="https://source.unsplash.com/g0zwKn5vslI" />
-                <span class="text-white fw-bold pe-0 me-3">Chason Jui</span>
-              </a>
+            <div class="d-md-none">
+              <div class="d-flex justify-content-between">
+                <button class="btn p-0" data-bs-toggle="collapse" href="#userCollpase" role="button" aria-expanded="false" aria-controls="userCollapse">
+                    <img class="nav__user-img rounded-circle me-3 me-md-1" src="https://source.unsplash.com/g0zwKn5vslI" />
+                    <span class="text-white fw-bold pe-0 me-3">Chason Jui</span>
+                </button>
 
-              <a href="#">
-                <img class="nav__logout-icon" src="../assets/img/Navbar/logout.png" />
-              </a>
-            </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">
+                    <img class="nav__logout-icon" src="../assets/img/Navbar/logout.png" />
+                  </a>
+                </li>
+              </div>
+              
+              <div class="collapse mt-2" id="userCollpase">
+                <li class="nav-item">
+                  <a href="#" class="nav-link">Profile</a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">Listings</a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">Favorites</a>
+                </li>
+              </div>
+            </div>
 
             <li class="nav-item user__container d-none d-md-block">
               <button @click="handleUserToggle" class="btn p-0" type="button">
@@ -61,14 +77,28 @@ function handleUserToggle() {
               </button>
 
               <div v-if="isUserExpanded" class="user__collapse p-3">
-                <a class="nav-link ps-0 d-flex align-items-center" href="#">
-                  <img class="nav__user-img rounded-circle me-3" src="https://source.unsplash.com/g0zwKn5vslI" />
-                  <span class="text-black fw-bold pe-0 me-3">Chason Jui</span>
-                </a>
+                <div class="d-flex justify-content-between align-items-center">
+                  <button class="btn p-0" data-bs-toggle="collapse" href="#userCollpase" role="button" aria-expanded="false" aria-controls="userCollapse">
+                    <img class="nav__user-img--collapse rounded-circle me-3" src="https://source.unsplash.com/g0zwKn5vslI" />
+                    <span class="user__name text-black fw-bold pe-0">Chason Jui</span>
+                  </button>
 
-                <a href="#">
-                  <img class="nav__logout-icon" src="../assets/img/Navbar/logout2.png" />
-                </a>
+                  <a href="#">
+                    <img class="nav__logout-icon" src="../assets/img/Navbar/logout2.png" />
+                  </a>
+                </div>
+               
+                <div class="collapse mt-2" id="userCollpase">
+                  <li class="nav-item">
+                    <a href="#" class="nav-link user-collapse__item text-black">Profile</a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link user-collapse__item text-black">Listings</a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link user-collapse__item text-black">Favorites</a>
+                  </li>
+                </div>
               </div>
             </li>
           </div>
@@ -107,6 +137,11 @@ function handleUserToggle() {
 .nav__logout-icon {
   width: 32px;
   height: 32px;
+  transition: opacity 0.2s ease;
+}
+
+.nav__logout-icon:hover {
+  opacity: 0.7;
 }
 
 .nav-link:hover {
@@ -124,27 +159,46 @@ function handleUserToggle() {
 }
 
 .user__collapse {
-  position: absolute;  
-  top: 50px;
+  position: absolute;
+  top: 52px;
   right: 0;
-  width: 250px;
+  width: 200px;
   background-color: #f0f0f0;
   border-radius: 5px;
+}
 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.nav__user-img--collapse {
+  width: 34px;
+  height: 34px;
+  object-fit: cover;
+}
+
+.user__name {
+  font-size: 12px;
+}
+
+.user-collapse__item:hover {
+  opacity: 0.8;
 }
 
 @media (min-width: 992px) {
   .navbar-brand,
   .nav-link {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .nav__user-img {
-    width: 30px;
-    height: 30px;
+    width: 34px;
+    height: 34px;
+  }
+
+  .nav__logout-icon {
+    width: 26px;
+    height: 26px;
+  }
+
+  .user-collapse__item {
+    font-size: 12px; 
   }
 }
 
@@ -155,12 +209,16 @@ function handleUserToggle() {
 
   .navbar-brand,
   .nav-link {
-    font-size: 16px;
+    font-size: 18px;
   }
-  
-  .nav__user-img {
-    width: 32px;
-    height: 32px;
+
+  .user__collapse {
+    width: 210px;
+  }
+
+  .user-collapse__item,
+  .user__name {
+    font-size: 14px;
   }
 }
 </style>

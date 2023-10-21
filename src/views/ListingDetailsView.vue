@@ -447,7 +447,6 @@ h1 {
   text-align: center;
 }
 
-
 .custom-carousel__item img {
   /* Your styling for carousel images */
   width: 100%;
@@ -460,7 +459,6 @@ h1 {
 }
 
 .property-info__container {
-  width: 80vw;
   display: flex;
   flex-direction: column;
   align-items: center;
