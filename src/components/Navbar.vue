@@ -24,7 +24,7 @@ function handleUserToggle() {
         data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
         aria-label="Toggle navigation">
         <img v-if="isNavExpanded" class="nav__close-icon" src="../assets/img/Navbar/close.png">
-        <span v-else class="material-symbols-outlined text-white fs-1">menu</span>
+        <span v-else class="material-symbols-outlined text-white nav__menu-icon">menu</span>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -123,10 +123,15 @@ function handleUserToggle() {
   color: white;
   padding-top: 0;
   padding-bottom: 0;
+  font-size: 16px;
 }
 
 .navbar-brand:hover {
   color: white;
+}
+
+.nav__menu-icon {
+  font-size: 26px;
 }
 
 .nav__close-icon {
@@ -149,8 +154,8 @@ function handleUserToggle() {
 }
 
 .nav__user-img {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   object-fit: cover;
 }
 
@@ -182,16 +187,6 @@ function handleUserToggle() {
 }
 
 @media (min-width: 992px) {
-  .navbar-brand,
-  .nav-link {
-    font-size: 16px;
-  }
-
-  .nav__user-img {
-    width: 34px;
-    height: 34px;
-  }
-
   .nav__logout-icon {
     width: 26px;
     height: 26px;
@@ -203,15 +198,6 @@ function handleUserToggle() {
 }
 
 @media (min-width: 992px) and (min-height: 900px) {
-  .navbar {
-    padding: 15px 0 16px 0;
-  }
-
-  .navbar-brand,
-  .nav-link {
-    font-size: 18px;
-  }
-
   .user__collapse {
     width: 210px;
   }

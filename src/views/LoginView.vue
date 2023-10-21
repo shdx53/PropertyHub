@@ -24,51 +24,36 @@
   <div class="login-container">
     <!-- Login Image on left side -->
     <div class="login-image">
-      <img
-        src="../assets/img/LoginView/apartmentvector.svg"
-        alt="Vector Image"
-      />
+      <img src="../assets/img/LoginView/apartmentvector.svg" alt="Vector Image" />
     </div>
-    <div class="w-60">
-      <!-- Login Form on right -->
-      <div class="login-form">
-        <h2 class="mb-4 fw-bold">Login</h2>
+    <!-- Login Form on right -->
+    <div class="login-form">
+      <h2 class="mb-4 fw-bold">Login</h2>
 
-        <!-- Email -->
-        <div class="form-group mb-2">
-          <label for="email" class="py-2 fw-bold">Email:</label>
-          <input
-            type="email"
-            class="form-control"
-            id="email"
-            placeholder="Enter your email"
-            v-model="email"
-          />
-        </div>
-        <!-- Password -->
-        <div class="form-group">
-          <label for="password" class="py-2 fw-bold">Password:</label>
-          <input
-            type="password"
-            class="form-control"
-            id="password"
-            placeholder="Enter your password"
-            v-model="password"
-          />
-        </div>
-        <!-- Forgot Password -->
-        <div class="mt-1 mb-4 py-2" style="font-size: 12px">
-          <span @click="forgotPassword" style="color: #0275d8; text-decoration: none; cursor: pointer">Forgot Password?</span>
-        </div>
-        <!-- Login button -->
-        <div class="d-grid gap-2">
-          <button type="submit" class="btn btn-primary mt-1" @click="signIn">
-            Login
-          </button>
-        </div>
-
-        <p class="my-2 text-danger text-center">{{ errMsg }}</p>
+      <!-- Email -->
+      <div class="form-group mb-2">
+        <label for="email" class="py-2 fw-bold">Email:</label>
+        <input type="email" class="form-control" id="email" placeholder="Enter your email" v-model="email" />
       </div>
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password" class="py-2 fw-bold">Password:</label>
+        <input type="password" class="form-control" id="password" placeholder="Enter your password" v-model="password" />
+      </div>
+      <!-- Forgot Password -->
+      <div class="mt-1 mb-4 py-2" style="font-size: 12px">
+        <span @click="forgotPassword" style="color: #0275d8; text-decoration: none; cursor: pointer">Forgot
+          Password?</span>
+      </div>
+      <!-- Login button -->
+      <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary mt-1" @click="signIn">
+          Login
+        </button>
+      </div>
+
+      <p class="my-2 text-danger text-center">{{ errMsg }}</p>
+
       <!-- Sign up link -->
       <p class="mt-3 text-center signup mx-auto">
         Don't have an account?
@@ -84,31 +69,72 @@
 .login-container {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
-  height: calc(100vh - 65px - 84px);
-  width: 90%;
+  justify-content: space-between;
+  height: calc(100vh - 68px - 84px);
+  width: 85%;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
 .login-image {
   width: 60%;
-  max-width: 700px;
+  max-width: 530px;
 }
 
 .login-form {
-  min-width: 400px;
+  width: 40%;
+  max-width: 400px;
 }
 
 .signup {
-  width: 40%;
-  max-width: 400px;
+  width: 90%;
+  /* max-width: 400px;
   min-width: 300px;
-  text-align: center;
+  text-align: center; */
+}
+
+input::placeholder {
+  font-size: 12px;
+  color: darkgray;
 }
 
 @media only screen and (max-width: 992px) {
+  .login-container {
+    justify-content: center;
+  }
+  
   .login-image {
     display: none;
+  }
+
+  .login-form {
+    width: 60%;
+    max-width: 350px;
+    min-width: unset;
+  }
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    height: calc(100vh - 68px - 152px);
+  }
+}
+
+@media (max-width: 600px) {
+  .login-form {
+    width: 70%;
+  }
+}
+
+@media (max-width: 510px) {
+  .signup {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 420px) {
+  .signup {
+    font-size: 12px;
   }
 }
 </style>
@@ -143,18 +169,18 @@ const signIn = () => {
           errMsg.value = "Invalid email";
           break;
         case "auth/user-not-found":
-          errMsg.value = "No account witht that email was found";
+          errMsg.value = "No account within that email was found";
           break;
         case "auth/wrong-password":
           errMsg.value = "Incorrect Password";
           break;
         default:
-          errMsg.value = "Email or password incorrect";
+          errMsg.value = "Incorrect email or password ";
           break;
       }
     });
 };
-const signInWithGoogle = () => {};
+const signInWithGoogle = () => { };
 
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";

@@ -5,73 +5,45 @@
   <div class="register-container">
     <!-- Login Image on left side -->
     <div class="login-image">
-      <img
-        src="../assets/img/LoginView/apartmentvector.svg"
-        alt="Vector Image"
-      />
+      <img src="../assets/img/LoginView/apartmentvector.svg" alt="Vector Image" />
     </div>
-    <div class="w-60">
-      <!-- Login Form on right -->
-      <div class="login-form">
-        <h2 class="mb-4 fw-bold">Sign Up</h2>
-        
-        <!-- Name -->
-        <div class="form-group mb-2">
-          <label for="name" class="py-2 fw-bold">Name:</label>
-          <input
-            type="text"
-            class="form-control"
-            id="name"
-            placeholder="Enter your name"
-            v-model="name"
-          />
-        </div>
-        <!-- Phone Number -->
-        <div class="form-group mb-2">
-          <label for="phoneno" class="py-2 fw-bold">Phone Number:</label>
-          <input
-            type="number"
-            class="form-control"
-            id="phoneno"
-            placeholder="Enter your phone number"
-            v-model="phoneno"
-          />
-        </div>
-        <!-- Email -->
-        <div class="form-group mb-2">
-          <label for="email" class="py-2 fw-bold">Email:</label>
-          <input
-            type="email"
-            class="form-control"
-            id="email"
-            placeholder="Enter your email"
-            v-model="email"
-          />
-        </div>
-        <!-- Password -->
-        <div class="form-group">
-          <label for="password" class="py-2 fw-bold">Password:</label>
-          <input
-            type="password"
-            class="form-control"
-            id="password"
-            placeholder="Enter your password"
-            v-model="password"
-          />
-        </div>
-        <!-- Sign up button -->
-        <div class="d-grid gap-2">
-          <button type="submit" class="btn btn-primary mt-1" @click="register">
-            Sign Up
-          </button>
-        </div>
+    <!-- Login Form on right -->
+    <div class="login-form">
+      <h2 class="mb-3 fw-bold fs-4">Sign Up</h2>
 
-        <p class="my-2 text-danger text-center">{{ errMsg }}</p>
+      <!-- Name -->
+      <div class="form-group mb-2">
+        <label for="name" class="py-2 fw-bold">Name:</label>
+        <input type="text" class="form-control" id="name" placeholder="Enter your name" v-model="name" />
       </div>
+      <!-- Phone Number -->
+      <div class="form-group mb-2">
+        <label for="phoneno" class="py-2 fw-bold">Phone Number:</label>
+        <input type="number" class="form-control" id="phoneno" placeholder="Enter your phone number" v-model="phoneno" />
+      </div>
+      <!-- Email -->
+      <div class="form-group mb-2">
+        <label for="email" class="py-2 fw-bold">Email:</label>
+        <input type="email" class="form-control" id="email" placeholder="Enter your email" v-model="email" />
+      </div>
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password" class="py-2 fw-bold">Password:</label>
+        <input type="password" class="form-control" id="password" placeholder="Enter your password" v-model="password" />
+      </div>
+      <!-- Sign up button -->
+      <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-primary mt-1" @click="register">
+          Sign Up
+        </button>
+      </div>
+
+      <p class="my-2 text-danger text-center">{{ errMsg }}</p>
+
       <!-- Sign up link -->
       <p class="mt-3 text-center login mx-auto">
         Already have an account?
-        <span @click="handleLogin" style="color: #0d6efd; text-decoration: none; cursor: pointer;">Login</span>
+        <span @click="handleLogin" style="color: #0d6efd; text-decoration: none; cursor: pointer; font-size: 14px;">Login</span>
       </p>
     </div>
   </div>
@@ -83,21 +55,22 @@
 <style scoped>
 .register-container {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-evenly;
-  /* height: calc(100vh - 65px - 87px); */
-  width: 90%;
+  align-items: center;
+  justify-content: space-between;
+  height: calc(100vh - 68px - 84px);
+  width: 85%;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
 .login-image {
-  width: 50%;
-  max-width: 700px;
+  width: 60%;
+  max-width: 530px;
 }
 
 .login-form {
-  min-width: 400px;
-  margin-top: 35px;
+  width: 40%;
+  max-width: 400px;
 }
 
 .login-form .btn {
@@ -105,15 +78,63 @@
 }
 
 .login {
-  width: 40%;
-  max-width: 400px;
+  width: 90%;
+  font-size: 14px;
+  /* max-width: 400px;
   min-width: 300px;
-  text-align: center;
+  text-align: center; */
+}
+
+label {
+  font-size: 14px;
+}
+
+button {
+  font-size: 14px;
+}
+
+input::placeholder {
+  font-size: 12px;
+  color: darkgray;
 }
 
 @media only screen and (max-width: 992px) {
+  .register-container {
+    justify-content: center;
+  }
+
   .login-image {
     display: none;
+  }
+
+  .login-form {
+    width: 60%;
+    max-width: 350px;
+    min-width: unset;
+  }
+}
+
+@media (max-width: 768px) {
+  .register-container {
+    height: calc(100vh - 68px - 152px);
+  }
+}
+
+@media (max-width: 600px) {
+  .login-form {
+    width: 70%;
+  }
+}
+
+@media (max-width: 510px) {
+  .login {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 420px) {
+  .login {
+    font-size: 12px;
   }
 }
 </style>
@@ -169,7 +190,7 @@ const register = () => {
       console.log(error.code);
       switch (error.code) {
         case "auth/missing-email":
-        errMsg.value = "Enter email";
+          errMsg.value = "Enter email";
           break;
         case "auth/invalid-email":
           errMsg.value = "Invalid email";
