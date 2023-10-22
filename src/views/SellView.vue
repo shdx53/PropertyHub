@@ -140,6 +140,10 @@ header::before {
   border-radius: 5px;
 }
 
+.get-started-btn:hover {
+  opacity: 0.9;
+}
+
 .card__container {
   border: none;
 }

@@ -18,6 +18,17 @@ import Navbar from "../components/Navbar.vue";
     <div class="reset-form">
       <h2 class="mb-4 fw-bold">Reset Password</h2>
 
+      <!-- Email -->
+      <div class="form-group mb-2">
+        <label for="password" class="py-2 fw-bold">Email:</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          placeholder="Enter your email"
+          
+        />
+      </div>
       <!-- Password -->
       <div class="form-group mb-2">
         <label for="password" class="py-2 fw-bold">New Password:</label>
