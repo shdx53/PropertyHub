@@ -2,7 +2,7 @@
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
 import { ref } from "vue";
-import {storage} from "../firebase/index.js";
+import {storage,getCurrentUser} from "../firebase/index.js";
 import { ref as storageRef, uploadBytes } from "firebase/storage";
 
 const fileInput = ref(null);
@@ -16,12 +16,26 @@ const fileInput = ref(null);
 //     console.log("Uploaded a blob or file!");
 //   });
 // }
+const userEmail = ref(null);
+getCurrentUser()
+  .then(user => {
+    if (user) {
+      userEmail.value = user.email;
+    } else {
+      console.log("No user is currently logged in.");
+    }
+  })
+  .catch(error => {
+    console.error("Error getting current user:", error);
+  });
+
+
 const uploadFile = async () => {
   if (fileInput.value && fileInput.value.files.length > 0) {
     const files = fileInput.value.files;
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      const storageReference = storageRef(storage, "listings/" + file.name);
+      const storageReference = storageRef(storage, "listings/" + `${userEmail.value}/` + file.name);
       try {
         const snapshot = await uploadBytes(storageReference, file);
         console.log("Uploaded a blob or file!", snapshot);
