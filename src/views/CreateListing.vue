@@ -17,17 +17,21 @@ const fileInput = ref(null);
 //   });
 // }
 const uploadFile = async () => {
-      if (fileInput.value && fileInput.value.files.length > 0) {
-        const file = fileInput.value.files[0];
-        const storageReference = storageRef(storage, "listings/" + file.name);
-        try {
-          const snapshot = await uploadBytes(storageReference, file);
-          console.log("Uploaded a blob or file!", snapshot);
-        } catch (error) {
-          console.error("Error uploading file:", error);
-        }
+  if (fileInput.value && fileInput.value.files.length > 0) {
+    const files = fileInput.value.files;
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const storageReference = storageRef(storage, "listings/" + file.name);
+      try {
+        const snapshot = await uploadBytes(storageReference, file);
+        console.log("Uploaded a blob or file!", snapshot);
+      } catch (error) {
+        console.error("Error uploading file:", error);
       }
-    };
+    }
+  }
+};
+
 </script>
 
 <template>
