@@ -224,13 +224,9 @@ function handleFavorite() {
       </div>
 
       <!-- Right column -->
-      <div class="seller__container ms-lg-4 rounded">
-        <div class="view__purchase">
-          <ViewPurchase/>
-        </div>
+      <div class="view-purchase__container">
+        <ViewPurchase/>
       </div>
-      
-
       
     </div>
   </div>
@@ -330,9 +326,10 @@ h2 {
   border-bottom: 1px solid lightgrey;
 }
 
-.seller__container {
-  width: 80vw;
-  max-width: 400px;
+.view-purchase__container {
+  width: 100%;
+  margin: 0 auto;
+  max-width: 500px;
 }
 
 .modal-body {
@@ -374,6 +371,10 @@ h2 {
   font-size: 26px;
   }
 
+  .view-purchase__container {
+    width: 60%;
+    margin-left: 30px;
+  }
 }
 
 @media (max-width: 585px){
