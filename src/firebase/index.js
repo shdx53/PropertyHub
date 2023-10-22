@@ -4,6 +4,7 @@ import "firebase/firestore";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import {getStorage} from "firebase/storage"
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 // import { getFirestore } from "firebase/firestore";
@@ -28,6 +29,7 @@ const app = initializeApp(firebaseConfig);
 // Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 const firebaseAuth = getAuth(app);
+const storage = getStorage(app);
 
 const getCurrentUser = () =>
   new Promise((resolve, reject) => {
@@ -40,4 +42,4 @@ const getCurrentUser = () =>
 
 // const app = initializeApp(firebaseConfig);
 // const db = getFirestore(app);
-export { db,getCurrentUser };
+export { db,getCurrentUser,storage };

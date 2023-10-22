@@ -19,8 +19,9 @@ async function getBalance(email) {
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    console.log("Document data:", docSnap.data());
-    console.log(docSnap.data().balance);
+    // console.log(docSnap);
+    // console.log("Document data:", docSnap.data());
+    // console.log(docSnap.data().balance);
     shownBalance.value = docSnap.data().balance;
   } else {
     // docSnap.data() will be undefined in this case
@@ -34,7 +35,8 @@ getCurrentUser()
   .then(user => {
     if (user) {
       email.value = user.email;
-//     // console.log(email.value);
+      console.log(user);
+    console.log(email.value);
     getBalance(email.value);
     } else {
       console.log("No user is currently logged in.");
@@ -66,6 +68,7 @@ function add(value){
         Get your E-credits to enjoy the best experiences that our platform
         provides
       </p>
+
     </div>
     <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
       <div class="col">
