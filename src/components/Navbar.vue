@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 
+
 const auth = getAuth();
 let isSignedIn = ref(false);
 let isAuthLoading = ref(true);
@@ -24,6 +25,9 @@ function handleUserToggle() {
 
 function handleLogout() {
   signOut(auth)
+}
+function handleHome(){
+
 }
 
 </script>
