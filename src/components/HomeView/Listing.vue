@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { reactive, ref } from "vue";
 import { getAuth } from "firebase/auth";
 import { doc, getFirestore, updateDoc, collection, getDoc, arrayUnion, onSnapshot } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref as storageRef } from "firebase/storage";
@@ -15,14 +15,20 @@ const props = defineProps({
   imgPath: String
 });
 
+const db = getFirestore();
+
 // Checks if user is logged in
 const auth = getAuth();
 const userId = ref(null);
 const isLoggedIn = ref(false);
 
+let customersDocRef;
+
 if (auth.currentUser) {
   userId.value = auth.currentUser.uid;
   isLoggedIn.value = true;
+
+  customersDocRef = doc(db, "customers", userId.value);
 }
 
 // Display listing image
@@ -38,11 +44,9 @@ if (props.imgPath) {
     .catch(err => console.log(err.message))
 }
 
-// Handle favorite toggle
+// // Handle favorite toggle
 let isFavorited = ref(null);
 let favoritedListings = ref([]);
-const db = getFirestore();
-const customersDocRef = doc(db, "customers", userId.value);
 
 const customersColRef = collection(db, "customers");
 
@@ -53,17 +57,21 @@ onSnapshot(customersColRef, snapshot => {
 })
 
 function updateFavorites() {
-  getDoc(customersDocRef)
-  .then(doc => {
-    favoritedListings.value = doc.data().favoritedListings;
+  if (customersDocRef) {
+    getDoc(customersDocRef)
+      .then(doc => {
+        favoritedListings.value = doc.data().favoritedListings;
 
-    if (!auth.currentUser || !favoritedListings.value.includes(props.listingId)) {
-      isFavorited.value = false;
-    } else if (favoritedListings.value.includes(props.listingId)) {
-      isFavorited.value = true;
-    } 
-  })
-  .catch(err => console.log(err.message))
+        if (!favoritedListings.value.includes(props.listingId)) {
+          isFavorited.value = false;
+        } else if (favoritedListings.value.includes(props.listingId)) {
+          isFavorited.value = true;
+        }
+      })
+      .catch(err => console.log(err.message))
+  } else {
+    isFavorited.value = false;
+  }
 }
 
 function handleFavorite() {
