@@ -130,7 +130,13 @@ function handleActiveTab(tab) {
 }
 
 .nav-link {
+    color: black;
     font-size: 12px;
+    cursor: pointer;
+}
+
+.active {
+    color: #0b5ed7 !important;
 }
 
 .bid__date-time {

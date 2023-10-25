@@ -1,7 +1,7 @@
 <script setup>
 import Footer from "../components/Footer.vue";
 import Navbar from "../components/Navbar.vue";
-import Listing from "../components/BuyView/Listing.vue";
+import Listing from "../components/CreateListing/Listing.vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
 const createlisting = () => {
@@ -28,7 +28,7 @@ const createlisting = () => {
 <style scoped>
 .container{
     width: 80%;
-    max-width: 850px;
+    max-width: 700px;
 }
 .createbtn:hover{
     background-color: transparent;
