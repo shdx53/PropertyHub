@@ -25,7 +25,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <input ref="addressInput" type="text" class="py-lg-0 form-control border" placeholder="Search">
+  <input ref="addressInput" type="text" class="form-control" id="address" placeholder="" required>
 </template>
 
 <style>
@@ -43,11 +43,5 @@ onMounted(() => {
   border: none;
   padding: 10px 5px 5px 5px;
   border-radius: 5px;
-}
-
-@media (min-width: 992px) {
-  input::placeholder {
-    font-size: 12px;
-  }
 }
 </style>

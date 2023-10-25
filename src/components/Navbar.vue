@@ -2,16 +2,15 @@
 import { ref } from 'vue';
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 
-
 const auth = getAuth();
-let isSignedIn = ref(false);
+let isLoggedIn = ref(false);
 let isAuthLoading = ref(true);
 
 let isNavExpanded = ref(false);
 let isUserExpanded = ref(false);
 
 onAuthStateChanged(auth, (user) => {
-  isSignedIn.value = user ? true : false;
+  isLoggedIn.value = user ? true : false;
   isAuthLoading.value = false;
 })
 
@@ -59,7 +58,7 @@ function handleHome(){
           <hr class="text-white-50">
 
           <div class="d-md-flex w-100 justify-content-end">
-            <div v-if="isSignedIn && !isAuthLoading" class="d-md-none">
+            <div v-if="isLoggedIn && !isAuthLoading" class="d-md-none">
               <div class="d-flex justify-content-between">
                 <button class="btn p-0 border-0" data-bs-toggle="collapse" href="#userCollpase" role="button" aria-expanded="false"
                   aria-controls="userCollapse">
@@ -87,7 +86,7 @@ function handleHome(){
               </div>
             </div>
 
-            <div v-if="isSignedIn && !isAuthLoading" class="nav-item user__container d-none d-md-block">
+            <div v-if="isLoggedIn && !isAuthLoading" class="nav-item user__container d-none d-md-block">
               <button @click="handleUserToggle" class="btn p-0" type="button">
                 <img class="nav__user-img rounded-circle" src="https://source.unsplash.com/g0zwKn5vslI" />
               </button>
@@ -120,7 +119,7 @@ function handleHome(){
               </div>
             </div>
 
-            <li v-if="!isAuthLoading && !isSignedIn" class="nav-item">
+            <li v-if="!isAuthLoading && !isLoggedIn" class="nav-item">
               <a class="nav-link nav-link--login pe-0" href="/login">Login</a>
             </li>
           </div>

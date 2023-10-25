@@ -5,11 +5,44 @@ import Footer from "../components/Footer.vue";
 import Filter from "../components/Filter.vue";
 import Autocomplete from "../components/Autocomplete.vue";
 import { ref } from "vue";
+import { getFirestore, collection, onSnapshot, orderBy, query } from "firebase/firestore";
 
 let isDisplayFilter = ref(false);
 function displayFilter() {
   isDisplayFilter.value = isDisplayFilter.value ? false : true;
 };
+
+const db = getFirestore();
+const listingsColRef = collection(db, "listings");
+const recentListingsQuery = query(listingsColRef, orderBy("dateOfEntry", "desc"));
+let recentListings = ref([]);
+
+const popularListingsQuery = query(listingsColRef, orderBy("favoriteCounts", "desc"))
+let popularListings = ref([]);
+
+function displayListings(query, listings) {
+  onSnapshot(query, snapshot => {
+    let listingsData = snapshot.docs;
+    listings.value = [];
+    if (listingsData.length > 3) {
+      listingsData = listingsData.slice(0, 4);
+    }
+    snapshot.docs.forEach(listing => {
+      listings.value.push([listing.id, listing.data()]);
+    })
+  })
+}
+
+displayListings(recentListingsQuery, recentListings);
+displayListings(popularListingsQuery, popularListings);
+
+const customersColRef = collection(db, "customers");
+
+onSnapshot(customersColRef, snapshot => {
+  displayListings(recentListingsQuery, recentListings);
+  displayListings(popularListingsQuery, popularListings);
+})
+
 </script>
 
 <template>
@@ -46,23 +79,23 @@ function displayFilter() {
 
   <!-- Recently Added -->
   <section class="mb-5">
-    <div class="general__container">
+    <div class="listings__container">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="fw-bold m-0">Recently Added</h3>
         <a class="view-all" href="./buy">View All</a>
       </div>
 
       <div class="row">
-        <div class="col-12 col-lg-4 mb-4">
+        <!-- <div class="col-12 col-lg-4 mb-4">
           <Listing></Listing>
-        </div>
+        </div> -->
 
-        <div class="col mb-4 col-lg-4 ">
-          <Listing></Listing>
-        </div>
-
-        <div class="col col-lg-4 ">
-          <Listing></Listing>
+        <div v-for="recentListing in recentListings" class="col-12 mb-4 col-lg-4">
+          <Listing :listingId="recentListing[0]" :address="recentListing[1].address"
+            :listedPrice="recentListing[1].listedPrice" :bedrooms="recentListing[1].bedrooms"
+            :bathrooms="recentListing[1].bathrooms" :floorSize="recentListing[1].floorSize"
+            :favoriteCounts="recentListing[1].favoriteCounts" :imgPath="recentListing[1].imgPath">
+          </Listing>
         </div>
       </div>
     </div>
@@ -70,23 +103,20 @@ function displayFilter() {
 
   <!-- Popular Listings -->
   <section class="mb-5">
-    <div class="general__container">
+    <div class="listings__container">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="fw-bold m-0">Popular Listings</h3>
         <a class="view-all" href="./buy">View All</a>
       </div>
 
       <div class="row">
-        <div class="col-12 col-lg-4 mb-4">
-          <Listing></Listing>
-        </div>
-
-        <div class="col mb-4 col-lg-4 ">
-          <Listing></Listing>
-        </div>
-
-        <div class="col col-lg-4 ">
-          <Listing></Listing>
+        <div v-for="popularListing in popularListings" class="col-12 mb-4 col-lg-4">
+          <Listing :listingId="popularListing[0]" :address="popularListing[1].address"
+            :listedPrice="popularListing[1].listedPrice" :bedrooms="popularListing[1].bedrooms"
+            :bathrooms="popularListing[1].bathrooms" :floorSize="popularListing[1].floorSize"
+            :favoriteCounts="popularListing[1].favoriteCounts" :isFavorited="popularListing[1].isFavorited"
+            :imgPath="popularListing[1].imgPath">
+          </Listing>
         </div>
       </div>
     </div>
@@ -136,6 +166,12 @@ header::before {
   opacity: 0.9;
 }
 
+.listings__container {
+  width: 90%;
+  max-width: 550px;
+  margin: 0 auto;
+}
+
 .view-all {
   text-decoration: none;
   color: black;
@@ -156,6 +192,12 @@ header::before {
     margin: 0;
     width: 100%;
     max-width: 500px;
+  }
+}
+
+@media (min-width: 992px) {
+  .listings__container {
+    max-width: 1550px;
   }
 }
 </style>
