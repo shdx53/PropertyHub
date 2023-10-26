@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 import { getAuth } from "firebase/auth";
 import { doc, getFirestore, updateDoc, collection, getDoc, arrayUnion, onSnapshot } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref as storageRef } from "firebase/storage";

@@ -20,6 +20,8 @@ let recentListings = ref([]);
 const popularListingsQuery = query(listingsColRef, orderBy("favoriteCounts", "desc"))
 let popularListings = ref([]);
 
+let rerenderKey = ref(0);
+
 function displayListings(query, listings) {
   onSnapshot(query, snapshot => {
     let listingsData = snapshot.docs;
@@ -31,6 +33,7 @@ function displayListings(query, listings) {
       listings.value.push([listing.id, listing.data()]);
     })
   })
+  rerenderKey.value += 1;
 }
 
 displayListings(recentListingsQuery, recentListings);
@@ -42,7 +45,6 @@ onSnapshot(customersColRef, snapshot => {
   displayListings(recentListingsQuery, recentListings);
   displayListings(popularListingsQuery, popularListings);
 })
-
 </script>
 
 <template>
@@ -90,7 +92,7 @@ onSnapshot(customersColRef, snapshot => {
           <Listing></Listing>
         </div> -->
 
-        <div v-for="recentListing in recentListings" class="col-12 mb-4 col-lg-4">
+        <div v-for="recentListing in recentListings" :key="rerenderKey" class="col-12 mb-4 col-lg-4">
           <Listing :listingId="recentListing[0]" :address="recentListing[1].address"
             :listedPrice="recentListing[1].listedPrice" :bedrooms="recentListing[1].bedrooms"
             :bathrooms="recentListing[1].bathrooms" :floorSize="recentListing[1].floorSize"
@@ -110,7 +112,7 @@ onSnapshot(customersColRef, snapshot => {
       </div>
 
       <div class="row">
-        <div v-for="popularListing in popularListings" class="col-12 mb-4 col-lg-4">
+        <div v-for="popularListing in popularListings" :key="rerenderKey"  class="col-12 mb-4 col-lg-4">
           <Listing :listingId="popularListing[0]" :address="popularListing[1].address"
             :listedPrice="popularListing[1].listedPrice" :bedrooms="popularListing[1].bedrooms"
             :bathrooms="popularListing[1].bathrooms" :floorSize="popularListing[1].floorSize"
