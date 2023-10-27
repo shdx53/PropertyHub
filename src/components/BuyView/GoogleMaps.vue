@@ -40,7 +40,7 @@ if (props.listings) {
     for (const listing of props.listings) {
       const address = listing[1].address;
       const imgPath = listing[1].imgPath;
-      const listedPrice = listing[1].listedPrice;
+      const listedPrice = Number(listing[1].listedPrice).toLocaleString();
 
       const imgSrc = ref(null);
       const imgRef = storageRef(storage, imgPath);
@@ -63,7 +63,7 @@ if (props.listings) {
       <img style="width: 100px; height: 75px; object-fit: cover;" src=${imgSrc.value}>
       <div>
         <div class="fw-bold my-1" style="font-size: 10px;">${address}</div>
-        <div style="font-size: 9px;">${listedPrice}</div>
+        <div style="font-size: 9px;">$${listedPrice}</div>
       </div>
     </div>`,
       });
