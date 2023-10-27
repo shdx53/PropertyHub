@@ -1,10 +1,111 @@
 <script setup>
 import { ref } from "vue";
-let isFavorited = ref(false);
+import { getAuth } from "firebase/auth";
+import { doc, getFirestore, updateDoc, collection, getDoc, arrayUnion, onSnapshot } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref as storageRef } from "firebase/storage";
+
+const props = defineProps({
+  listingId: String,
+  address: String,
+  listedPrice: String,
+  bedrooms: String,
+  bathrooms: String,
+  floorSize: String,
+  favoriteCounts: Number,
+  imgPath: String
+});
+
+const db = getFirestore();
+
+// Checks if user is logged in
+const auth = getAuth();
+const userId = ref(null);
+const isLoggedIn = ref(false);
+
+let customersDocRef;
+
+if (auth.currentUser) {
+  userId.value = auth.currentUser.uid;
+  isLoggedIn.value = true;
+
+  customersDocRef = doc(db, "customers", userId.value);
+}
+
+// Display listing image
+const img = ref(null);
+if (props.imgPath) {
+  const storage = getStorage();
+  const imgRef = storageRef(storage, props.imgPath);
+
+  getDownloadURL(imgRef)
+    .then(url => {
+      img.value.src = url;
+    })
+    .catch(err => console.log(err.message))
+}
+
+// // Handle favorite toggle
+let isFavorited = ref(null);
+let favoritedListings = ref([]);
+
+const customersColRef = collection(db, "customers");
+
+updateFavorites();
+
+onSnapshot(customersColRef, snapshot => {
+  updateFavorites();
+})
+
+function updateFavorites() {
+  if (customersDocRef) {
+    getDoc(customersDocRef)
+      .then(doc => {
+        favoritedListings.value = doc.data().favoritedListings;
+
+        if (!favoritedListings.value.includes(props.listingId)) {
+          isFavorited.value = false;
+        } else if (favoritedListings.value.includes(props.listingId)) {
+          isFavorited.value = true;
+        }
+      })
+      .catch(err => console.log(err.message))
+  } else {
+    isFavorited.value = false;
+  }
+}
 
 function handleFavorite() {
   event.preventDefault();
-  isFavorited.value = !isFavorited.value;
+  const listingsDocRef = doc(db, "listings", props.listingId);
+
+  if (isFavorited.value) {
+    isFavorited.value = false;
+
+    updateDoc(listingsDocRef, {
+      favoriteCounts: props.favoriteCounts - 1,
+      isFavorited: false
+    })
+
+    const itemToBeRemovedIndex = favoritedListings.value.indexOf(props.listingId);
+    favoritedListings.value.splice(itemToBeRemovedIndex, 1);
+
+    updateDoc(customersDocRef, {
+      favoritedListings: favoritedListings.value
+    })
+  } else {
+    isFavorited.value = true;
+
+    updateDoc(listingsDocRef, {
+      favoriteCounts: props.favoriteCounts + 1,
+      isFavorited: true
+    })
+
+    if (!favoritedListings.value.includes(props.listingId)) {
+      updateDoc(customersDocRef, {
+        favoritedListings: arrayUnion(props.listingId)
+      })
+    }
+  }
 }
 </script>
 
@@ -12,32 +113,31 @@ function handleFavorite() {
   <div class="card">
     <div class="row g-0">
       <div class="col-4">
-        <img src="../../assets/img/Listings/hudson-graves-nOJagMqGCpA-unsplash.jpg"
-          class="card__img img-fluid rounded-start">
+        <img ref="img" class="card__img img-fluid rounded-start">
       </div>
 
       <div class="col-8">
         <div class="card-body d-flex flex-column justify-content-center h-100 p-2 px-3  py-lg-2">
           <div class="d-flex justify-content-between align-items-center">
-            <h5 class="card-title fw-bold mb-0">220B Bedok Central</h5>
+            <h5 class="card-title fw-bold mb-0">{{ address }}</h5>
 
             <button @click="handleFavorite" class="card__favorite-btn"
-              :class="{ 'card__favorite-btn-active': isFavorited }">
+              :class="{ 'card__favorite-btn-active': isFavorited }" :disabled="!isLoggedIn">
               <img class="card__favorite-icon me-1"
                 src="../../assets/img/Listings/favorite_FILL1_wght400_GRAD0_opsz24.png">
               <span class="card__favorite-qty text-body-tertiary fw-bold"
-                :class="{ 'card__favorite-qty--active': isFavorited }">10</span>
+                :class="{ 'card__favorite-qty--active': isFavorited }">{{ favoriteCounts }}</span>
             </button>
           </div>
 
-          <p class="card-text text-muted mb-0">$530,000</p>
+          <p class="card-text text-muted mb-0">${{ Number(listedPrice).toLocaleString() }}</p>
           <hr class="text-black-50 my-3 my-sm-4 my-lg-3">
 
           <div class="d-flex">
             <div class="me-2 me-lg-3">
               <div class="d-flex">
                 <span class="material-symbols-outlined me-1">bed</span>
-                <b class="card__value">3</b>
+                <b class="card__value">{{ bedrooms }}</b>
               </div>
               <div class="text-muted card__property">Bedrooms</div>
             </div>
@@ -45,7 +145,7 @@ function handleFavorite() {
             <div class="me-2 me-lg-3">
               <div class="d-flex">
                 <span class="material-symbols-outlined me-1">bathtub</span>
-                <b class="card__value">2</b>
+                <b class="card__value">{{ bathrooms }}</b>
               </div>
               <div class="text-muted card__property">Bathrooms</div>
             </div>
@@ -53,7 +153,7 @@ function handleFavorite() {
             <div>
               <div class="d-flex">
                 <span class="material-symbols-outlined me-1">crop_square</span>
-                <b class="card__value">984 <span class="card__unit">sqft</span></b>
+                <b class="card__value">{{ floorSize }} <span class="card__unit">sqft</span></b>
               </div>
               <div class="text-muted card__property">Living Area</div>
             </div>

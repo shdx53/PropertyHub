@@ -6,11 +6,36 @@ import Listing from "../components/BuyView/Listing.vue";
 import Filter from "../components/Filter.vue";
 import { ref } from "vue";
 import Autocomplete from "../components/Autocomplete.vue";
+import { getFirestore, collection, onSnapshot, orderBy, query } from "firebase/firestore";
 
 let isDisplayFilter = ref(false);
 function displayFilter() {
   isDisplayFilter.value = isDisplayFilter.value ? false : true;
 };
+
+// Fetch listings data
+const db = getFirestore();
+const listingsColRef = collection(db, "listings");
+const listingsQuery = query(listingsColRef, orderBy("dateOfEntry", "desc"));
+let listings = ref([]);
+
+let buyListingsKey = ref(0);
+
+function displayListings(query, listings) {
+  onSnapshot(query, snapshot => {
+    let listingsData = snapshot.docs;
+    listings.value = [];
+    if (listingsData.length > 3) {
+      listingsData = listingsData.slice(0, 4);
+    }
+    snapshot.docs.forEach(listing => {
+      listings.value.push([listing.id, listing.data()]);
+    })
+  })
+  buyListingsKey.value += 1;
+}
+
+displayListings(listingsQuery, listings);
 
 //getting data from firestore
 // import { doc, getDoc } from "firebase/firestore";
@@ -48,27 +73,23 @@ function displayFilter() {
 
     <!-- Search Results -->
     <section class="search-results__container">
-      <div class="search-results__qty mb-2">200 listings found</div>
+      <div class="search-results__qty mb-2">{{ listings.length }} listings found</div>
 
       <div class="search-results__flex">
         <div class="search-results__listing-container">
-          <Listing></Listing>
-          <Listing></Listing>
-          <Listing></Listing>
+          <div v-for="listing in listings" :key="buyListingsKey">
+            <Listing :listingId="listing[0]" :address="listing[1].address"
+              :listedPrice="listing[1].listedPrice" :bedrooms="listing[1].bedrooms"
+              :bathrooms="listing[1].bathrooms" :floorSize="listing[1].floorSize"
+              :favoriteCounts="listing[1].favoriteCounts" :imgPath="listing[1].imgPath">
+            </Listing>
+          </div>
         </div>
 
         <div class="search-results__map-container">
-          <GoogleMaps />
+          <GoogleMaps :listings="listings" :key="listings"/>
         </div>
       </div>
-
-      <!-- <div class="page-num text-center mb-5 mb-lg-0">
-        <a class="me-2" href="#">1</a>
-        <a class="me-2" href="#">2</a>
-        <a class="me-2" href="#">3</a>
-        <span class="me-2">. . .</span>
-        <a href="#">20</a>
-      </div> -->
 
       <nav aria-label="Page navigation" class="mb-5 mg-lg-0">
         <ul class="pagination justify-content-center">

@@ -6,12 +6,15 @@ import Filter from "../components/Filter.vue";
 import Autocomplete from "../components/Autocomplete.vue";
 import { ref } from "vue";
 import { getFirestore, collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
+// Filter
 let isDisplayFilter = ref(false);
 function displayFilter() {
   isDisplayFilter.value = isDisplayFilter.value ? false : true;
 };
 
+// Fetch listings data
 const db = getFirestore();
 const listingsColRef = collection(db, "listings");
 const recentListingsQuery = query(listingsColRef, orderBy("dateOfEntry", "desc"));
@@ -20,7 +23,7 @@ let recentListings = ref([]);
 const popularListingsQuery = query(listingsColRef, orderBy("favoriteCounts", "desc"))
 let popularListings = ref([]);
 
-let rerenderKey = ref(0);
+let homeListingsKey = ref(0);
 
 function displayListings(query, listings) {
   onSnapshot(query, snapshot => {
@@ -33,17 +36,24 @@ function displayListings(query, listings) {
       listings.value.push([listing.id, listing.data()]);
     })
   })
-  rerenderKey.value += 1;
+  homeListingsKey.value += 1;
 }
 
 displayListings(recentListingsQuery, recentListings);
 displayListings(popularListingsQuery, popularListings);
 
+// Rerender whenever user favorite/unfavorite a listing
 const customersColRef = collection(db, "customers");
 
-onSnapshot(customersColRef, snapshot => {
-  displayListings(recentListingsQuery, recentListings);
-  displayListings(popularListingsQuery, popularListings);
+onSnapshot(customersColRef, () => {
+  homeListingsKey.value += 1;
+})
+
+// Rerender whenever user logs out
+const auth = getAuth();
+
+onAuthStateChanged(auth, () => {
+  homeListingsKey.value += 1;
 })
 </script>
 
@@ -92,7 +102,7 @@ onSnapshot(customersColRef, snapshot => {
           <Listing></Listing>
         </div> -->
 
-        <div v-for="recentListing in recentListings" :key="rerenderKey" class="col-12 mb-4 col-lg-4">
+        <div v-for="recentListing in recentListings" :key="homeListingsKey" class="col-12 mb-4 col-lg-4">
           <Listing :listingId="recentListing[0]" :address="recentListing[1].address"
             :listedPrice="recentListing[1].listedPrice" :bedrooms="recentListing[1].bedrooms"
             :bathrooms="recentListing[1].bathrooms" :floorSize="recentListing[1].floorSize"
@@ -112,7 +122,7 @@ onSnapshot(customersColRef, snapshot => {
       </div>
 
       <div class="row">
-        <div v-for="popularListing in popularListings" :key="rerenderKey"  class="col-12 mb-4 col-lg-4">
+        <div v-for="popularListing in popularListings" :key="homeListingsKey"  class="col-12 mb-4 col-lg-4">
           <Listing :listingId="popularListing[0]" :address="popularListing[1].address"
             :listedPrice="popularListing[1].listedPrice" :bedrooms="popularListing[1].bedrooms"
             :bathrooms="popularListing[1].bathrooms" :floorSize="popularListing[1].floorSize"

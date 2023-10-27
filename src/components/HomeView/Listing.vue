@@ -11,7 +11,7 @@ const props = defineProps({
   bedrooms: String,
   bathrooms: String,
   floorSize: String,
-  favoriteCounts: String,
+  favoriteCounts: Number,
   imgPath: String
 });
 

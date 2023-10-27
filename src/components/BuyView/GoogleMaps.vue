@@ -5,8 +5,12 @@
 <script setup>
 import { Loader } from "@googlemaps/js-api-loader";
 import { ref } from 'vue';
-// import { mapsApiKey } from "../../config.js";
- 
+import { getDownloadURL, getStorage, ref as storageRef } from "firebase/storage";
+
+const props = defineProps({
+  listings: Array
+});
+
 let gmap = ref(null);
 
 const loader = new Loader({
@@ -14,48 +18,81 @@ const loader = new Loader({
   version: "weekly",
 });
 
-loader.load().then(async () => {
-  const { Map, InfoWindow } = await google.maps.importLibrary("maps");
-  const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+const storage = getStorage();
 
-  const mapInstance = new Map(gmap.value, {
-    mapId: "b9bac48230daafe7",
-    mapTypeControl: false,
-    scaleControl: false,
-    streetViewControl: false,
-    rotateControl: false,
-    fullscreenControl: false,
-    center: { lat: 1.3690733917807663, lng: 103.81484177443241 },
-    zoom: 10.5,
-  });
+if (props.listings) {
+  loader.load().then(async () => {
+    const { Map, InfoWindow } = await google.maps.importLibrary("maps");
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+    const geocoder = new google.maps.Geocoder();
 
-  const houseMarkerImg = document.createElement("img");
-  houseMarkerImg.style = "width: 25px; height: 25px;";
-  houseMarkerImg.src = "https://i.postimg.cc/Kz3vZ5fw/home-Custom.png";
+    const mapInstance = new Map(gmap.value, {
+      mapId: "b9bac48230daafe7",
+      mapTypeControl: false,
+      scaleControl: false,
+      streetViewControl: false,
+      rotateControl: false,
+      fullscreenControl: false,
+      center: { lat: 1.3690733917807663, lng: 103.81484177443241 },
+      zoom: 10.5,
+    });
 
-  const infoWindow = new InfoWindow({
-    content: `<div>
-      <img style="width: 100px; height: 75px; object-fit: cover;" src="https://i.postimg.cc/7ZcX1kJJ/hudson-graves-n-OJag-Mq-GCp-A-unsplash.jpg">
+    for (const listing of props.listings) {
+      const address = listing[1].address;
+      const imgPath = listing[1].imgPath;
+      const listedPrice = listing[1].listedPrice;
+
+      const imgSrc = ref(null);
+      const imgRef = storageRef(storage, imgPath);
+
+      let lat;
+      let lng;
+
+      const houseMarkerImg = document.createElement("img");
+      houseMarkerImg.style = "width: 25px; height: 25px;";
+      houseMarkerImg.src = "https://i.postimg.cc/Kz3vZ5fw/home-Custom.png";
+
+      await getDownloadURL(imgRef)
+        .then(url => {
+          imgSrc.value = url;
+        })
+        .catch(err => console.log(err.message))
+
+      const infoWindow = new InfoWindow({
+        content: `<div>
+      <img style="width: 100px; height: 75px; object-fit: cover;" src=${imgSrc.value}>
       <div>
-        <div class="fw-bold my-1" style="font-size: 10px;">220B Bedok Central</div>
-        <div style="font-size: 9px;">$530,000</div>
+        <div class="fw-bold my-1" style="font-size: 10px;">${address}</div>
+        <div style="font-size: 9px;">${listedPrice}</div>
       </div>
     </div>`,
-  });
+      });
 
-  const houseMarker = new AdvancedMarkerElement({
-    position: { lat: 1.3257004958559055, lng: 103.9339796539663 },
-    map: mapInstance,
-    content: houseMarkerImg,
-  });
+      await geocoder
+        .geocode({ address: address })
+        .then(res => {
+          const location = res.results[0].geometry.location;
+          lat = location.lat();
+          lng = location.lng();
+        })
+        .catch(err => console.log(err.message))
 
-  houseMarker.addListener("click", () => {
-    infoWindow.open({
-      anchor: houseMarker,
-      map: mapInstance,
-    })
+      const houseMarker = new AdvancedMarkerElement({
+        position: { lat: lat, lng: lng },
+        map: mapInstance,
+        content: houseMarkerImg,
+      });
+
+      houseMarker.addListener("click", () => {
+        infoWindow.open({
+          anchor: houseMarker,
+          map: mapInstance,
+        })
+      });
+    }
   });
-});
+}
+
 </script>
 
 <style scoped>
