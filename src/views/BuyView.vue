@@ -7,6 +7,7 @@ import Filter from "../components/Filter.vue";
 import { ref } from "vue";
 import Autocomplete from "../components/Autocomplete.vue";
 import { getFirestore, collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 let isDisplayFilter = ref(false);
 function displayFilter() {
@@ -18,7 +19,6 @@ const db = getFirestore();
 const listingsColRef = collection(db, "listings");
 const listingsQuery = query(listingsColRef, orderBy("dateOfEntry", "desc"));
 let listings = ref([]);
-
 let buyListingsKey = ref(0);
 
 function displayListings(query, listings) {
@@ -26,16 +26,27 @@ function displayListings(query, listings) {
     let listingsData = snapshot.docs;
     listings.value = [];
     if (listingsData.length > 3) {
-      listingsData = listingsData.slice(0, 4);
+      listingsData = listingsData.slice(0, 3);
+      listingsData.forEach(listing => {
+        listings.value.push([listing.id, listing.data()]);
+      })
+    } else {
+      snapshot.docs.forEach(listing => {
+        listings.value.push([listing.id, listing.data()]);
+      })
     }
-    snapshot.docs.forEach(listing => {
-      listings.value.push([listing.id, listing.data()]);
-    })
   })
   buyListingsKey.value += 1;
 }
 
 displayListings(listingsQuery, listings);
+
+// Rerender whenever user logs out
+const auth = getAuth();
+
+onAuthStateChanged(auth, () => {
+  buyListingsKey.value += 1;
+})
 
 //getting data from firestore
 // import { doc, getDoc } from "firebase/firestore";
@@ -78,16 +89,15 @@ displayListings(listingsQuery, listings);
       <div class="search-results__flex">
         <div class="search-results__listing-container">
           <div v-for="listing in listings" :key="buyListingsKey">
-            <Listing :listingId="listing[0]" :address="listing[1].address"
-              :listedPrice="listing[1].listedPrice" :bedrooms="listing[1].bedrooms"
-              :bathrooms="listing[1].bathrooms" :floorSize="listing[1].floorSize"
+            <Listing :listingId="listing[0]" :address="listing[1].address" :listedPrice="listing[1].listedPrice"
+              :bedrooms="listing[1].bedrooms" :bathrooms="listing[1].bathrooms" :floorSize="listing[1].floorSize"
               :favoriteCounts="listing[1].favoriteCounts" :imgPath="listing[1].imgPath">
             </Listing>
           </div>
         </div>
 
         <div class="search-results__map-container">
-          <GoogleMaps :listings="listings" :key="listings"/>
+          <GoogleMaps :listings="listings" :key="listings" />
         </div>
       </div>
 

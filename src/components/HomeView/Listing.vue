@@ -48,6 +48,7 @@ if (props.imgPath) {
 let isFavorited = ref(null);
 let favoritedListings = ref([]);
 
+
 const customersColRef = collection(db, "customers");
 
 updateFavorites();

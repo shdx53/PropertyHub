@@ -30,11 +30,15 @@ function displayListings(query, listings) {
     let listingsData = snapshot.docs;
     listings.value = [];
     if (listingsData.length > 3) {
-      listingsData = listingsData.slice(0, 4);
+      listingsData = listingsData.slice(0, 3);
+      listingsData.forEach(listing => {
+        listings.value.push([listing.id, listing.data()]);
+      })
+    } else {
+      snapshot.docs.forEach(listing => {
+        listings.value.push([listing.id, listing.data()]);
+      })
     }
-    snapshot.docs.forEach(listing => {
-      listings.value.push([listing.id, listing.data()]);
-    })
   })
   homeListingsKey.value += 1;
 }

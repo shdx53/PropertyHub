@@ -5,7 +5,7 @@ import Listing from "../components/CreateListing/Listing.vue";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
 import { getAuth } from "firebase/auth";
-import { doc, getFirestore, updateDoc, collection, getDoc, arrayUnion, onSnapshot, getDocs } from "firebase/firestore";
+import { doc, getFirestore, updateDoc, collection, getDoc, arrayUnion, onSnapshot, getDocs, orderBy } from "firebase/firestore";
 import { query, where } from "firebase/firestore";
 const router = useRouter();
 const createlisting = () => {
@@ -21,7 +21,7 @@ const isLoggedIn = ref(false);
 console.log(auth.currentUser)
 
 const listingsColRef = collection(db, "listings");
-const currentuserListingsQuery = query(listingsColRef, where("userEmail", "==", "tester1@wad.com"));
+const currentuserListingsQuery = query(listingsColRef, where("userEmail", "==", "chasonjui@gmail.com"));
 // const q = query(listingRef, where("userEmail", "==", auth.currentUser.email));
 
 let userListings = ref([]);
@@ -49,16 +49,16 @@ onSnapshot(listingsColRef, snapshot => {
             <button @click="createlisting" type="button" class="mb-4 btn btn-primary createbtn">Create Listing</button>
         </div>
         <div v-for="listing in userListings" :key="listing[0]">
-        <Listing :listingId="listing[0]"
-                 :address="listing[1].address"
-                 :listedPrice="listing[1].listedPrice"
-                 :bedrooms="listing[1].bedrooms"
-                 :bathrooms="listing[1].bathrooms"
-                 :floorSize="listing[1].floorSize"
-                 :favoriteCounts="listing[1].favoriteCounts"
-                 :isFavorited="listing[1].isFavorited"
-                 :imgPath="listing[1].imgPath"
-        ></Listing>
+          <Listing :listingId="listing[0]"
+                  :address="listing[1].address"
+                  :listedPrice="listing[1].listedPrice"
+                  :bedrooms="listing[1].bedrooms"
+                  :bathrooms="listing[1].bathrooms"
+                  :floorSize="listing[1].floorSize"
+                  :favoriteCounts="listing[1].favoriteCounts"
+                  :isFavorited="listing[1].isFavorited"
+                  :imgPath="listing[1].imgPath"
+          ></Listing>
         </div>
     </div>
     <Footer></Footer>

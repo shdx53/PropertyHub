@@ -5,8 +5,7 @@ import Autocomplete from "../components/CreateListing/Autocomplete.vue";
 import { ref } from "vue";
 import { storage, getCurrentUser } from "../firebase/index.js";
 import { ref as storageRef, uploadBytes } from "firebase/storage";
-import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { nanoid } from "nanoid";
+import { doc, updateDoc, getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 const fileInput = ref(null);
 const form = ref(null);
@@ -28,7 +27,7 @@ const userId = ref(null);
 getCurrentUser()
   .then(user => {
     if (user) {
-      console.log(user);
+      // console.log(user);
       userEmail.value = user.email;
       userId.value = user.uid;
     } else {
@@ -57,7 +56,7 @@ const uploadFile = async (listingId) => {
   }
 };
 
-function handleSubmit() {
+async function handleSubmit() {
   event.preventDefault()
 
   let isFormValid = true;
@@ -90,31 +89,39 @@ function handleSubmit() {
   if (isFormValid) {
     const db = getFirestore();
     const colRef = collection(db, "listings");
-    const listingId = nanoid();
-    uploadFile(listingId);
-    
-    if (imgPath.value) {
-      addDoc(colRef, {
-        userId: userId.value,
-        userEmail: userEmail.value,
-        listingId: listingId,
-        address: address,
-        about: about,
-        listedPrice: listedPrice,
-        type: type,
-        level: level,
-        bedrooms: bedrooms,
-        bathrooms: bathrooms,
-        floorSize: floorSize,
-        tenure: tenure,
-        remainingLease: remainingLease,
-        balcony: balcony,
-        viewingStartDate: viewingStartDate,
-        viewingEndDate: viewingEndDate,
-        favoriteCounts: 0,
-        imgPath: imgPath.value,
-        dateOfEntry: serverTimestamp()
+    let listingDocRef;
+
+    await addDoc(colRef, {
+      userId: userId.value,
+      userEmail: userEmail.value,
+      address: address,
+      about: about,
+      listedPrice: listedPrice,
+      type: type,
+      level: level,
+      bedrooms: bedrooms,
+      bathrooms: bathrooms,
+      floorSize: floorSize,
+      tenure: tenure,
+      remainingLease: remainingLease,
+      balcony: balcony,
+      viewingStartDate: viewingStartDate,
+      viewingEndDate: viewingEndDate,
+      favoriteCounts: 0,
+      dateOfEntry: serverTimestamp()
+    })
+      .then(docRef => {
+        listingDocRef = docRef.id;
+        uploadFile(docRef.id)
       })
+
+    if (imgPath.value) {
+      const listingRef = doc(db, "listings", listingDocRef);
+      console.log(listingRef);
+
+      await updateDoc(listingRef, {
+        imgPath: imgPath.value,
+      });
     }
 
     Array.from(form.value).forEach(form => {

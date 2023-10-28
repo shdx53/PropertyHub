@@ -22,16 +22,16 @@ function handleFavorite() {
   isFavorited.value = !isFavorited.value;
 }
 
-let imagePath = "";
+let imagePath = ""; 
 
-function handleDelete(listingId, imgPath) {
+function handleDelete(address) {
   event.preventDefault();
   document.getElementById('btn-close').click();
 
   // Delete image
-  console.log(imgPath)
-  console.log(props.imgPath)
-  console.log(listingId)
+  // console.log(imgPath)
+  // console.log(props.imgPath)
+  // console.log(props.listingId)
   const storage = getStorage();
   const imageRef = storageRef(storage, props.imgPath);
 
@@ -44,6 +44,7 @@ function handleDelete(listingId, imgPath) {
   }).catch((error) => {
     console.error("Whoops image not deleted:", error);
   });
+
   // // Delete listing from db
   // deleteDoc(doc(db, "listings", props.listingId)).then(() => {
   //   console.log("Listing deleted successfully");
@@ -58,20 +59,20 @@ function handleDelete(listingId, imgPath) {
   //   });
   // });
 }
-  // Display listing image
-  const img = ref(null);
-  if (props.imgPath) {
-    const storage = getStorage();
-    const imgRef = storageRef(storage, props.imgPath);
-    console.log(props.imgPath)
-    imagePath = props.imgPath;
+// Display listing image
+const img = ref(null);
+if (props.imgPath) {
+  const storage = getStorage();
+  const imgRef = storageRef(storage, props.imgPath);
+  // console.log(props.imgPath)
+  imagePath = props.imgPath;
 
-    getDownloadURL(imgRef)
-      .then(url => {
-        img.value.src = url;
-      })
-      .catch(err => console.log(err.message))
-  }
+  getDownloadURL(imgRef)
+    .then(url => {
+      img.value.src = url;
+    })
+    .catch(err => console.log(err.message))
+}
 </script>
 
 <template>
@@ -86,7 +87,8 @@ function handleDelete(listingId, imgPath) {
                 <b class="modal-title fs-4" id="deleteModalLabel">Delete</b>
               </div>
               <div class="col-4 text-end">
-                <button type="button" id="btn-close" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" id="btn-close" class="btn-close" data-bs-dismiss="modal"
+                  aria-label="Close"></button>
               </div>
             </div>
           </div>
@@ -107,7 +109,7 @@ function handleDelete(listingId, imgPath) {
         </div>
         <div class="modal-footer justify-content-space-between">
           <button type="button" class="btn cancel-btn" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" @click="handleDelete(listingId, imgPath)" class="btn btn-primary">Delete</button>
+          <button type="button" @click="handleDelete(props.address)" class="btn btn-primary">Delete</button>
         </div>
       </div>
     </div>
@@ -115,13 +117,12 @@ function handleDelete(listingId, imgPath) {
   <div class="card">
     <div class="row g-0">
       <div class="col-4">
-        <img ref="img"
-          class="card__img img-fluid rounded-start">
+        <img ref="img" class="card__img img-fluid rounded-start">
       </div>
       <button class="delete-btn" data-bs-toggle="modal" data-bs-target="#deleteModal">
         <span class="material-symbols-outlined me-1">delete</span> Delete
       </button>
-      
+
       <div class="col-8">
         <div class="card-body d-flex flex-column justify-content-center h-100 p-2 px-3  py-lg-2">
           <div class="d-flex justify-content-between align-items-center">
