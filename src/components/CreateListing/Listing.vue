@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { doc, getFirestore, deleteDoc } from "firebase/firestore";
-import { getDownloadURL, getStorage, deleteObject, ref as storageRef } from "firebase/storage";
+import { getDownloadURL, getStorage, ref as storageRef } from "firebase/storage";
 let isFavorited = ref(false);
 
 const props = defineProps({
@@ -15,8 +14,6 @@ const props = defineProps({
   imgPath: String
 });
 
-const db = getFirestore();
-
 function handleFavorite() {
   event.preventDefault();
   isFavorited.value = !isFavorited.value;
@@ -24,41 +21,11 @@ function handleFavorite() {
 
 let imagePath = ""; 
 
-function handleDelete(address) {
-  event.preventDefault();
-  document.getElementById('btn-close').click();
-
-  // Delete image
-  // console.log(imgPath)
-  // console.log(props.imgPath)
-  // console.log(props.listingId)
-  const storage = getStorage();
-  const imageRef = storageRef(storage, props.imgPath);
-
-  deleteObject(imageRef).then(() => {
-    console.log("File deleted successfully");
-    // Delete listing from db
-    deleteDoc(doc(db, "listings", props.listingId)).then(() => {
-      console.log("Listing deleted successfully");
-    });
-  }).catch((error) => {
-    console.error("Whoops image not deleted:", error);
-  });
-
-  // // Delete listing from db
-  // deleteDoc(doc(db, "listings", props.listingId)).then(() => {
-  //   console.log("Listing deleted successfully");
-  //   const storage = getStorage();
-  //   const imageRef = storageRef(storage, props.imgPath);
-
-  //   // Delete image
-  //   deleteObject(imageRef).then(() => {
-  //     console.log("File deleted successfully");
-  //   }).catch((error) => {
-  //     console.error("Whoops image not deleted:", error);
-  //   });
-  // });
+function toggleDelete(id, imgPath) {
+  document.getElementById('deleteModal').dataset.id = id;
+  document.getElementById('deleteModal').dataset.img = imgPath;
 }
+
 // Display listing image
 const img = ref(null);
 if (props.imgPath) {
@@ -76,50 +43,12 @@ if (props.imgPath) {
 </script>
 
 <template>
-  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <!-- modal-header -->
-        <div class="modal-header">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-8 text-start">
-                <b class="modal-title fs-4" id="deleteModalLabel">Delete</b>
-              </div>
-              <div class="col-4 text-end">
-                <button type="button" id="btn-close" class="btn-close" data-bs-dismiss="modal"
-                  aria-label="Close"></button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- modal-body -->
-        <div class="modal-body">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="text-center">
-                <div class="text-start d-flex flex-column justify-content-between h-100">
-                  <div>
-                    <span>Are you sure you want to delete this listing?</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer justify-content-space-between">
-          <button type="button" class="btn cancel-btn" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" @click="handleDelete(props.address)" class="btn btn-primary">Delete</button>
-        </div>
-      </div>
-    </div>
-  </div>
   <div class="card">
     <div class="row g-0">
       <div class="col-4">
         <img ref="img" class="card__img img-fluid rounded-start">
       </div>
-      <button class="delete-btn" data-bs-toggle="modal" data-bs-target="#deleteModal">
+      <button class="delete-btn" data-bs-toggle="modal" data-bs-target="#deleteModal" @click="toggleDelete(props.listingId, props.imgPath)">
         <span class="material-symbols-outlined me-1">delete</span> Delete
       </button>
 
@@ -183,10 +112,6 @@ if (props.imgPath) {
 
 .card-title {
   font-size: 12px;
-}
-
-.cancel-btn:hover {
-  background-color: #f0f0f0;
 }
 
 .delete-btn {
