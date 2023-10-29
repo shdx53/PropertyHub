@@ -5,11 +5,20 @@ import Autocomplete from "../components/CreateListing/Autocomplete.vue";
 import { ref } from "vue";
 import { storage, getCurrentUser } from "../firebase/index.js";
 import { ref as storageRef, uploadBytes } from "firebase/storage";
-import { doc, updateDoc, getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { nanoid } from "nanoid";
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
+import { useRouter } from "vue-router";
 
 const fileInput = ref(null);
 const form = ref(null);
 const imgPath = ref(null);
+const router = useRouter();
+// Viewing window
+const date = ref(null)
+const additionalDates = ref([]);
+
 
 // const storage = getStorage();
 // const storageRef = s_Ref(storage, "listings");
@@ -27,7 +36,7 @@ const userId = ref(null);
 getCurrentUser()
   .then(user => {
     if (user) {
-      // console.log(user);
+      console.log(user);
       userEmail.value = user.email;
       userId.value = user.uid;
     } else {
@@ -56,7 +65,12 @@ const uploadFile = async (listingId) => {
   }
 };
 
-async function handleSubmit() {
+function generateNewDate() {
+  event.preventDefault();
+  additionalDates.value.push(ref(0));
+}
+
+function handleSubmit() {
   event.preventDefault()
 
   let isFormValid = true;
@@ -72,16 +86,35 @@ async function handleSubmit() {
   const tenure = form.value["tenure"].value;
   const remainingLease = form.value["remaining-lease"].value;
   const balcony = form.value["balcony"].value;
-  const viewingStartDate = form.value["viewing-start-date"].value;
-  const viewingEndDate = form.value["viewing-end-date"].value;
+  const viewingDate = date.value;
+  let viewingDates = [viewingDate];
+  additionalDates.value.forEach(additionalDate => {
+    console.log(additionalDate)
+    if (additionalDate.value != null && additionalDate.value != 0) {
+      viewingDates.push(additionalDate.value);
+    }
+  });
 
   // Form validation
   Array.from(form.value).forEach(form => {
-    if (!form.checkValidity()) {
-      form.classList.add("is-invalid");
-      isFormValid = false;
-    } else if (form.classList.contains("is-invalid")) {
-      form.classList.remove("is-invalid")
+    if (!form.classList.contains("dp__input")) {
+      if (!form.checkValidity()) {
+        form.classList.add("is-invalid");
+        isFormValid = false;
+      } else if (form.classList.contains("is-invalid")) {
+        form.classList.remove("is-invalid")
+      }
+    } else {
+      if (viewingDate == null) {
+        form.classList.add("form-control");
+        form.classList.add("is-invalid");
+        document.getElementById("viewing-date").classList.add("is-invalid");
+        isFormValid = false;
+      } else if (document.getElementById("viewing-date").classList.contains("is-invalid")) {
+        form.classList.remove("form-control");
+        form.classList.remove("is-invalid");
+        document.getElementById("viewing-date").classList.remove("is-invalid");
+      }
     }
   })
 
@@ -89,45 +122,40 @@ async function handleSubmit() {
   if (isFormValid) {
     const db = getFirestore();
     const colRef = collection(db, "listings");
-    let listingDocRef;
-
-    await addDoc(colRef, {
-      userId: userId.value,
-      userEmail: userEmail.value,
-      address: address,
-      about: about,
-      listedPrice: listedPrice,
-      type: type,
-      level: level,
-      bedrooms: bedrooms,
-      bathrooms: bathrooms,
-      floorSize: floorSize,
-      tenure: tenure,
-      remainingLease: remainingLease,
-      balcony: balcony,
-      viewingStartDate: viewingStartDate,
-      viewingEndDate: viewingEndDate,
-      favoriteCounts: 0,
-      dateOfEntry: serverTimestamp()
-    })
-      .then(docRef => {
-        listingDocRef = docRef.id;
-        uploadFile(docRef.id)
-      })
-
+    const listingId = nanoid();
+    uploadFile(listingId);
+    
     if (imgPath.value) {
-      const listingRef = doc(db, "listings", listingDocRef);
-      console.log(listingRef);
-
-      await updateDoc(listingRef, {
+      addDoc(colRef, {
+        userId: userId.value,
+        userEmail: userEmail.value,
+        listingId: listingId,
+        address: address,
+        about: about,
+        listedPrice: listedPrice,
+        type: type,
+        level: level,
+        bedrooms: bedrooms,
+        bathrooms: bathrooms,
+        floorSize: floorSize,
+        tenure: tenure,
+        remainingLease: remainingLease,
+        balcony: balcony,
+        viewingDates: viewingDates,
+        favoriteCounts: 0,
         imgPath: imgPath.value,
-      });
+        dateOfEntry: serverTimestamp()
+      })
     }
 
     Array.from(form.value).forEach(form => {
       form.value = "";
     })
+    date.value = null;
+    additionalDates.value = [];
   }
+  router.push("/CreateListingPage");
+
 }
 </script>
 
@@ -283,20 +311,16 @@ async function handleSubmit() {
           <hr class="d-lg-none" />
           <div class="fw-bold fs-5 mb-2">Customize viewing window</div>
 
-          <div class="mb-3">
-            <label for="viewing-start-date" class="col-form-label fw-bold">Start Date:</label>
-            <input type="date" class="form-control" id="viewing-start-date" required />
+          <div class="mb-3 d-flex flex-column">
+            <VueDatePicker v-model="date" :min-date="new Date()" id="viewing-date" class="" time-picker-inline :is-24="false"></VueDatePicker>
             <div class="invalid-feedback">
               Field is required
             </div>
+            <button class="add-date-btn" @click="generateNewDate">+ Add new date</button>
           </div>
 
-          <div class="mb-3">
-            <label for="viewing-end-date" class="col-form-label fw-bold">End Date:</label>
-            <input type="date" class="form-control" id="viewing-end-date" required />
-            <div class="invalid-feedback">
-              Field is required
-            </div>
+          <div class="mb-3" id="additional-viewingdates">
+            <VueDatePicker v-for="dateItem, dateIndex in additionalDates" :key="dateIndex" v-model="dateItem.value" :min-date="new Date()" class="viewing-dates" time-picker-inline :is-24="false"></VueDatePicker>
           </div>
         </div>
       </div>
@@ -338,6 +362,22 @@ input::file-selector-button {
 
 h2 {
   font-weight: 900;
+}
+
+.add-date-btn {
+  margin: auto;
+  background-color: unset;
+  border: 0;
+  border-radius: 8px;
+  padding: 5px 10px;
+  margin-top: 5px;
+}
+
+.add-date-btn:hover {
+  background-color: #f0f0f0;
+}
+.viewing-dates {
+  margin-bottom: 20px;
 }
 
 @media (min-width: 992px) {
