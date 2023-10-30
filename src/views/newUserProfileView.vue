@@ -41,7 +41,7 @@ import Filter from "../components/FIlter.vue";
             <div v-if="isLoading == false">
               <button
                 type="button"
-                @click="createSingleCheckout(product.prices[0].id)"
+                @click="createSingleCheckout(product.prices[0].id,product.stripe_metadata_credits)"
                 class="w-100 btn btn-lg btn-primary"
               >
                 Purchase Credits
