@@ -13,9 +13,12 @@ import Filter from "../components/FIlter.vue";
       <div class="card-body">
         <h5 class="card-title">Current Amount:</h5>
         <p class="card-text">${{ shownBalance }}</p>
-        <a href="#" class="btn btn-primary">Previous Transactions</a>
+        <a @click="showTransactions" class="btn btn-primary"
+          >Previous Transactions</a
+        >
       </div>
     </div>
+    <div v-if="transactions" v-for="transaction in transactions">transactions</div>
     <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
       <h1 class="display-4 fw-normal">Pricing</h1>
       <p class="fs-5 text-muted">
@@ -24,16 +27,17 @@ import Filter from "../components/FIlter.vue";
       </p>
     </div>
     <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
-      <div class="col-3" v-for="(product,idx) in products">
+      <div class="col-3" v-for="(product, idx) in products">
         <div class="card mb-4 rounded-3 shadow-sm">
           <div class="card-header py-3">
             <h4 class="my-0 fw-normal">{{ product.name }}</h4>
           </div>
-          <div class="card-body" >
+          <div class="card-body">
             <h1 class="card-title pricing-card-title">
               ${{ product.prices[0].unit_amount / 100 }}
             </h1>
-            <ul  v-for="detail in prod_details[idx]"
+            <ul
+              v-for="detail in prod_details[idx]"
               class="list-unstyled mt-3 mb-4"
             >
               <li>{{ detail }}</li>
@@ -41,7 +45,12 @@ import Filter from "../components/FIlter.vue";
             <div v-if="isLoading == false">
               <button
                 type="button"
-                @click="createSingleCheckout(product.prices[0].id,product.stripe_metadata_credits)"
+                @click="
+                  createSingleCheckout(
+                    product.prices[0].id,
+                    product.stripe_metadata_credits
+                  )
+                "
                 class="w-100 btn btn-lg btn-primary"
               >
                 Purchase Credits
@@ -54,7 +63,7 @@ import Filter from "../components/FIlter.vue";
                 @click="
                   createSingleCheckout(
                     product.prices[0].id,
-                    product.stripe_metadata_credits,
+                    product.stripe_metadata_credits
                   )
                 "
                 class="w-100 btn btn-lg btn-primary"
@@ -98,15 +107,28 @@ export default {
     return {
       products: [],
       prod_details: [
-  { "1": "10 credits", "2": "Start bidding on viewings", "3": "Start bidding on your dream property" },
-  { "1": "50 credits", "2": "Start bidding on your dream house", "3": "50% cheaper!" },
-  { "1": "35 credits", "2": "Start bidding with more credits", "3": "30% cheaper!" },
-],
+        {
+          1: "10 credits",
+          2: "Start bidding on viewings",
+          3: "Start bidding on your dream property",
+        },
+        {
+          1: "50 credits",
+          2: "Start bidding on your dream house",
+          3: "50% cheaper!",
+        },
+        {
+          1: "35 credits",
+          2: "Start bidding with more credits",
+          3: "30% cheaper!",
+        },
+      ],
       selectedPrice: null,
       isLoading: false,
       user: null,
       email: null,
       shownBalance: null,
+      transactions: null,
     };
   },
   mounted() {
@@ -115,6 +137,7 @@ export default {
     console.log(this.products);
   },
   methods: {
+    async showTransactions() {},
     async getBalance(email) {
       const docRef = doc(db, "balance", email);
       const docSnap = await getDoc(docRef);
@@ -167,7 +190,7 @@ export default {
       this.selectedPrice = price;
       console.log(this.shownBalance);
       console.log(credits);
-      const temp_balance = this.shownBalance+parseInt(credits);
+      const temp_balance = this.shownBalance + parseInt(credits);
       console.log(temp_balance);
       const collectionRef = collection(
         db,
