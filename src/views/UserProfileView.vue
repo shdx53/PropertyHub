@@ -7,55 +7,50 @@ import Filter from "../components/FIlter.vue";
 import { ref } from "vue";
 
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
-import {db,getCurrentUser}  from "../firebase/index.js";
+import { doc, getDoc,collection,query,where,getDocs } from "firebase/firestore";
+import { db, getCurrentUser, payments } from "../firebase/index.js";
+import { getProducts } from "@stripe/firestore-stripe-payments";
 
+// const auth = getAuth();
 
-const auth = getAuth();
 var shownBalance = ref(null);
 var email = ref(null);
+
+
 async function getBalance(email) {
   const docRef = doc(db, "balance", email);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    // console.log(docSnap);
-    // console.log("Document data:", docSnap.data());
-    // console.log(docSnap.data().balance);
+
     shownBalance.value = docSnap.data().balance;
   } else {
-    // docSnap.data() will be undefined in this case
     console.log("No such document!");
   }
-
-
 }
 
 getCurrentUser()
-  .then(user => {
+  .then((user) => {
     if (user) {
       email.value = user.email;
-      console.log(user);
-    console.log(email.value);
-    getBalance(email.value);
+      getBalance(email.value);
+
     } else {
       console.log("No user is currently logged in.");
     }
   })
-  .catch(error => {
+  .catch((error) => {
     console.error("Error getting current user:", error);
   });
-function add(value){
-
-}
-
+function add(value) {}
+// console.log(products.value);
 </script>
 
 <template>
   <Navbar />
   <div class="mx-4">
     <div class="card mt-4 mb-4">
-      <h5 class="card-header">Your Balance({{email}})</h5>
+      <h5 class="card-header">Your Balance({{ email }})</h5>
       <div class="card-body">
         <h5 class="card-title">Current Amount:</h5>
         <p class="card-text">${{ shownBalance }}</p>
@@ -68,7 +63,6 @@ function add(value){
         Get your E-credits to enjoy the best experiences that our platform
         provides
       </p>
-
     </div>
     <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
       <div class="col">

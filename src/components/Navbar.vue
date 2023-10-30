@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { useRouter } from "vue-router";
 
 const auth = getAuth();
 let isLoggedIn = ref(false);
@@ -8,7 +9,7 @@ let isAuthLoading = ref(true);
 
 let isNavExpanded = ref(false);
 let isUserExpanded = ref(false);
-
+let router = useRouter();
 onAuthStateChanged(auth, (user) => {
   isLoggedIn.value = user ? true : false;
   isAuthLoading.value = false;
@@ -28,7 +29,10 @@ function handleLogout() {
 function handleHome(){
 
 }
+function handleProfile(){
+  router.push("/userprofile");
 
+}
 </script>
 
 <template>
@@ -107,7 +111,7 @@ function handleHome(){
 
                 <div class="collapse mt-2" id="userCollpase">
                   <li class="nav-item">
-                    <a href="#" class="nav-link user-collapse__item text-black">Profile</a>
+                    <a @click="handleProfile" class="nav-link user-collapse__item text-black">Profile</a>
                   </li>
                   <li class="nav-item">
                     <a href="#" class="nav-link user-collapse__item text-black">Listings</a>

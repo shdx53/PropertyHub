@@ -6,6 +6,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import {getStorage} from "firebase/storage"
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getStripePayments } from "@stripe/firestore-stripe-payments";
 
 // import { getFirestore } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -42,4 +43,11 @@ const getCurrentUser = () =>
 
 // const app = initializeApp(firebaseConfig);
 // const db = getFirestore(app);
-export { db,getCurrentUser,storage };
+
+const payments = getStripePayments(app,{
+  productsCollection: "products",
+  customersCollection: "customers",
+})
+
+
+export { db,getCurrentUser,storage,payments };
