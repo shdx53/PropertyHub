@@ -13,12 +13,29 @@ import Filter from "../components/FIlter.vue";
       <div class="card-body">
         <h5 class="card-title">Current Amount:</h5>
         <p class="card-text">${{ shownBalance }}</p>
-        <a @click="showTransactions" class="btn btn-primary"
-          >Previous Transactions</a
-        >
+        <div v-if="!showing">
+          <a @click="showTransactions" class="btn btn-primary"
+            >Previous Transactions</a
+          >
+        </div>
+        <div v-if="showing">
+          <a
+            @click="
+              () => {
+                this.showing = false;
+                this.transactions = [];
+              }
+            "
+            class="btn btn-primary"
+            >Previous Transactions</a
+          >
+        </div>
       </div>
     </div>
-    <div v-if="transactions" v-for="transaction in transactions">transactions</div>
+    <div v-if="showing" v-for="transaction in transactions">
+      {{ transaction.id }}: ${{ transaction.amount / 100 }} :
+      {{ transaction.created }}
+    </div>
     <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
       <h1 class="display-4 fw-normal">Pricing</h1>
       <p class="fs-5 text-muted">
@@ -128,7 +145,8 @@ export default {
       user: null,
       email: null,
       shownBalance: null,
-      transactions: null,
+      transactions: [],
+      showing: false,
     };
   },
   mounted() {
@@ -137,7 +155,26 @@ export default {
     console.log(this.products);
   },
   methods: {
-    async showTransactions() {},
+    async showTransactions() {
+      const paymentsRef = collection(db, `customers/${this.user.uid}/payments`);
+      const paymentsQuery = query(
+        paymentsRef,
+        where("status", "==", "succeeded")
+      );
+      const paymentsQuerySnap = await getDocs(paymentsQuery);
+
+      paymentsQuerySnap.forEach(async (doc) => {
+        // const pricesRef = collection(db, "products", doc.id, "prices");
+        // const pricesQuerySnap = await getDocs(pricesRef);
+        console.log(doc);
+        this.transactions.push({
+          id: doc.id,
+          ...doc.data(),
+        });
+      });
+      this.showing = true;
+      console.log(this.transactions);
+    },
     async getBalance(email) {
       const docRef = doc(db, "balance", email);
       const docSnap = await getDoc(docRef);
