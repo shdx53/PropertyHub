@@ -12,16 +12,16 @@
         <div class="footer__copyright mb-3 mb-md-0">©2023 PropertyHub. All rights reserved.</div>
         <div class="footer__social-media">
           <a href="#">
-            <img class="footer__icon me-2" src="../assets/img/Footer/linkedin.png">
+            <img class="footer__icon me-2" src="https://i.postimg.cc/6382VhDw/linkedin.png">
           </a>
           <a href="#">
-            <img class="footer__icon me-2" src="../assets/img/Footer/facebook.png">
+            <img class="footer__icon me-2" src="https://i.postimg.cc/0jKGVvKt/facebook.png">
           </a>
           <a href="#">
-            <img class="footer__icon me-2" src="../assets/img/Footer/twitter.png">
+            <img class="footer__icon me-2" src="https://i.postimg.cc/vZXt33S6/twitter.png">
           </a>
           <a href="#">
-            <img class="footer__icon" src="../assets/img/Footer/instagram.png">
+            <img class="footer__icon" src="https://i.postimg.cc/DfWyx0mv/instagram.png">
           </a>
         </div>
       </div>

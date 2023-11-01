@@ -119,7 +119,7 @@ function handleFavorite() {
           <h5 class="card-title fw-bold mb-1">{{ address }}</h5>
           <button @click="handleFavorite" class="card__favorite-btn" :class="{ 'card__favorite-btn-active': isFavorited }"
             :disabled="!isLoggedIn">
-            <img class="card__favorite-icon me-1" src="../../assets/img/Listings/favorite_FILL1_wght400_GRAD0_opsz24.png">
+            <img class="card__favorite-icon me-1" src="https://i.postimg.cc/7YTKqFY1/favorite-FILL1-wght400-GRAD0-opsz24.png">
             <span class="text-body-tertiary fw-bold" :class="{ 'card__favorite-qty': isFavorited }">{{
               favoriteCounts
             }}</span>
@@ -151,7 +151,7 @@ function handleFavorite() {
           <div>
             <div class="d-flex">
               <span class="material-symbols-outlined me-2">crop_square</span>
-              <b>{{ floorSize }}<span class="card__unit">sqft</span></b>
+              <b>{{ floorSize }}<span class="card__unit"> sqft</span></b>
             </div>
 
             <div class="card__property text-muted">Living Area</div>
@@ -179,6 +179,8 @@ a {
   border: 1px solid #f0f0f0;
   border-radius: 5px;
   padding: 1px 5px;
+  display: flex;
+  align-items: center;
 }
 
 .card__favorite-btn-active {
@@ -186,7 +188,7 @@ a {
 }
 
 .card__favorite-icon {
-  width: 18px;
+  width: 16px;
 }
 
 .card__favorite-qty {

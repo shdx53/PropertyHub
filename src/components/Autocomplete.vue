@@ -3,6 +3,9 @@ import { onMounted, ref } from "vue";
 import { Loader } from "@googlemaps/js-api-loader";
 
 let addressInput = ref(null);
+let addressInput2 = ref("");
+
+const emits = defineEmits(["inputChange"]);
 
 onMounted(() => {
   const loader = new Loader({
@@ -20,12 +23,22 @@ onMounted(() => {
     };
 
     const autocomplete = new google.maps.places.Autocomplete(addressInput.value, options);
+    autocomplete.addListener("place_changed", fillInAddress);
+
+    function fillInAddress() {
+      emits("inputChange", addressInput.value.value);
+    }
   });
 })
+
+function handleChange() {
+  emits("inputChange", addressInput2.value);
+}
 </script>
 
 <template>
-  <input ref="addressInput" type="text" class="py-lg-0 form-control border" placeholder="Search">
+  <input ref="addressInput" v-model="addressInput2" type="text" class="py-lg-0 form-control border" placeholder="Search"
+    @change="handleChange()">
 </template>
 
 <style>

@@ -4,15 +4,68 @@ import GoogleMaps from "../components/BuyView/GoogleMaps.vue";
 import Footer from "../components/Footer.vue";
 import Listing from "../components/BuyView/Listing.vue";
 import Filter from "../components/Filter.vue";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import Autocomplete from "../components/Autocomplete.vue";
-import { getFirestore, collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { getFirestore, collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useRoute, useRouter } from 'vue-router';
 
 let isDisplayFilter = ref(false);
 function displayFilter() {
   isDisplayFilter.value = isDisplayFilter.value ? false : true;
 };
+
+// Handle pagination
+let currentPage = ref(1);
+const itemsPerPage = 3;
+
+const totalPages = computed(() => {
+  if (listings.value.length) {
+    return Math.ceil(listings.value.length / itemsPerPage);
+  }
+})
+
+const pageNums = computed(() => {
+  if (totalPages.value == 0) {
+    return [];
+  } else if (totalPages.value == 1) {
+    return [1];
+  } else if (totalPages.value == 2) {
+    return [1, 2];
+  } else if (totalPages.value >= 3) {
+    return [1, 2, 3];
+  }
+})
+
+const paginatedListings = computed(() => {
+  if (listings.value.length) {
+    const startIndex = (currentPage.value - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return listings.value.slice(startIndex, endIndex);
+  }
+})
+
+// function previousPage() {
+//   if (currentPage.value > 1) {
+//     currentPage.value -= 1;
+//     buyListingsKey.value += 1;
+//   }
+// };
+
+// function nextPage() {
+//   if (currentPage.value < totalPages.value) {
+//     currentPage.value += 1;
+//     buyListingsKey.value += 1;
+//   }
+// };
+
+function specificPage(page) {
+  currentPage.value = page;
+  const prevPage = page - 1;
+  const nextPage = page + 1;
+  pageNums.value = [prevPage, page, nextPage];
+  buyListingsKey.value += 1;
+}
 
 // Fetch listings data
 const db = getFirestore();
@@ -23,23 +76,13 @@ let buyListingsKey = ref(0);
 
 function displayListings(query, listings) {
   onSnapshot(query, snapshot => {
-    let listingsData = snapshot.docs;
     listings.value = [];
-    if (listingsData.length > 3) {
-      listingsData = listingsData.slice(0, 3);
-      listingsData.forEach(listing => {
-        listings.value.push([listing.id, listing.data()]);
-      })
-    } else {
-      snapshot.docs.forEach(listing => {
-        listings.value.push([listing.id, listing.data()]);
-      })
-    }
+    snapshot.docs.forEach(listing => {
+      listings.value.push([listing.id, listing.data()]);
+    })
   })
   buyListingsKey.value += 1;
 }
-
-displayListings(listingsQuery, listings);
 
 // Rerender whenever user logs out
 const auth = getAuth();
@@ -47,6 +90,32 @@ const auth = getAuth();
 onAuthStateChanged(auth, () => {
   buyListingsKey.value += 1;
 })
+
+// Submit search
+const router = useRouter();
+function handleInputChange(value) {
+  addressInput.value = value;
+}
+
+function handleSubmit() {
+  router
+    .push({
+      path: "/buy",
+      query: { addressInput: addressInput.value }
+    })
+    .then(() => router.go())
+}
+
+// Matched listings
+const route = useRoute();
+const addressInput = ref("");
+addressInput.value = route.query.addressInput;
+if (addressInput.value) {
+  const searchQuery = query(listingsColRef, where("address", "==", addressInput.value));
+  displayListings(searchQuery, listings);
+} else {
+  displayListings(listingsQuery, listings);
+}
 
 //getting data from firestore
 // import { doc, getDoc } from "firebase/firestore";
@@ -70,14 +139,14 @@ onAuthStateChanged(auth, () => {
     <!-- Search -->
     <section class="search__container">
       <div class="input-group">
-        <Autocomplete />
+        <Autocomplete @inputChange="handleInputChange" />
 
         <button @click="displayFilter" class="btn header__filter-btn" type="button">
           <span class="material-symbols-outlined">tune</span>
         </button>
       </div>
 
-      <button class="btn btn-primary ms-5">
+      <button class="btn btn-primary ms-5" @click="handleSubmit">
         <span class="material-symbols-outlined">search</span>
       </button>
     </section>
@@ -88,7 +157,7 @@ onAuthStateChanged(auth, () => {
 
       <div class="search-results__flex">
         <div class="search-results__listing-container">
-          <div v-for="listing in listings" :key="buyListingsKey">
+          <div v-for="listing in paginatedListings" :key="buyListingsKey">
             <Listing :listingId="listing[0]" :address="listing[1].address" :listedPrice="listing[1].listedPrice"
               :bedrooms="listing[1].bedrooms" :bathrooms="listing[1].bathrooms" :floorSize="listing[1].floorSize"
               :favoriteCounts="listing[1].favoriteCounts" :imgPath="listing[1].imgPath">
@@ -97,21 +166,22 @@ onAuthStateChanged(auth, () => {
         </div>
 
         <div class="search-results__map-container">
-          <GoogleMaps :listings="listings" :key="listings" />
+          <GoogleMaps :listings="paginatedListings" :key="paginatedListings" />
         </div>
       </div>
 
       <nav aria-label="Page navigation" class="mb-5 mg-lg-0">
         <ul class="pagination justify-content-center">
-          <li class="page-item">
+          <li class="page-item" :class="{ 'disabled': currentPage == 1 }" @click="specificPage(1)">
             <a class="page-link" href="#" aria-label="Previous">
               <span aria-hidden="true">&laquo;</span>
             </a>
           </li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
+          <li class="page-item" :class="{ 'active': currentPage == page }" v-for="page in pageNums"
+            @click="specificPage(page)">
+            <a href="#" class="page-link">{{ page }}</a>
+          </li>
+          <li class="page-item" :class="{ 'disabled': currentPage == totalPages }" @click="specificPage(totalPages)">
             <a class="page-link" href="#" aria-label="Next">
               <span aria-hidden="true">&raquo;</span>
             </a>

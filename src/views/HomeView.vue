@@ -7,6 +7,7 @@ import Autocomplete from "../components/Autocomplete.vue";
 import { ref } from "vue";
 import { getFirestore, collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useRouter } from "vue-router";
 
 // Filter
 let isDisplayFilter = ref(false);
@@ -23,7 +24,8 @@ let recentListings = ref([]);
 const popularListingsQuery = query(listingsColRef, orderBy("favoriteCounts", "desc"))
 let popularListings = ref([]);
 
-let homeListingsKey = ref(0);
+let recentListingsKey = ref(0);
+let popularListingsKey = ref(0);
 
 function displayListings(query, listings) {
   onSnapshot(query, snapshot => {
@@ -31,16 +33,13 @@ function displayListings(query, listings) {
     listings.value = [];
     if (listingsData.length > 3) {
       listingsData = listingsData.slice(0, 3);
-      listingsData.forEach(listing => {
-        listings.value.push([listing.id, listing.data()]);
-      })
-    } else {
-      snapshot.docs.forEach(listing => {
-        listings.value.push([listing.id, listing.data()]);
-      })
     }
+    listingsData.forEach(listing => {
+      listings.value.push([listing.id, listing.data()]);
+    })
   })
-  homeListingsKey.value += 1;
+  recentListingsKey.value += 1;
+  popularListingsKey.value += 1;
 }
 
 displayListings(recentListingsQuery, recentListings);
@@ -50,15 +49,31 @@ displayListings(popularListingsQuery, popularListings);
 const customersColRef = collection(db, "customers");
 
 onSnapshot(customersColRef, () => {
-  homeListingsKey.value += 1;
+  recentListingsKey.value += 1;
+  popularListingsKey.value += 1;
 })
 
 // Rerender whenever user logs out
 const auth = getAuth();
 
 onAuthStateChanged(auth, () => {
-  homeListingsKey.value += 1;
+  recentListingsKey.value += 1;
+  popularListingsKey.value += 1;
 })
+
+// Submit search
+const router = useRouter();
+let addressInput = ref("");
+function handleSubmit() {
+  router.push({
+    path: "/buy",
+    query: { addressInput: addressInput.value }
+  })
+}
+
+function handleInputChange(value) {
+  addressInput.value = value;
+}
 </script>
 
 <template>
@@ -67,7 +82,7 @@ onAuthStateChanged(auth, () => {
 
   <!-- Header -->
   <header class="mb-5">
-    <div class="general__container">
+    <div class="general__container" :class="{ 'container--without-listings': recentListings.length == 0 }">
       <div class="row">
         <div class="col-md-7 text-center text-md-start">
           <h1 class="fw-bold text-white mb-3 mb-md-2">Buy and Sell your property in one place!</h1>
@@ -77,14 +92,14 @@ onAuthStateChanged(auth, () => {
 
           <div class="header__search-container">
             <div class="input-group">
-              <Autocomplete />
+              <Autocomplete @inputChange="handleInputChange" />
 
               <button @click="displayFilter" class="btn header__filter-btn" type="button">
                 <span class="material-symbols-outlined">tune</span>
               </button>
             </div>
 
-            <button class="btn btn-primary ms-5">
+            <button class="btn btn-primary ms-5" @click="handleSubmit">
               <span class="material-symbols-outlined">search</span>
             </button>
           </div>
@@ -95,7 +110,7 @@ onAuthStateChanged(auth, () => {
 
   <!-- Recently Added -->
   <section class="mb-5">
-    <div class="listings__container">
+    <div class="listings__container" :class="{ 'container--without-listings': recentListings.length == 0 }">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="fw-bold m-0">Recently Added</h3>
         <a class="view-all" href="./buy">View All</a>
@@ -106,7 +121,7 @@ onAuthStateChanged(auth, () => {
           <Listing></Listing>
         </div> -->
 
-        <div v-for="recentListing in recentListings" :key="homeListingsKey" class="col-12 mb-4 col-lg-4">
+        <div v-for="recentListing in recentListings" :key="recentListingsKey" class="col-12 mb-4 col-lg-4">
           <Listing :listingId="recentListing[0]" :address="recentListing[1].address"
             :listedPrice="recentListing[1].listedPrice" :bedrooms="recentListing[1].bedrooms"
             :bathrooms="recentListing[1].bathrooms" :floorSize="recentListing[1].floorSize"
@@ -119,14 +134,14 @@ onAuthStateChanged(auth, () => {
 
   <!-- Popular Listings -->
   <section class="mb-5">
-    <div class="listings__container">
+    <div class="listings__container" :class="{ 'container--without-listings': recentListings.length == 0 }">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="fw-bold m-0">Popular Listings</h3>
         <a class="view-all" href="./buy">View All</a>
       </div>
 
       <div class="row">
-        <div v-for="popularListing in popularListings" :key="homeListingsKey"  class="col-12 mb-4 col-lg-4">
+        <div v-for="popularListing in popularListings" :key="popularListingsKey" class="col-12 mb-4 col-lg-4">
           <Listing :listingId="popularListing[0]" :address="popularListing[1].address"
             :listedPrice="popularListing[1].listedPrice" :bedrooms="popularListing[1].bedrooms"
             :bathrooms="popularListing[1].bathrooms" :floorSize="popularListing[1].floorSize"
@@ -150,7 +165,7 @@ onAuthStateChanged(auth, () => {
 <style scoped>
 header {
   height: 500px;
-  background-image: url("../assets/img/HomeView/jiachen-lin-AIk_5-M9Uho-unsplash.jpg");
+  background-image: url("https://i.imgur.com/h11kSI3.jpg");
   background-position: center;
   background-size: cover;
   position: relative;
@@ -180,6 +195,10 @@ header::before {
 .header__filter-btn:hover {
   background-color: #f0f0f0;
   opacity: 0.9;
+}
+
+.container--without-listings {
+  height: calc(100vh - 68px - 84px);
 }
 
 .listings__container {

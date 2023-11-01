@@ -5,7 +5,7 @@ import Listing from "../components/CreateListing/Listing.vue";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { doc, getFirestore, collection, onSnapshot, deleteDoc } from "firebase/firestore";
+import { doc, getFirestore, collection, onSnapshot, deleteDoc, orderBy } from "firebase/firestore";
 import { getStorage, deleteObject, ref as storageRef } from "firebase/storage";
 import { query, where } from "firebase/firestore";
 const router = useRouter();
@@ -25,7 +25,7 @@ const currentuserListingsQuery = ref({});
 onAuthStateChanged(auth, user => {
   if (user) {
     userId.value = user.uid;
-    currentuserListingsQuery.value = query(listingsColRef, where("userId", "==", userId.value));
+    currentuserListingsQuery.value = query(listingsColRef, where("userId", "==", userId.value), orderBy("dateOfEntry", "desc"));
   } else {
     router.push("/home");
   }
@@ -70,8 +70,8 @@ function handleDelete() {
 
 <template>
     <Navbar/>
-    <div class="container mx-auto">
-        <div class="d-flex justify-content-between pt-5">
+    <div class="container mx-auto py-5" :class="{ 'container--without-listings' : userListings.length == 0 }">
+        <div class="d-flex justify-content-between">
             <h2 class="mb-4 fw-bold">My Listings</h2>
             <button @click="createlisting" type="button" class="mb-4 btn btn-primary createbtn">Create Listing</button>
         </div>
@@ -136,13 +136,18 @@ function handleDelete() {
 .container{
     width: 80%;
     max-width: 700px;
-    height: calc(100vh - 68px - 84px);
 }
+
+.container--without-listings {
+  height: calc(100vh - 68px - 84px);
+}
+
 .createbtn:hover{
     background-color: transparent;
     color:#0d6efd;
     box-shadow: 6px 6px 20px 0px rgba(0,0,0,0.22);
 }
+
 .cancel-btn:hover {
   background-color: #f0f0f0;
 }

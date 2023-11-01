@@ -26,9 +26,7 @@ function handleUserToggle() {
 function handleLogout() {
   signOut(auth)
 }
-function handleHome(){
 
-}
 function handleProfile(){
   router.push("/userprofile");
 
@@ -45,7 +43,7 @@ function handleProfile(){
       <button @click="handleNavToggle" class="navbar-toggler" type="button" data-bs-toggle="collapse"
         data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
         aria-label="Toggle navigation">
-        <img v-if="isNavExpanded" class="nav__close-icon" src="../assets/img/Navbar/close.png">
+        <img v-if="isNavExpanded" class="nav__close-icon" src="https://i.postimg.cc/qBspRvBQ/close.png">
         <span v-else class="material-symbols-outlined text-white nav__menu-icon">menu</span>
       </button>
 
@@ -72,7 +70,7 @@ function handleProfile(){
 
                 <li class="nav-item">
                   <a @click="handleLogout" class="nav-link" href="#">
-                    <img class="nav__logout-icon" src="../assets/img/Navbar/logout.png" />
+                    <img class="nav__logout-icon" src="https://i.postimg.cc/d32r1k4G/logout.png" />
                   </a>
                 </li>
               </div>
@@ -105,7 +103,7 @@ function handleProfile(){
                   </button>
 
                   <a @click="handleLogout" href="#">
-                    <img class="nav__logout-icon" src="../assets/img/Navbar/logout2.png" />
+                    <img class="nav__logout-icon" src="https://i.postimg.cc/RCDTbKnb/logout2.png" />
                   </a>
                 </div>
 
@@ -165,8 +163,8 @@ function handleProfile(){
 }
 
 .nav__logout-icon {
-  width: 32px;
-  height: 32px;
+  width: 26px;
+  height: 26px;
   transition: opacity 0.2s ease;
 }
 

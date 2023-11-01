@@ -21,7 +21,7 @@ onAuthStateChanged(auth, (user) => {
     <div class="general__container text-center">
       <h1 class="fw-bold text-white mb-2">Selling your home?</h1>
       <h2 class="text-white-50 mb-4 fs-3">Let us help you find the perfect buyer</h2>
-      <a v-if="isSignedIn" class="get-started-btn bg-primary" href="#">Get started</a>
+      <a v-if="isSignedIn" class="get-started-btn bg-primary" href="/createlistingpage">Get started</a>
       <a v-else class="get-started-btn bg-primary" href="/login">Get started</a>
     </div>
   </header>
@@ -29,7 +29,7 @@ onAuthStateChanged(auth, (user) => {
   <!-- Benefits -->
   <section class="general__container mb-5">
     <div class="card__container d-sm-flex">
-      <img src="../assets/img/SellView/christin-hume-Hcfwew744z4-unsplash.jpg" class="card__img mb-4 mb-sm-0">
+      <img src="https://i.postimg.cc/wj726CW6/christin-hume-Hcfwew744z4-unsplash.jpg" class="card__img mb-4 mb-sm-0">
 
       <div class="card__text-container ms-sm-3 ms-lg-4">
         <div>
@@ -37,7 +37,8 @@ onAuthStateChanged(auth, (user) => {
           <p class="fw-bold text-body-tertiary card__subtitle">Active Property Seekers</p>
         </div>
 
-        <p class="card__text mb-3 mb-sm-0">Reach out to our extensive user base and enhance the exposure of your listing.</p>
+        <p class="card__text mb-3 mb-sm-0">Reach out to our extensive user base and enhance the exposure of your listing.
+        </p>
       </div>
     </div>
 
@@ -50,11 +51,11 @@ onAuthStateChanged(auth, (user) => {
 
         <p class="card__text mb-3 mb-sm-0">Sell your home with confidence.</p>
       </div>
-      <img src="../assets/img/SellView/oppo-find-x5-pro-mCxk_ba7CJ8-unsplash.jpg" class="card__img mb-4 mb-sm-0">
+      <img src="https://i.postimg.cc/908k1Y4Y/oppo-find-x5-pro-m-Cxk-ba7-CJ8-unsplash.jpg" class="card__img mb-4 mb-sm-0">
     </div>
 
     <div class="card__container d-sm-flex">
-      <img src="../assets/img/SellView/amos-lee-5Rc4doYnu94-unsplash.jpg" class="card__img mb-4 mb-sm-0">
+      <img src="https://i.postimg.cc/9FbHSy9T/amos-lee-5-Rc4do-Ynu94-unsplash.jpg" class="card__img mb-4 mb-sm-0">
 
       <div class="card__text-container ms-sm-3 ms-lg-4">
         <div>
@@ -79,7 +80,9 @@ onAuthStateChanged(auth, (user) => {
           </button>
         </h2>
         <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-          <div class="accordion-body">Once you have listed your home, you can customize the 5-day viewing period based on your availability. Additionally, you can set a specific price for each day. Potential buyers will then bid for those 5 viewing slots.</div>
+          <div class="accordion-body">Once you have listed your home, you can customize the 5-day viewing period based on
+            your availability. Additionally, you can set a specific price for each day. Potential buyers will then bid for
+            those 5 viewing slots.</div>
         </div>
       </div>
 
@@ -91,10 +94,11 @@ onAuthStateChanged(auth, (user) => {
           </button>
         </h2>
         <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-          <div class="accordion-body">If you do not want to host your own viewings, that is totally fine. We are here to sell your home, in whatever way works for you.</div>
+          <div class="accordion-body">If you do not want to host your own viewings, that is totally fine. We are here to
+            sell your home, in whatever way works for you.</div>
         </div>
       </div>
-      
+
       <div class="accordion-item">
         <h2 class="accordion-header">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -116,7 +120,7 @@ onAuthStateChanged(auth, (user) => {
 <style scoped>
 header {
   height: 500px;
-  background-image: url("../assets/img/SellView/nathan-oh-PWIOX6atM4w-unsplash.jpg");
+  background-image: url("https://i.imgur.com/UAT4jbX.jpg");
   background-position: center;
   background-size: cover;
   position: relative;
@@ -181,8 +185,8 @@ header::before {
 }
 
 .accordion-button:focus {
-    box-shadow: none;
-    border-color: rgba(0,0,0,.125);
+  box-shadow: none;
+  border-color: rgba(0, 0, 0, .125);
 }
 
 @media (min-width: 576px) {
@@ -200,6 +204,7 @@ header::before {
     flex-direction: column;
     justify-content: center;
   }
+
   .card__title--bid {
     font-size: 17px;
   }

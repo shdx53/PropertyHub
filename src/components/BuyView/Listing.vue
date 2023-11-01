@@ -32,14 +32,14 @@ if (auth.currentUser) {
 }
 
 // Display listing image
-const img = ref(null);
+const imgSrc = ref("");
 if (props.imgPath) {
   const storage = getStorage();
   const imgRef = storageRef(storage, props.imgPath);
 
   getDownloadURL(imgRef)
     .then(url => {
-      img.value.src = url;
+      imgSrc.value = url;
     })
     .catch(err => console.log(err.message))
 }
@@ -113,7 +113,7 @@ function handleFavorite() {
   <div class="card">
     <div class="row g-0">
       <div class="col-4">
-        <img ref="img" class="card__img img-fluid rounded-start">
+        <img :src="imgSrc" class="card__img img-fluid rounded-start">
       </div>
 
       <div class="col-8">
@@ -124,7 +124,7 @@ function handleFavorite() {
             <button @click="handleFavorite" class="card__favorite-btn"
               :class="{ 'card__favorite-btn-active': isFavorited }" :disabled="!isLoggedIn">
               <img class="card__favorite-icon me-1"
-                src="../../assets/img/Listings/favorite_FILL1_wght400_GRAD0_opsz24.png">
+                src="https://i.postimg.cc/7YTKqFY1/favorite-FILL1-wght400-GRAD0-opsz24.png">
               <span class="card__favorite-qty text-body-tertiary fw-bold"
                 :class="{ 'card__favorite-qty--active': isFavorited }">{{ favoriteCounts }}</span>
             </button>
@@ -182,7 +182,9 @@ function handleFavorite() {
   background-color: transparent;
   border: 1px solid #f0f0f0;
   border-radius: 5px;
-  padding: 1px 5px;
+  padding: 3px 5px;
+  display: flex;
+  align-items: center;
 }
 
 .card__favorite-btn-active {

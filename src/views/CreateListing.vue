@@ -152,9 +152,8 @@ function handleSubmit() {
     })
     date.value = null;
     additionalDates.value = [];
+    router.push("/CreateListingPage");
   }
-  router.push("/CreateListingPage");
-
 }
 </script>
 
