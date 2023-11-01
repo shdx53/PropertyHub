@@ -4,8 +4,8 @@ import Navbar from "../components/Navbar.vue";
 import Listing from "../components/CreateListing/Listing.vue";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
-import { getAuth } from "firebase/auth";
-import { doc, getFirestore, updateDoc, collection, getDoc, arrayUnion, onSnapshot, getDocs, orderBy, deleteDoc } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { doc, getFirestore, collection, onSnapshot, deleteDoc } from "firebase/firestore";
 import { getStorage, deleteObject, ref as storageRef } from "firebase/storage";
 import { query, where } from "firebase/firestore";
 const router = useRouter();
@@ -18,13 +18,20 @@ const db = getFirestore();
 // Checks if user is logged in
 const auth = getAuth();
 const userId = ref(null);
-const isLoggedIn = ref(false);
-console.log(auth.currentUser)
 
 const listingsColRef = collection(db, "listings");
-const currentuserListingsQuery = query(listingsColRef, where("userEmail", "==", "tester1@wad.com"));
-// const q = query(listingRef, where("userEmail", "==", auth.currentUser.email));
+const currentuserListingsQuery = ref({});
 
+onAuthStateChanged(auth, user => {
+  if (user) {
+    userId.value = user.uid;
+    currentuserListingsQuery.value = query(listingsColRef, where("userId", "==", userId.value));
+  } else {
+    router.push("/home");
+  }
+})
+
+// Fetch listings data
 let userListings = ref([]);
 function displayListings(query, listings) {
   onSnapshot(query, snapshot => {
@@ -35,10 +42,8 @@ function displayListings(query, listings) {
   })
 }
 
-displayListings(currentuserListingsQuery, userListings);
-
 onSnapshot(listingsColRef, snapshot => {
-  displayListings(currentuserListingsQuery, userListings);
+  displayListings(currentuserListingsQuery.value, userListings);
 });
 
 function handleDelete() {
@@ -65,8 +70,8 @@ function handleDelete() {
 
 <template>
     <Navbar/>
-    <div class="container mx-auto my-5">
-        <div class="d-flex justify-content-between">
+    <div class="container mx-auto">
+        <div class="d-flex justify-content-between pt-5">
             <h2 class="mb-4 fw-bold">My Listings</h2>
             <button @click="createlisting" type="button" class="mb-4 btn btn-primary createbtn">Create Listing</button>
         </div>
@@ -118,8 +123,10 @@ function handleDelete() {
                   :favoriteCounts="listing[1].favoriteCounts"
                   :isFavorited="listing[1].isFavorited"
                   :imgPath="listing[1].imgPath"
+                  :key="isLoggedIn"
           ></Listing>
         </div>
+        <div v-if="userListings.length==0" class="text-center mt-3 text-black-50">You currently have no listings.</div>
     </div>
     <Footer></Footer>
 </template>
@@ -129,6 +136,7 @@ function handleDelete() {
 .container{
     width: 80%;
     max-width: 700px;
+    height: calc(100vh - 68px - 84px);
 }
 .createbtn:hover{
     background-color: transparent;

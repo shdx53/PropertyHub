@@ -19,7 +19,6 @@ const router = useRouter();
 const date = ref(null)
 const additionalDates = ref([]);
 
-
 // const storage = getStorage();
 // const storageRef = s_Ref(storage, "listings");
 
