@@ -4,48 +4,7 @@ import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
 
 import Filter from "../components/FIlter.vue";
-import { ref } from "vue";
-
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc,collection,query,where,getDocs } from "firebase/firestore";
-import { db, getCurrentUser, payments } from "../firebase/index.js";
-import { getProducts } from "@stripe/firestore-stripe-payments";
-
-// const auth = getAuth();
-
-var shownBalance = ref(null);
-var email = ref(null);
-
-
-async function getBalance(email) {
-  const docRef = doc(db, "balance", email);
-  const docSnap = await getDoc(docRef);
-
-  if (docSnap.exists()) {
-
-    shownBalance.value = docSnap.data().balance;
-  } else {
-    console.log("No such document!");
-  }
-}
-
-getCurrentUser()
-  .then((user) => {
-    if (user) {
-      email.value = user.email;
-      getBalance(email.value);
-
-    } else {
-      console.log("No user is currently logged in.");
-    }
-  })
-  .catch((error) => {
-    console.error("Error getting current user:", error);
-  });
-function add(value) {}
-// console.log(products.value);
 </script>
-
 <template>
   <Navbar />
   <div class="mx-4">
@@ -54,8 +13,48 @@ function add(value) {}
       <div class="card-body">
         <h5 class="card-title">Current Amount:</h5>
         <p class="card-text">${{ shownBalance }}</p>
-        <a href="#" class="btn btn-primary">Previous Transactions</a>
+        <div v-if="!showing">
+          <a @click="showTransactions" class="btn btn-primary"
+            >Previous Transactions</a
+          >
+        </div>
+        <div v-if="showing">
+          <a
+            @click="
+              () => {
+                this.showing = false;
+                this.transactions = [];
+              }
+            "
+            class="btn btn-primary"
+            >Hide Transactions</a
+          >
+        </div>
       </div>
+    </div>
+    <div v-if="showing">
+      <h1 class="display-4 fw-normal text-center">Transactions</h1>
+      <p class="fs-5 text-muted text-center">
+        Your past transactions with us
+      </p>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Amount Paid</th>
+            <th scope="col">Package</th>
+            <th scope="col">Time Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="transaction in transactions">
+            <th scope="row">{{ transaction.id }}</th>
+            <td>${{ transaction.amount / 100 }}</td>
+            <td>{{ transaction.items[0].description }}</td>
+            <td>{{ timeStampy(transaction.created) }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
       <h1 class="display-4 fw-normal">Pricing</h1>
@@ -65,63 +64,50 @@ function add(value) {}
       </p>
     </div>
     <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
-      <div class="col">
+      <div class="col-3" v-for="(product, idx) in products">
         <div class="card mb-4 rounded-3 shadow-sm">
           <div class="card-header py-3">
-            <h4 class="my-0 fw-normal">Primary</h4>
+            <h4 class="my-0 fw-normal">{{ product.name }}</h4>
           </div>
           <div class="card-body">
             <h1 class="card-title pricing-card-title">
-              $5<small class="text-muted fw-light">/mo</small>
+              ${{ product.prices[0].unit_amount / 100 }}
             </h1>
-            <ul class="list-unstyled mt-3 mb-4">
-              <li>50 credits</li>
-              <li>Bid for viewings</li>
-              <li>Bid for houses</li>
+            <ul
+              v-for="detail in prod_details[idx]"
+              class="list-unstyled mt-3 mb-4"
+            >
+              <li>{{ detail }}</li>
             </ul>
-            <button type="button" class="w-100 btn btn-lg btn-primary">
-              Get started
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card mb-4 rounded-3 shadow-sm">
-          <div class="card-header py-3">
-            <h4 class="my-0 fw-normal">Pro</h4>
-          </div>
-          <div class="card-body">
-            <h1 class="card-title pricing-card-title">
-              $15<small class="text-muted fw-light">/mo</small>
-            </h1>
-            <ul class="list-unstyled mt-3 mb-4">
-              <li>200 Credits</li>
-              <li>30% Cheaper</li>
-              <li>Get ahead of others in bidding</li>
-            </ul>
-            <button type="button" class="w-100 btn btn-lg btn-primary">
-              Get started
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card mb-4 rounded-3 shadow-sm">
-          <div class="card-header py-3">
-            <h4 class="my-0 fw-normal">Premium</h4>
-          </div>
-          <div class="card-body">
-            <h1 class="card-title pricing-card-title">
-              $25<small class="text-muted fw-light">/mo</small>
-            </h1>
-            <ul class="list-unstyled mt-3 mb-4">
-              <li>300 Credits</li>
-              <li>50% Cheaper</li>
-              <li>Have the biggest dog in the fight</li>
-            </ul>
-            <button type="button" class="w-100 btn btn-lg btn-primary">
-              Lets do this
-            </button>
+            <div v-if="isLoading == false">
+              <button
+                type="button"
+                @click="
+                  createSingleCheckout(
+                    product.prices[0].id,
+                    product.stripe_metadata_credits
+                  )
+                "
+                class="w-100 btn btn-lg btn-primary"
+              >
+                Purchase Credits
+              </button>
+            </div>
+            <div v-else>
+              <button
+                type="button"
+                disabled
+                @click="
+                  createSingleCheckout(
+                    product.prices[0].id,
+                    product.stripe_metadata_credits
+                  )
+                "
+                class="w-100 btn btn-lg btn-primary"
+              >
+                Purchase Credits
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -134,3 +120,178 @@ function add(value) {}
 #footer {
 }
 </style>
+
+<script>
+import {
+  getFirestore,
+  getDocs,
+  where,
+  query,
+  collection,
+  addDoc,
+  onSnapshot,
+  doc,
+  getDoc,
+  updateDoc,
+} from "firebase/firestore";
+
+// import { firebaseAuth } from "@/firebase";
+import { db, getCurrentUser } from "../firebase/index.js";
+import { loadStripe } from "@stripe/stripe-js";
+
+export default {
+  data() {
+    return {
+      products: [],
+      prod_details: [
+        {
+          1: "10 credits",
+          2: "Start bidding on viewings",
+          3: "Start bidding on your dream property",
+        },
+        {
+          1: "50 credits",
+          2: "Start bidding on your dream house",
+          3: "50% cheaper!",
+        },
+        {
+          1: "35 credits",
+          2: "Start bidding with more credits",
+          3: "30% cheaper!",
+        },
+      ],
+      selectedPrice: null,
+      isLoading: false,
+      user: null,
+      email: null,
+      shownBalance: null,
+      transactions: [],
+      showing: false,
+    };
+  },
+
+  mounted() {
+    this.fetchProducts();
+    this.getUserPrice();
+    console.log(this.products);
+  },
+  methods: {
+    timeStampy(unixTimestamp) {
+      var date = new Date(unixTimestamp * 1000);
+      var result =
+        date.toLocaleDateString("en-US") +
+        " " +
+        date.toLocaleTimeString("en-US");
+      return result;
+    },
+    async showTransactions() {
+      const paymentsRef = collection(db, `customers/${this.user.uid}/payments`);
+      const paymentsQuery = query(
+        paymentsRef,
+        where("status", "==", "succeeded")
+      );
+      const paymentsQuerySnap = await getDocs(paymentsQuery);
+
+      paymentsQuerySnap.forEach(async (doc) => {
+        // const pricesRef = collection(db, "products", doc.id, "prices");
+        // const pricesQuerySnap = await getDocs(pricesRef);
+        console.log(doc);
+        this.transactions.push({
+          id: doc.id,
+          ...doc.data(),
+        });
+      });
+      this.showing = true;
+      console.log(this.transactions);
+    },
+    async getBalance(email) {
+      const docRef = doc(db, "balance", email);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        this.shownBalance = docSnap.data().balance;
+      } else {
+        console.log("No such document!");
+      }
+    },
+    getUserPrice() {
+      getCurrentUser()
+        .then((user) => {
+          if (user) {
+            this.email = user.email;
+            this.user = user;
+            this.getBalance(user.email);
+          } else {
+            console.log("No user is currently logged in.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error getting current user:", error);
+        });
+    },
+
+    async fetchProducts() {
+      const productsRef = collection(db, "products");
+      const productsQuery = query(productsRef, where("active", "==", true));
+      const productsQuerySnap = await getDocs(productsQuery);
+
+      productsQuerySnap.forEach(async (doc) => {
+        const pricesRef = collection(db, "products", doc.id, "prices");
+        const pricesQuerySnap = await getDocs(pricesRef);
+
+        this.products.push({
+          id: doc.id,
+          ...doc.data(),
+          prices: pricesQuerySnap.docs.map((price) => {
+            return {
+              id: price.id,
+              ...price.data(),
+            };
+          }),
+        });
+      });
+    },
+    async createSingleCheckout(price, credits) {
+      this.isLoading = true;
+      this.selectedPrice = price;
+      console.log(this.shownBalance);
+      console.log(credits);
+      const temp_balance = this.shownBalance + parseInt(credits);
+      console.log(temp_balance);
+      const collectionRef = collection(
+        db,
+        "customers",
+        this.user.uid,
+        "checkout_sessions"
+      );
+
+      const docRef = await addDoc(collectionRef, {
+        price: this.selectedPrice,
+        mode: "payment",
+        success_url: window.location.href,
+        cancel_url: window.location.href,
+      });
+
+      onSnapshot(docRef, async (snap) => {
+        const { error, url } = snap.data();
+
+        if (error) {
+          console.error(`An error occurred: ${error.message}`);
+          this.isLoading = false;
+        }
+
+        if (url) {
+          // console.log(url);
+
+          const balanceRef = doc(db, "balance", this.email);
+
+          await updateDoc(balanceRef, {
+            balance: temp_balance,
+          });
+          window.location.assign(url);
+        }
+      });
+    },
+  },
+};
+</script>

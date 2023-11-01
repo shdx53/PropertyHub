@@ -96,14 +96,14 @@ const router = createRouter({
       component: () => import("../views/EditListing.vue"),
     },
     {
+      path: "/brokenuserProfile",
+      name: "brokenuserprofile",
+      component: () => import("../views/brokenUserProfileView.vue"),
+    },
+    {
       path: "/userProfile",
       name: "userprofile",
       component: () => import("../views/UserProfileView.vue"),
-    },
-    {
-      path: "/newuserProfile",
-      name: "newuserprofile",
-      component: () => import("../views/newUserProfileView.vue"),
     },
   ],
 });
