@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from "vue";
 const townArr = {
   north: [
     "Sembawang",
@@ -43,6 +44,23 @@ const props = defineProps({
   isDisplayFilter: Boolean,
   displayFilter: Function
 });
+
+const emits = defineEmits(["getFilterResults"])
+
+const selectedTowns = ref([]);
+const selectedPrice = ref(null);
+const selectedBedrooms = ref(null);
+
+function handleSubmit() {
+  event.preventDefault();
+  props.displayFilter();
+  const filterResults = {
+    towns: selectedTowns.value,
+    price: selectedPrice.value,
+    bedrooms: selectedBedrooms.value
+  }
+  emits("getFilterResults", filterResults);
+}
 </script>
 
 <template>
@@ -61,8 +79,8 @@ const props = defineProps({
             <h3 class="form__title form__title--area">North:</h3>
 
             <div v-for="town in townArr.north" class="form-check mb-2">
-              <input class="form-check-input" type="checkbox" :value="town" id="flexCheckDefault">
-              <label class="form-check-label" for="flexCheckDefault">
+              <input class="form-check-input" type="checkbox" :value="town" :id="town" v-model="selectedTowns">
+              <label class="form-check-label" :for="town">
                 {{ town }}
               </label>
             </div>
@@ -72,8 +90,8 @@ const props = defineProps({
             <h3 class="form__title form__title--area">NorthEast:</h3>
 
             <div v-for="town in townArr.northEast" class="form-check mb-2 d-md-none d-xxl-block">
-              <input class="form-check-input" type="checkbox" :value="town" id="flexCheckDefault">
-              <label class="form-check-label" for="flexCheckDefault">
+              <input class="form-check-input" type="checkbox" :value="town" :id="town" v-model="selectedTowns">
+              <label class="form-check-label" :for="town">
                 {{ town }}
               </label>
             </div>
@@ -82,8 +100,9 @@ const props = defineProps({
               <div class="row">
                 <div class="col">
                   <div v-for="town in townArr.northEast.slice(0, 3)" class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" :value="town" id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault">
+                    <input class="form-check-input" type="checkbox" :value="town" :id="town"
+                      v-model="selectedTowns">
+                    <label class="form-check-label" :for="town">
                       {{ town }}
                     </label>
                   </div>
@@ -91,8 +110,9 @@ const props = defineProps({
 
                 <div class="col">
                   <div v-for="town in townArr.northEast.slice(3, 5)" class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" :value="town" id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault">
+                    <input class="form-check-input" type="checkbox" :value="town" :id="town"
+                      v-model="selectedTowns">
+                    <label class="form-check-label" :for="town">
                       {{ town }}
                     </label>
                   </div>
@@ -105,8 +125,8 @@ const props = defineProps({
             <h3 class="form__title form__title--area">East:</h3>
 
             <div v-for="town in townArr.east" class="form-check mb-2">
-              <input class="form-check-input" type="checkbox" :value="town" id="flexCheckDefault">
-              <label class="form-check-label" for="flexCheckDefault">
+              <input class="form-check-input" type="checkbox" :value="town" :id="town" v-model="selectedTowns">
+              <label class="form-check-label" :for="town">
                 {{ town }}
               </label>
             </div>
@@ -116,8 +136,8 @@ const props = defineProps({
             <h3 class="form__title form__title--area">West:</h3>
 
             <div v-for="town in townArr.west" class="form-check mb-2 d-md-none d-xxl-block">
-              <input class="form-check-input" type="checkbox" :value="town" id="flexCheckDefault">
-              <label class="form-check-label" for="flexCheckDefault">
+              <input class="form-check-input" type="checkbox" :value="town" :id="town" v-model="selectedTowns">
+              <label class="form-check-label" :for="town">
                 {{ town }}
               </label>
             </div>
@@ -126,8 +146,9 @@ const props = defineProps({
               <div class="row">
                 <div class="col">
                   <div v-for="town in townArr.west.slice(0, 3)" class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" :value="town" id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault">
+                    <input class="form-check-input" type="checkbox" :value="town" :id="town"
+                      v-model="selectedTowns">
+                    <label class="form-check-label" :for="town">
                       {{ town }}
                     </label>
                   </div>
@@ -135,8 +156,9 @@ const props = defineProps({
 
                 <div class="col">
                   <div v-for="town in townArr.west.slice(3, 6)" class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" :value="town" id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault">
+                    <input class="form-check-input" type="checkbox" :value="town" :id="town"
+                      v-model="selectedTowns">
+                    <label class="form-check-label" :for="town">
                       {{ town }}
                     </label>
                   </div>
@@ -144,8 +166,9 @@ const props = defineProps({
 
                 <div class="col">
                   <div v-for="town in townArr.west.slice(6, 7)" class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" :value="town" id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault">
+                    <input class="form-check-input" type="checkbox" :value="town" :id="town"
+                      v-model="selectedTowns">
+                    <label class="form-check-label" :for="town">
                       {{ town }}
                     </label>
                   </div>
@@ -158,8 +181,8 @@ const props = defineProps({
             <h3 class="form__title form__title--area">Central:</h3>
 
             <div v-for="town in townArr.central" class="form-check mb-2 d-md-none d-xxl-block">
-              <input class="form-check-input" type="checkbox" :value="town" id="flexCheckDefault">
-              <label class="form-check-label" for="flexCheckDefault">
+              <input class="form-check-input" type="checkbox" :value="town" :id="town" v-model="selectedTowns">
+              <label class="form-check-label" :for="town">
                 {{ town }}
               </label>
             </div>
@@ -168,8 +191,9 @@ const props = defineProps({
               <div class="row">
                 <div class="col">
                   <div v-for="town in townArr.central.slice(0, 3)" class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" :value="town" id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault">
+                    <input class="form-check-input" type="checkbox" :value="town" :id="town"
+                      v-model="selectedTowns">
+                    <label class="form-check-label" :for="town">
                       {{ town }}
                     </label>
                   </div>
@@ -177,8 +201,9 @@ const props = defineProps({
 
                 <div class="col">
                   <div v-for="town in townArr.central.slice(3, 6)" class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" :value="town" id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault">
+                    <input class="form-check-input" type="checkbox" :value="town" :id="town"
+                      v-model="selectedTowns">
+                    <label class="form-check-label" :for="town">
                       {{ town }}
                     </label>
                   </div>
@@ -186,8 +211,9 @@ const props = defineProps({
 
                 <div class="col">
                   <div v-for="town in townArr.central.slice(6, 9)" class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" :value="town" id="flexCheckDefault">
-                    <label class="form-check-label" for="flexCheckDefault">
+                    <input class="form-check-input" type="checkbox" :value="town" :id="town"
+                      v-model="selectedTowns">
+                    <label class="form-check-label" :for="town">
                       {{ town }}
                     </label>
                   </div>
@@ -204,26 +230,33 @@ const props = defineProps({
         <!-- <input type="number" id="maxPrice" class="form-control input-price"> -->
         <div class="input-group input-price__container">
           <span class="input-group-text">$</span>
-          <input type="number" class="form-control" placeholder="Price">
+          <input id="maxPrice" type="number" class="form-control" placeholder="Price" v-model="selectedPrice">
         </div>
       </div>
 
-
-
       <!-- Bedrooms -->
-      <div class="d-md-flex mb-5 align-items-center">
-        <div class="form__title form__title2">Bedrooms:</div>
+      <div class="d-md-flex mb-4 align-items-center">
+        <!-- <div class="form__title form__title2">Bedrooms:</div>
         <div>
           <button class="btn btn-dark me-1 me-sm-2">1</button>
           <button class="btn btn-dark me-1 me-sm-2">2</button>
           <button class="btn btn-dark me-1 me-sm-2">3</button>
           <button class="btn btn-dark me-1 me-sm-2">4</button>
           <button class="btn btn-dark">5</button>
-        </div>
+        </div> -->
+        <label for="bedrooms" class="form__title form__title2">Bedrooms:</label>
+        <select class="form-select select-bedrooms__container" id="bedrooms" v-model="selectedBedrooms">
+          <option value=""></option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
       </div>
 
       <!-- Apply -->
-      <div class="d-flex justify-content-center">
+      <div class="d-flex justify-content-center" @click="handleSubmit">
         <button class="btn btn-primary">Apply</button>
       </div>
     </div>
@@ -267,7 +300,13 @@ hr {
   margin-bottom: 5px;
 }
 
-.input-price__container {
+input::placeholder {
+  font-size: 16px;
+}
+
+.input-price__container,
+.select-bedrooms__container,
+.input-floor-size__container {
   width: 206px;
 }
 
