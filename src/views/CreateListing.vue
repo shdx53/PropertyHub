@@ -40,18 +40,11 @@ getCurrentUser()
       userId.value = user.uid;
     } else {
       console.log("No user is currently logged in.");
-      router.push("/home");
     }
   })
   .catch(error => {
     console.error("Error getting current user:", error);
   });
-
-onAuthStateChanged(auth, user => {
-  if (!user) {
-    router.push("/home");
-  }
-})
 
 const uploadFile = async (listingId) => {
   if (fileInput.value && fileInput.value.files.length > 0) {

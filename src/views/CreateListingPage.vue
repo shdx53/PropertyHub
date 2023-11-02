@@ -26,8 +26,6 @@ onAuthStateChanged(auth, user => {
   if (user) {
     userId.value = user.uid;
     currentuserListingsQuery.value = query(listingsColRef, where("userId", "==", userId.value), orderBy("dateOfEntry", "desc"));
-  } else {
-    router.push("/home");
   }
 })
 
