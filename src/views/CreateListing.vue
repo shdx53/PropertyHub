@@ -5,15 +5,14 @@ import Autocomplete from "../components/CreateListing/Autocomplete.vue";
 import { ref } from "vue";
 import { storage, getCurrentUser } from "../firebase/index.js";
 import { ref as storageRef, uploadBytes } from "firebase/storage";
-import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { nanoid } from "nanoid";
+import { doc, updateDoc, getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import { useRouter } from "vue-router";
 
+const db = getFirestore();
 const fileInput = ref(null);
 const form = ref(null);
-const imgPath = ref(null);
 const router = useRouter();
 // Viewing window
 const date = ref(null)
@@ -51,11 +50,16 @@ const uploadFile = async (listingId) => {
     const files = fileInput.value.files;
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      imgPath.value = `listings/${userEmail.value}/${listingId}/${file.name}`;
-      const storageReference = storageRef(storage, imgPath.value);
+      const imgPath = `listings/${userEmail.value}/${listingId}/${file.name}`;
+      const storageReference = storageRef(storage, imgPath);
       try {
         const snapshot = await uploadBytes(storageReference, file);
         console.log("Uploaded a blob or file!", snapshot);
+
+        const listingsDocRef = doc(db, "listings", listingId);
+        updateDoc(listingsDocRef, {
+          imgPath: imgPath
+        })
       } catch (error) {
         console.error("Error uploading file:", error);
       }
@@ -117,41 +121,36 @@ function handleSubmit() {
   })
 
   // Store listing in Firebase
-  if (isFormValid) {
-    const db = getFirestore();
+  if (!isFormValid) {
     const colRef = collection(db, "listings");
-    const listingId = nanoid();
-    uploadFile(listingId);
-    
-    if (imgPath.value) {
-      addDoc(colRef, {
-        userId: userId.value,
-        userEmail: userEmail.value,
-        listingId: listingId,
-        address: address,
-        about: about,
-        listedPrice: listedPrice,
-        type: type,
-        level: level,
-        bedrooms: bedrooms,
-        bathrooms: bathrooms,
-        floorSize: floorSize,
-        tenure: tenure,
-        remainingLease: remainingLease,
-        balcony: balcony,
-        viewingDates: viewingDates,
-        favoriteCounts: 0,
-        imgPath: imgPath.value,
-        dateOfEntry: serverTimestamp()
-      })
-    }
 
-    Array.from(form.value).forEach(form => {
-      form.value = "";
+    addDoc(colRef, {
+      userId: userId.value,
+      userEmail: userEmail.value,
+      address: address,
+      about: about,
+      listedPrice: listedPrice,
+      type: type,
+      level: level,
+      bedrooms: bedrooms,
+      bathrooms: bathrooms,
+      floorSize: floorSize,
+      tenure: tenure,
+      remainingLease: remainingLease,
+      balcony: balcony,
+      viewingDates: viewingDates,
+      favoriteCounts: 0,
+      dateOfEntry: serverTimestamp()
     })
-    date.value = null;
-    additionalDates.value = [];
-    router.push("/CreateListingPage");
+      .then(docRef => {
+        uploadFile(docRef.id);
+        Array.from(form.value).forEach(form => {
+          form.value = "";
+        })
+        date.value = null;
+        additionalDates.value = [];
+        router.push("/CreateListingPage");
+      })
   }
 }
 </script>
@@ -309,7 +308,8 @@ function handleSubmit() {
           <div class="fw-bold fs-5 mb-2">Customize viewing window</div>
 
           <div class="mb-3 d-flex flex-column">
-            <VueDatePicker v-model="date" :min-date="new Date()" id="viewing-date" class="" time-picker-inline :is-24="false"></VueDatePicker>
+            <VueDatePicker v-model="date" :min-date="new Date()" id="viewing-date" class="" time-picker-inline
+              :is-24="false"></VueDatePicker>
             <div class="invalid-feedback">
               Field is required
             </div>
@@ -317,7 +317,8 @@ function handleSubmit() {
           </div>
 
           <div class="mb-3" id="additional-viewingdates">
-            <VueDatePicker v-for="dateItem, dateIndex in additionalDates" :key="dateIndex" v-model="dateItem.value" :min-date="new Date()" class="viewing-dates" time-picker-inline :is-24="false"></VueDatePicker>
+            <VueDatePicker v-for="dateItem, dateIndex in additionalDates" :key="dateIndex" v-model="dateItem.value"
+              :min-date="new Date()" class="viewing-dates" time-picker-inline :is-24="false"></VueDatePicker>
           </div>
         </div>
       </div>
@@ -373,6 +374,7 @@ h2 {
 .add-date-btn:hover {
   background-color: #f0f0f0;
 }
+
 .viewing-dates {
   margin-bottom: 20px;
 }
