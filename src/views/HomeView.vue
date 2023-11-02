@@ -74,6 +74,11 @@ function handleSubmit() {
 function handleInputChange(value) {
   addressInput.value = value;
 }
+
+// const individualListing = () => {
+//   router.push({
+//     name: "/individualListing"});
+//   }
 </script>
 
 <template>
@@ -121,7 +126,7 @@ function handleInputChange(value) {
           <Listing></Listing>
         </div> -->
 
-        <div v-for="recentListing in recentListings" :key="recentListingsKey" class="col-12 mb-4 col-lg-4">
+        <div v-for="recentListing in recentListings" :key="recentListingsKey" class="col-12 mb-4 col-lg-4" @click="individualListing">
           <Listing :listingId="recentListing[0]" :address="recentListing[1].address"
             :listedPrice="recentListing[1].listedPrice" :bedrooms="recentListing[1].bedrooms"
             :bathrooms="recentListing[1].bathrooms" :floorSize="recentListing[1].floorSize"
@@ -141,7 +146,7 @@ function handleInputChange(value) {
       </div>
 
       <div class="row">
-        <div v-for="popularListing in popularListings" :key="popularListingsKey" class="col-12 mb-4 col-lg-4">
+        <div v-for="popularListing in popularListings" :key="popularListingsKey" class="col-12 mb-4 col-lg-4" @click="individualListing">
           <Listing :listingId="popularListing[0]" :address="popularListing[1].address"
             :listedPrice="popularListing[1].listedPrice" :bedrooms="popularListing[1].bedrooms"
             :bathrooms="popularListing[1].bathrooms" :floorSize="popularListing[1].floorSize"

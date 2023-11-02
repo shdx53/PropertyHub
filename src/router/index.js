@@ -4,6 +4,7 @@ import HomeView from "../views/HomeView.vue";
 import SellView from "../views/SellView.vue";
 import BuyView from "../views/BuyView.vue";
 import ListingDetails from "../views/ListingDetailsView.vue";
+import ListingDetailsViewVue from "../views/ListingDetailsView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
