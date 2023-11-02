@@ -17,21 +17,33 @@ const router = createRouter({
       path: "/home",
       name: "home",
       component: HomeView,
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: "/buy",
       name: "buy",
       component: BuyView,
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: "/listing-details",
       name: "listing-listings",
       component: ListingDetails,
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: "/sell",
       name: "sell",
       component: SellView,
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: "/about",
@@ -74,36 +86,54 @@ const router = createRouter({
       path: "/likedlistings",
       name: "likedlistings",
       component: () => import("../views/LikedListings.vue"),
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: "/createlistingpage",
       name: "createlistingpage",
       component: () => import("../views/CreateListingPage.vue"),
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: "/createlisting",
       name: "createlisting",
       component: () => import("../views/CreateListing.vue"),
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: "/ownlistings",
       name: "ownlistings",
       component: () => import("../views/OwnListings.vue"),
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: "/editlisting",
       name: "editlisting",
       component: () => import("../views/EditListing.vue"),
+      meta: {
+        requiresAuth: true,
+      },
     },
-    {
-      path: "/brokenuserProfile",
-      name: "brokenuserprofile",
-      component: () => import("../views/brokenUserProfileView.vue"),
-    },
+    // {
+    //   path: "/brokenuserProfile",
+    //   name: "brokenuserprofile",
+    //   component: () => import("../views/brokenUserProfileView.vue"),
+    // },
     {
       path: "/userProfile",
       name: "userprofile",
       component: () => import("../views/UserProfileView.vue"),
+      meta: {
+        requiresAuth: true,
+      },
     },
   ],
 });
