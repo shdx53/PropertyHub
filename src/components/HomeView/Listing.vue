@@ -77,6 +77,7 @@ function updateFavorites() {
 
 function handleFavorite() {
   event.preventDefault();
+  event.stopPropagation();
   const listingsDocRef = doc(db, "listings", props.listingId);
 
   if (isFavorited.value) {
