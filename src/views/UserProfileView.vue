@@ -138,6 +138,7 @@ import {
 // import { firebaseAuth } from "@/firebase";
 import { db, getCurrentUser } from "../firebase/index.js";
 import { loadStripe } from "@stripe/stripe-js";
+import { useRouter } from "vue-router";
 
 export default {
   data() {
@@ -288,7 +289,8 @@ export default {
           await updateDoc(balanceRef, {
             balance: temp_balance,
           });
-          window.location.assign(url);
+          const router = useRouter();
+          router.push(url);
         }
       });
     },
