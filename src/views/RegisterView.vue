@@ -188,7 +188,7 @@ const register = () => {
       console.log(email.value, data.user.uid);
       createUserDocument(email.value, data.user.uid, name.value, phoneno.value);
       console.log("successfully registered");
-      router.push("/home");
+      router.push("/");
     })
     .catch((error) => {
       console.log(error.code);

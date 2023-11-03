@@ -166,7 +166,7 @@ const signIn = () => {
     .then((data) => {
       console.log("successfully logged in");
       console.log(auth.currentUser);
-      router.push("/home");
+      router.push("/");
     })
     .catch((error) => {
       console.log(error.code);

@@ -1,11 +1,52 @@
 <script setup>
 import { ref } from 'vue';
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { db, getCurrentUser } from "../firebase/index.js";
+import {
+  getFirestore,
+  getDocs,
+  where,
+  query,
+  collection,
+  addDoc,
+  onSnapshot,
+  doc,
+  getDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { useRouter } from "vue-router";
 
 const auth = getAuth();
 let isLoggedIn = ref(false);
 let isAuthLoading = ref(true);
+// var user = ref(null);
+var name =ref(null);
+async function getName(email) {
+      const docRef = doc(db, "balance", email);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        name.value = docSnap.data().name;
+        console.log(docSnap.data().name)
+        console.log(name);
+      } else {
+        console.log("No such document!");
+      }
+    }
+getCurrentUser()
+        .then((user) => {
+          if (user) {
+            console.log(user)
+            // user.value = user;
+            getName(user.email);
+
+          } else {
+            console.log("No user is currently logged in.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error getting current user:", error);
+        });
 
 let isNavExpanded = ref(false);
 let isUserExpanded = ref(false);
@@ -65,7 +106,7 @@ function handleProfile(){
                 <button class="btn p-0 border-0" data-bs-toggle="collapse" href="#userCollpase" role="button" aria-expanded="false"
                   aria-controls="userCollapse">
                   <img class="nav__user-img rounded-circle me-3 me-md-1" src="https://source.unsplash.com/g0zwKn5vslI" />
-                  <span class="text-white fw-bold pe-0 me-3">{{}}</span>
+                  <span class="text-white fw-bold pe-0 me-3">{{name}}</span>
                 </button>
 
                 <li class="nav-item">
@@ -99,7 +140,7 @@ function handleProfile(){
                     aria-expanded="false" aria-controls="userCollapse">
                     <img class="nav__user-img--collapse rounded-circle me-3"
                       src="https://source.unsplash.com/g0zwKn5vslI" />
-                    <span class="user__name text-black fw-bold pe-0">Chason Jui</span>
+                    <span class="user__name text-black fw-bold pe-0">{{name}}</span>
                   </button>
 
                   <a @click="handleLogout" href="#">
