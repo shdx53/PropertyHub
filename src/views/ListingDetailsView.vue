@@ -4,7 +4,7 @@ import Footer from "../components/Footer.vue";
 import GoogleMaps from "../components/ListingDetailsView/GoogleMaps.vue";
 import { useRoute } from 'vue-router';
 import { ref } from "vue";
-import { getFirestore, collection, onSnapshot } from "firebase/firestore";
+import { getFirestore, collection, onSnapshot, doc } from "firebase/firestore";
 import { getStorage, ref as storageRef } from "firebase/storage";
 import { query, where } from "firebase/firestore";
 
@@ -19,24 +19,14 @@ function handleFavorite() {
 const route = useRoute();
 const listingId = route.query.listingId;
 const listing = ref(null);
+const address = ref("");
 
 const db = getFirestore();
-const listingsColRef = collection(db, "listings");
-const listingQuery = query(listingsColRef, where("listingId", "==", listingId));
+const listingDocRef = doc(db, "listings", listingId);
 
-function displayListings(query, listings) {
-  onSnapshot(query, snapshot => {
-    listings.value = [];
-    console.log(snapshot.docs)
-    snapshot.docs.forEach(listing => {
-      listings.value.push([listing.id, listing.data()]);
-    })
-    console.log(listings.value)
-  })
-}
-
-onSnapshot(listingsColRef, snapshot => {
-  displayListings(listingQuery, listing);
+onSnapshot(listingDocRef, listing => {
+  listing.value = listing.data();
+  address.value = listing.value.address;
 });
 
 </script>
@@ -88,7 +78,7 @@ onSnapshot(listingsColRef, snapshot => {
       <div>
         <div class="property-overview-row">
           <div class="property-header">
-            <h2 class="property-title">220B Bedok Central</h2>
+            <h2 class="property-title">{{ address }}</h2>
             <button @click="handleFavorite" class="favorite-btn" :class="{ 'favorite-btn-active': isFavorited }">
               <img class="favorite-icon" src="../assets/img/Listings/favorite_FILL1_wght400_GRAD0_opsz24.png">
             </button>

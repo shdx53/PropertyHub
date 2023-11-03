@@ -273,7 +273,7 @@ form {
   z-index: 4;
   inset: 15%;
   max-width: 880px;
-  max-height: 660px;
+  max-height: 680px;
   margin: 0 auto;
   background-color: white;
   border-radius: 10px;
@@ -335,7 +335,7 @@ input::placeholder {
 
 @media (min-width: 1400px) {
   form {
-    inset: 11% 20%;
+    inset: 6% 20%;
     overflow: hidden;
   }
 
