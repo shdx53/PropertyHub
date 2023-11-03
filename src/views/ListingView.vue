@@ -4,16 +4,10 @@ import Footer from "../components/Footer.vue";
 import GoogleMaps from "../components/ListingView/GoogleMaps.vue";
 import { useRoute } from 'vue-router';
 import { ref } from "vue";
-import { getFirestore, collection, onSnapshot, doc } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { doc, getFirestore, updateDoc, collection, getDoc, arrayUnion, onSnapshot } from "firebase/firestore";
 import { getStorage, ref as storageRef } from "firebase/storage";
 import { query, where } from "firebase/firestore";
-
-let isFavorited = ref(false);
-
-function handleFavorite() {
-  event.preventDefault();
-  isFavorited.value = !isFavorited.value;
-}
 
 // Fetch listing data
 const route = useRoute();
@@ -23,15 +17,15 @@ const address = ref("");
 const listedPrice = ref(null);
 const about = ref("");
 const bedrooms = ref("");
-const bathrooms = ref ("");
-const balcony = ref ("");
-const floorSize= ref ("");
-const remainingLease = ref ("");
+const bathrooms = ref("");
+const balcony = ref("");
+const floorSize = ref("");
+const remainingLease = ref("");
 const tenure = ref("");
-const type = ref ("");
-const dateOfEntry = ref ("");
-const level = ref ("");
-
+const type = ref("");
+const dateOfEntry = ref("");
+const level = ref("");
+const favoriteCounts = ref("");
 
 const db = getFirestore();
 const listingDocRef = doc(db, "listings", listingId);
@@ -50,9 +44,94 @@ onSnapshot(listingDocRef, listing => {
   type.value = listing.value.type;
   dateOfEntry.value = listing.value.dateOfEntry;
   level.value = listing.value.level;
-
+  favoriteCounts.value = listing.value.favoriteCounts;
 });
 
+// Checks if user is logged in
+const auth = getAuth();
+const userId = ref(null);
+const isLoggedIn = ref(false);
+
+let customersDocRef;
+
+onAuthStateChanged(auth, user => {
+  if (user) {
+    isLoggedIn.value = true;
+    customersDocRef = doc(db, "customers", user.uid);
+  }
+})
+
+if (auth.currentUser) {
+  userId.value = auth.currentUser.uid;
+  isLoggedIn.value = true;
+
+  customersDocRef = doc(db, "customers", userId.value);
+}
+
+// Handle favorite toggle
+let isFavorited = ref(null);
+let favoritedListings = ref([]);
+
+const customersColRef = collection(db, "customers");
+
+updateFavorites();
+
+onSnapshot(customersColRef, snapshot => {
+  updateFavorites();
+})
+
+function updateFavorites() {
+  if (customersDocRef) {
+    getDoc(customersDocRef)
+      .then(doc => {
+        favoritedListings.value = doc.data().favoritedListings;
+
+        if (!favoritedListings.value.includes(listingId)) {
+          isFavorited.value = false;
+        } else if (favoritedListings.value.includes(listingId)) {
+          isFavorited.value = true;
+        }
+      })
+      .catch(err => console.log(err.message))
+  } else {
+    isFavorited.value = false;
+  }
+}
+
+function handleFavorite() {
+  event.preventDefault();
+  event.stopPropagation();
+  const listingsDocRef = doc(db, "listings", listingId);
+
+  if (isFavorited.value) {
+    isFavorited.value = false;
+
+    updateDoc(listingsDocRef, {
+      favoriteCounts: favoriteCounts.value - 1,
+      isFavorited: false
+    })
+
+    const itemToBeRemovedIndex = favoritedListings.value.indexOf(listingId);
+    favoritedListings.value.splice(itemToBeRemovedIndex, 1);
+
+    updateDoc(customersDocRef, {
+      favoritedListings: favoritedListings.value
+    })
+  } else {
+    isFavorited.value = true;
+
+    updateDoc(listingsDocRef, {
+      favoriteCounts: favoriteCounts.value + 1,
+      isFavorited: true
+    })
+
+    if (!favoritedListings.value.includes(listingId)) {
+      updateDoc(customersDocRef, {
+        favoritedListings: arrayUnion(listingId)
+      })
+    }
+  }
+}
 </script>
 
 <template>
@@ -64,10 +143,9 @@ onSnapshot(listingDocRef, listing => {
     <div id="imgCarousel" class="carousel slide mx-auto mt-4">
       <!-- Elements: custom-carousel__indicators -->
       <div class="carousel-indicators">
-        <button type="button" data-bs-target="#imgCarousel" data-bs-slide-to="0" class="active"
-          aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#imgCarousel" data-bs-slide-to="1"
-          aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#imgCarousel" data-bs-slide-to="0" class="active" aria-current="true"
+          aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#imgCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
       </div>
 
       <!-- Block: custom-carousel__inner -->
@@ -80,7 +158,8 @@ onSnapshot(listingDocRef, listing => {
 
         <!-- Add more carousel items as needed -->
         <div class="carousel-item custom-carousel__item">
-          <img src="../assets/img/Listings/hudson-graves-nOJagMqGCpA-unsplash.jpg" class="d-block w-100 rounded" alt="Slide 2">
+          <img src="../assets/img/Listings/hudson-graves-nOJagMqGCpA-unsplash.jpg" class="d-block w-100 rounded"
+            alt="Slide 2">
         </div>
       </div>
 
@@ -103,12 +182,16 @@ onSnapshot(listingDocRef, listing => {
         <div class="property-overview-row">
           <div class="property-header">
             <h2 class="property-title">{{ address }}</h2>
-            <button @click="handleFavorite" class="favorite-btn" :class="{ 'favorite-btn-active': isFavorited }">
-              <img class="favorite-icon" src="../assets/img/Listings/favorite_FILL1_wght400_GRAD0_opsz24.png">
+            <button @click="handleFavorite" class="favorite-btn" :class="{ 'favorite-btn-active': isFavorited }"
+              :disabled="!isLoggedIn">
+              <img class="favorite-icon me-1" src="https://i.postimg.cc/7YTKqFY1/favorite-FILL1-wght400-GRAD0-opsz24.png">
+              <span class="text-body-tertiary fw-bold" :class="{ 'favorite-qty': isFavorited }">{{
+                favoriteCounts
+              }}</span>
             </button>
           </div>
 
-          <div class="property-price text-muted"> ${{ listedPrice }}</div>
+          <div class="property-price text-muted"> ${{ Number(listedPrice).toLocaleString() }}</div>
 
           <div class="section-divider"></div>
 
@@ -118,7 +201,7 @@ onSnapshot(listingDocRef, listing => {
                 <div class="overview__description">Bedrooms</div>
                 <div class="d-flex justify-content-center">
                   <span class="material-symbols-outlined me-2">bed</span>
-                  <span class="overview__value"> {{bedrooms}} </span>
+                  <span class="overview__value"> {{ bedrooms }} </span>
                 </div>
               </div>
 
@@ -126,7 +209,7 @@ onSnapshot(listingDocRef, listing => {
                 <div class="overview__description">Bathrooms</div>
                 <div class="d-flex justify-content-center">
                   <span class="material-symbols-outlined me-2">bathtub</span>
-                  <span class="overview__value"> {{bathrooms}} </span>
+                  <span class="overview__value"> {{ bathrooms }} </span>
                 </div>
               </div>
 
@@ -135,7 +218,7 @@ onSnapshot(listingDocRef, listing => {
                 <div class="d-flex justify-content-center">
                   <span class="material-symbols-outlined me-2">crop_square</span>
                   <span class="overview__value">
-                    {{floorSize}} <span class="overview__unit">sqft</span>
+                    {{ floorSize }} <span class="overview__unit">sqft</span>
                   </span>
                 </div>
               </div>
@@ -148,7 +231,7 @@ onSnapshot(listingDocRef, listing => {
             <div class="description-block">
               <h2>About the Property</h2>
               <p class="text">
-                {{about}}
+                {{ about }}
               </p>
             </div>
           </section>
@@ -161,42 +244,42 @@ onSnapshot(listingDocRef, listing => {
               <div class="col-md-6 mb-2">
                 <div class="row">
                   <div class="col-6 col-md-12 fw-bold">Property Type</div>
-                  <div class="col-6 col-md-12">{{type}}</div>
+                  <div class="col-6 col-md-12">{{ type }}</div>
                 </div>
               </div>
 
               <div class="col-md-6 mb-2">
                 <div class="row">
                   <div class="col-6 col-md-12 fw-bold">Level</div>
-                  <div class="col-6 col-md-12">{{level}}</div>
+                  <div class="col-6 col-md-12">{{ level }}</div>
                 </div>
               </div>
 
               <div class="col-md-6 mb-2">
                 <div class="row">
                   <div class="col-6 col-md-12 fw-bold">Tenure</div>
-                  <div class="col-6 col-md-12">{{tenure}} Years</div>
+                  <div class="col-6 col-md-12">{{ tenure }} Years</div>
                 </div>
               </div>
 
               <div class="col-md-6 mb-2">
                 <div class="row">
                   <div class="col-6 col-md-12 fw-bold">Remaining Lease</div>
-                  <div class="col-6 col-md-12">{{remainingLease}} Years</div>
+                  <div class="col-6 col-md-12">{{ remainingLease }} Years</div>
                 </div>
               </div>
 
               <div class="col-md-6 mb-2">
                 <div class="row">
                   <div class="col-6 col-md-12 fw-bold">Balcony</div>
-                  <div class="col-6 col-md-12">{{balcony}}</div>
+                  <div class="col-6 col-md-12">{{ balcony }}</div>
                 </div>
               </div>
 
               <div class="col-md-6">
                 <div class="row">
                   <div class="col-6 col-md-12 fw-bold">Listed On</div>
-                  <div class="col-6 col-md-12">{{dateOfEntry}}</div>
+                  <div class="col-6 col-md-12">{{ dateOfEntry }}</div>
                 </div>
               </div>
             </div>
@@ -456,19 +539,19 @@ h1 {
   align-items: center;
 }
 
-.property-header{
-  display:flex;
-  justify-content:space-between;
+.property-header {
+  display: flex;
+  justify-content: space-between;
 }
 
-.property-price{
+.property-price {
   font-size: 22px;
 }
 
-.property-title{
+.property-title {
   font-size: 25px;
   margin-bottom: auto;
-  margin-top:auto;  
+  margin-top: auto;
   text-align: center;
 }
 
@@ -482,7 +565,9 @@ h2 {
   background-color: transparent;
   border: 1px solid #f0f0f0;
   border-radius: 5px;
-  padding: 5px;
+  padding: 1px 5px;
+  display: flex;
+  align-items: center;
 }
 
 .favorite-btn-active {
@@ -491,6 +576,10 @@ h2 {
 
 .favorite-icon {
   width: 20px;
+}
+
+.favorite-qty {
+  color: white !important;
 }
 
 .overview__value {
@@ -522,14 +611,14 @@ h2 {
   border: none;
 }
 
-.modal-body #modal-property-title{
-  font-size:18px ;
+.modal-body #modal-property-title {
+  font-size: 18px;
   font-weight: bold;
 }
 
 .modal-body .listing-info {
-    font-size: 12px;
-  }
+  font-size: 12px;
+}
 
 .icon-text {
   font-size: 16px;
@@ -543,23 +632,24 @@ h2 {
   }
 
   h2 {
-  font-weight: bold;
-  font-size: 24px;
-  margin-bottom: 15px;
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 15px;
   }
 
-  .property-title{
-  font-size: 30px;
-  margin-bottom: auto;  
+  .property-title {
+    font-size: 30px;
+    margin-bottom: auto;
   }
 
-  .property-price{
-  font-size: 26px;
+  .property-price {
+    font-size: 26px;
   }
 
 }
 
-@media (max-width: 585px){
+@media (max-width: 585px) {
+
   /* div.property-info__container{
     width: 80%;
     margin:auto;
@@ -569,6 +659,7 @@ h2 {
     font-size: 15px;
     font-weight: 700;
   }
+
   .overview__value {
     font-size: 15px;
   }
@@ -578,8 +669,8 @@ h2 {
   }
 
   .modal-dialog {
-    width:80vw;
-    margin:auto;
+    width: 80vw;
+    margin: auto;
   }
 
   #modal-icons {
@@ -591,16 +682,17 @@ h2 {
     font-size: 13px;
   }
 
-  .modal-body .icon-container{
+  .modal-body .icon-container {
     margin-left: 1rem
   }
-  .modal-body .input-group{
+
+  .modal-body .input-group {
     justify-content: center;
   }
 
 
-  .modal-body #modal-property-title{
-    font-size:16px ;
+  .modal-body #modal-property-title {
+    font-size: 16px;
     display: flex;
     justify-content: center;
   }
@@ -609,5 +701,4 @@ h2 {
     font-size: 10px;
   }
 }
-
 </style>

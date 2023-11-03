@@ -293,8 +293,8 @@ function handleSubmit() {
             <label for="balcony" class="col-form-label fw-bold">Balcony:</label>
             <select class="form-select" id="balcony" required>
               <option value=""></option>
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
             </select>
             <div class="invalid-feedback">
               Field is required
