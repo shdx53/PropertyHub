@@ -20,6 +20,18 @@ const route = useRoute();
 const listingId = route.query.listingId;
 const listing = ref(null);
 const address = ref("");
+const listedPrice = ref(null);
+const about = ref("");
+const bedrooms = ref("");
+const bathrooms = ref ("");
+const balcony = ref ("");
+const floorSize= ref ("");
+const remainingLease = ref ("");
+const tenure = ref("");
+const type = ref ("");
+const dateOfEntry = ref ("");
+const level = ref ("");
+
 
 const db = getFirestore();
 const listingDocRef = doc(db, "listings", listingId);
@@ -27,6 +39,18 @@ const listingDocRef = doc(db, "listings", listingId);
 onSnapshot(listingDocRef, listing => {
   listing.value = listing.data();
   address.value = listing.value.address;
+  listedPrice.value = listing.value.listedPrice;
+  about.value = listing.value.about;
+  bedrooms.value = listing.value.bedrooms;
+  bathrooms.value = listing.value.bathrooms;
+  balcony.value = listing.value.balcony;
+  floorSize.value = listing.value.floorSize;
+  remainingLease.value = listing.value.remainingLease;
+  tenure.value = listing.value.tenure;
+  type.value = listing.value.type;
+  dateOfEntry.value = listing.value.dateOfEntry;
+  level.value = listing.value.level;
+
 });
 
 </script>
@@ -84,7 +108,7 @@ onSnapshot(listingDocRef, listing => {
             </button>
           </div>
 
-          <div class="property-price text-muted">$530,000</div>
+          <div class="property-price text-muted"> ${{ listedPrice }}</div>
 
           <div class="section-divider"></div>
 
@@ -94,7 +118,7 @@ onSnapshot(listingDocRef, listing => {
                 <div class="overview__description">Bedrooms</div>
                 <div class="d-flex justify-content-center">
                   <span class="material-symbols-outlined me-2">bed</span>
-                  <span class="overview__value">3</span>
+                  <span class="overview__value"> {{bedrooms}} </span>
                 </div>
               </div>
 
@@ -102,7 +126,7 @@ onSnapshot(listingDocRef, listing => {
                 <div class="overview__description">Bathrooms</div>
                 <div class="d-flex justify-content-center">
                   <span class="material-symbols-outlined me-2">bathtub</span>
-                  <span class="overview__value">2</span>
+                  <span class="overview__value"> {{bathrooms}} </span>
                 </div>
               </div>
 
@@ -111,7 +135,7 @@ onSnapshot(listingDocRef, listing => {
                 <div class="d-flex justify-content-center">
                   <span class="material-symbols-outlined me-2">crop_square</span>
                   <span class="overview__value">
-                    984 <span class="overview__unit">sqft</span>
+                    {{floorSize}} <span class="overview__unit">sqft</span>
                   </span>
                 </div>
               </div>
@@ -124,19 +148,7 @@ onSnapshot(listingDocRef, listing => {
             <div class="description-block">
               <h2>About the Property</h2>
               <p class="text">
-                Discover a remarkable opportunity with this newly listed property, offering a host of captivating
-                features that define luxury living:
-                <br>
-                -High Floor
-                <br>
-                -Two lifts
-                <br>
-                -Unblock view
-                <br>
-                -Modern Renovations
-                <br>
-                -Spacious Layout
-                <br>
+                {{about}}
               </p>
             </div>
           </section>
@@ -149,42 +161,42 @@ onSnapshot(listingDocRef, listing => {
               <div class="col-md-6 mb-2">
                 <div class="row">
                   <div class="col-6 col-md-12 fw-bold">Property Type</div>
-                  <div class="col-6 col-md-12">5-room HDB</div>
+                  <div class="col-6 col-md-12">{{type}}</div>
                 </div>
               </div>
 
               <div class="col-md-6 mb-2">
                 <div class="row">
                   <div class="col-6 col-md-12 fw-bold">Level</div>
-                  <div class="col-6 col-md-12">8</div>
+                  <div class="col-6 col-md-12">{{level}}</div>
                 </div>
               </div>
 
               <div class="col-md-6 mb-2">
                 <div class="row">
                   <div class="col-6 col-md-12 fw-bold">Tenure</div>
-                  <div class="col-6 col-md-12">99 Years</div>
+                  <div class="col-6 col-md-12">{{tenure}} Years</div>
                 </div>
               </div>
 
               <div class="col-md-6 mb-2">
                 <div class="row">
                   <div class="col-6 col-md-12 fw-bold">Remaining Lease</div>
-                  <div class="col-6 col-md-12">40 Years</div>
+                  <div class="col-6 col-md-12">{{remainingLease}} Years</div>
                 </div>
               </div>
 
               <div class="col-md-6 mb-2">
                 <div class="row">
                   <div class="col-6 col-md-12 fw-bold">Balcony</div>
-                  <div class="col-6 col-md-12">Yes</div>
+                  <div class="col-6 col-md-12">{{balcony}}</div>
                 </div>
               </div>
 
               <div class="col-md-6">
                 <div class="row">
                   <div class="col-6 col-md-12 fw-bold">Listed On</div>
-                  <div class="col-6 col-md-12">Date</div>
+                  <div class="col-6 col-md-12">{{dateOfEntry}}</div>
                 </div>
               </div>
             </div>
