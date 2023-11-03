@@ -65,7 +65,7 @@ function handleProfile(){
                 <button class="btn p-0 border-0" data-bs-toggle="collapse" href="#userCollpase" role="button" aria-expanded="false"
                   aria-controls="userCollapse">
                   <img class="nav__user-img rounded-circle me-3 me-md-1" src="https://source.unsplash.com/g0zwKn5vslI" />
-                  <span class="text-white fw-bold pe-0 me-3">Chason Jui</span>
+                  <span class="text-white fw-bold pe-0 me-3">{{}}</span>
                 </button>
 
                 <li class="nav-item">

@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
 
 import Filter from "../components/FIlter.vue";
+import { useRouter } from "vue-router";
 </script>
 <template>
   <Navbar />
@@ -113,7 +114,9 @@ import Filter from "../components/FIlter.vue";
       </div>
     </div>
   </div>
+  <div class="mt-auto">
   <Footer id="footer" />
+  </div>
 </template>
 
 <style>
@@ -138,7 +141,7 @@ import {
 // import { firebaseAuth } from "@/firebase";
 import { db, getCurrentUser } from "../firebase/index.js";
 import { loadStripe } from "@stripe/stripe-js";
-import { useRouter } from "vue-router";
+
 
 export default {
   data() {
@@ -168,6 +171,7 @@ export default {
       shownBalance: null,
       transactions: [],
       showing: false,
+
     };
   },
 
@@ -253,12 +257,10 @@ export default {
       });
     },
     async createSingleCheckout(price, credits) {
+
       this.isLoading = true;
       this.selectedPrice = price;
-      console.log(this.shownBalance);
-      console.log(credits);
       const temp_balance = this.shownBalance + parseInt(credits);
-      console.log(temp_balance);
       const collectionRef = collection(
         db,
         "customers",
@@ -289,8 +291,9 @@ export default {
           await updateDoc(balanceRef, {
             balance: temp_balance,
           });
-          const router = useRouter();
-          router.push(url);
+          // const router = useRouter();
+          // this.$router.push("/userprofile");
+          window.location.assign(url)
         }
       });
     },
