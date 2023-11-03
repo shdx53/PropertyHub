@@ -1,7 +1,7 @@
 <script setup>
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
-import GoogleMaps from "../components/ListingDetailsView/GoogleMaps.vue";
+import GoogleMaps from "../components/ListingView/GoogleMaps.vue";
 import { useRoute } from 'vue-router';
 import { ref } from "vue";
 import { getFirestore, collection, onSnapshot, doc } from "firebase/firestore";
