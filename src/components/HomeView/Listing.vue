@@ -115,7 +115,7 @@ const router = useRouter();
 function handleRedirect() {
   router
     .push({
-      path: "/listing-details",
+      path: "/listing",
       query: {
         listingId: props.listingId
       }
