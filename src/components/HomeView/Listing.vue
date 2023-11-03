@@ -45,7 +45,7 @@ if (props.imgPath) {
     .catch(err => console.log(err.message))
 }
 
-// // Handle favorite toggle
+// Handle favorite toggle
 let isFavorited = ref(null);
 let favoritedListings = ref([]);
 

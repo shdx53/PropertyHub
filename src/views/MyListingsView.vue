@@ -132,7 +132,7 @@ function handleDelete() {
 
 <style scoped>
 .container{
-  width: 80%;
+  width: 90%;
   max-width: 700px;
 }
 

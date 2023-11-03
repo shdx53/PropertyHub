@@ -7,7 +7,7 @@ import Filter from "../components/Filter.vue";
 import { ref, computed, watch } from "vue";
 import Autocomplete from "../components/Autocomplete.vue";
 import { getFirestore, collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+// import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useRoute, useRouter } from 'vue-router';
 
 let isDisplayFilter = ref(false);
@@ -125,12 +125,12 @@ function displayListings(query, listings) {
   buyListingsKey.value += 1;
 }
 
-// Rerender whenever user logs out
-const auth = getAuth();
+// // Rerender whenever user logs out
+// const auth = getAuth();
 
-onAuthStateChanged(auth, () => {
-  buyListingsKey.value += 1;
-})
+// onAuthStateChanged(auth, () => {
+//   buyListingsKey.value += 1;
+// })
 
 // Submit search
 const router = useRouter();

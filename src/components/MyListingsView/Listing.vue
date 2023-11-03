@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { getDownloadURL, getStorage, ref as storageRef } from "firebase/storage";
+import { useRouter } from "vue-router";
 let isFavorited = ref(false);
 
 const props = defineProps({
@@ -40,10 +41,22 @@ if (props.imgPath) {
     })
     .catch(err => console.log(err.message))
 }
+
+// Redirect to listing details
+const router = useRouter();
+function handleRedirect() {
+  router
+    .push({
+      path: "/listing",
+      query: {
+        listingId: props.listingId
+      }
+    })
+}
 </script>
 
 <template>
-  <div class="card">
+  <div class="card" @click="handleRedirect">
     <div class="row g-0">
       <div class="col-4">
         <img ref="img" class="card__img img-fluid rounded-start">
@@ -67,7 +80,7 @@ if (props.imgPath) {
           </div>
 
           <p class="card-text text-muted mb-0">${{ Number(listedPrice).toLocaleString() }}</p>
-          <hr class="text-black-50 my-3 my-sm-4 my-lg-3">
+          <hr class="text-black-50 my-2 my-sm-3 my-lg-3">
 
           <div class="d-flex">
             <div class="me-2 me-lg-3">
@@ -103,6 +116,7 @@ if (props.imgPath) {
 <style scoped>
 .card {
   margin-bottom: 20px;
+  cursor: pointer;
 }
 
 .card__img {
