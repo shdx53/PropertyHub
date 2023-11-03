@@ -128,7 +128,7 @@ function handleRedirect() {
     <img ref="img" class="card-img-top card__img">
     <div class="card-body">
       <div class="d-flex justify-content-between">
-        <h5 class="card-title fw-bold mb-1">{{ address }}</h5>
+        <h5 class="card-title fw-bold mb-1">{{  address }}</h5>
         <button @click="handleFavorite" class="card__favorite-btn" :class="{ 'card__favorite-btn-active': isFavorited }"
           :disabled="!isLoggedIn">
           <img class="card__favorite-icon me-1"
