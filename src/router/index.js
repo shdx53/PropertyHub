@@ -115,9 +115,9 @@ const router = createRouter({
       path: "/user-profile",
       name: "userprofile",
       component: () => import("../views/UserProfileView.vue"),
-      // meta: {
-      //   requiresAuth: true,
-      // },
+      meta: {
+        requiresAuth: true,
+      },
     },
   ],
 });
@@ -134,7 +134,7 @@ router.beforeEach((to, from, next) => {
       if (user) {
         next();
       } else {
-        next("/login");
+        next("/");
       }
     })
   } else {
