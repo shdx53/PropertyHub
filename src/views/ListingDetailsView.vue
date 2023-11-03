@@ -17,16 +17,17 @@ function handleFavorite() {
 
 // Fetch listing data
 const route = useRoute();
-const listingId = route.query.listingId;
+// const listingId = route.query.listingId; 
+// hardcoding listingId for testing purposes
+const listingId = 'OZBZ1VvgPl0EjekMceSC'
 const listing = ref(null);
-const address = ref("");
 
 const db = getFirestore();
 const listingDocRef = doc(db, "listings", listingId);
 
-onSnapshot(listingDocRef, listing => {
-  listing.value = listing.data();
-  address.value = listing.value.address;
+onSnapshot(listingDocRef, (doc) => {
+  // listing.value = listing.data();
+  listing.value = doc.data()
 });
 
 </script>
@@ -78,13 +79,13 @@ onSnapshot(listingDocRef, listing => {
       <div>
         <div class="property-overview-row">
           <div class="property-header">
-            <h2 class="property-title">{{ address }}</h2>
+            <h2 class="property-title">{{ listing.address }}</h2>
             <button @click="handleFavorite" class="favorite-btn" :class="{ 'favorite-btn-active': isFavorited }">
               <img class="favorite-icon" src="../assets/img/Listings/favorite_FILL1_wght400_GRAD0_opsz24.png">
             </button>
           </div>
 
-          <div class="property-price text-muted">$530,000</div>
+          <div class="property-price text-muted">{{ listing.listedPrice }}</div>
 
           <div class="section-divider"></div>
 
@@ -94,7 +95,7 @@ onSnapshot(listingDocRef, listing => {
                 <div class="overview__description">Bedrooms</div>
                 <div class="d-flex justify-content-center">
                   <span class="material-symbols-outlined me-2">bed</span>
-                  <span class="overview__value">3</span>
+                  <span class="overview__value">{{ listing.bedrooms }}</span>
                 </div>
               </div>
 
@@ -102,7 +103,7 @@ onSnapshot(listingDocRef, listing => {
                 <div class="overview__description">Bathrooms</div>
                 <div class="d-flex justify-content-center">
                   <span class="material-symbols-outlined me-2">bathtub</span>
-                  <span class="overview__value">2</span>
+                  <span class="overview__value">{{ listing.bathrooms }}</span>
                 </div>
               </div>
 
@@ -111,7 +112,7 @@ onSnapshot(listingDocRef, listing => {
                 <div class="d-flex justify-content-center">
                   <span class="material-symbols-outlined me-2">crop_square</span>
                   <span class="overview__value">
-                    984 <span class="overview__unit">sqft</span>
+                    {{ listing.floorSize }} <span class="overview__unit">sqft</span>
                   </span>
                 </div>
               </div>
@@ -124,8 +125,8 @@ onSnapshot(listingDocRef, listing => {
             <div class="description-block">
               <h2>About the Property</h2>
               <p class="text">
-                Discover a remarkable opportunity with this newly listed property, offering a host of captivating
-                features that define luxury living:
+                {{ listing.about }}
+                <!-- not too sure about hyphens below -->
                 <br>
                 -High Floor
                 <br>
@@ -149,42 +150,42 @@ onSnapshot(listingDocRef, listing => {
               <div class="col-md-6 mb-2">
                 <div class="row">
                   <div class="col-6 col-md-12 fw-bold">Property Type</div>
-                  <div class="col-6 col-md-12">5-room HDB</div>
+                  <div class="col-6 col-md-12">{{ listing.type }}</div>
                 </div>
               </div>
 
               <div class="col-md-6 mb-2">
                 <div class="row">
                   <div class="col-6 col-md-12 fw-bold">Level</div>
-                  <div class="col-6 col-md-12">8</div>
+                  <div class="col-6 col-md-12">{{ listing.level }}</div>
                 </div>
               </div>
 
               <div class="col-md-6 mb-2">
                 <div class="row">
                   <div class="col-6 col-md-12 fw-bold">Tenure</div>
-                  <div class="col-6 col-md-12">99 Years</div>
+                  <div class="col-6 col-md-12">{{ listing.tenure }} Years</div>
                 </div>
               </div>
 
               <div class="col-md-6 mb-2">
                 <div class="row">
                   <div class="col-6 col-md-12 fw-bold">Remaining Lease</div>
-                  <div class="col-6 col-md-12">40 Years</div>
+                  <div class="col-6 col-md-12">{{ listing.remainingLease }} Years</div>
                 </div>
               </div>
 
               <div class="col-md-6 mb-2">
                 <div class="row">
                   <div class="col-6 col-md-12 fw-bold">Balcony</div>
-                  <div class="col-6 col-md-12">Yes</div>
+                  <div class="col-6 col-md-12">{{ listing.balcony }}</div>
                 </div>
               </div>
 
               <div class="col-md-6">
                 <div class="row">
                   <div class="col-6 col-md-12 fw-bold">Listed On</div>
-                  <div class="col-6 col-md-12">Date</div>
+                  <div class="col-6 col-md-12">{{ listing.dateOfEntry.toDate() }}</div>
                 </div>
               </div>
             </div>
@@ -212,7 +213,7 @@ onSnapshot(listingDocRef, listing => {
             </div>
             <div class="col-8 d-flex flex-column justify-content-around align-items-start">
               <div class="fw-bold fs-4">
-                Chason Jui
+                {{ listing.userId }}
               </div>
               <div>
                 {User ID}
