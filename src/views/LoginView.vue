@@ -156,7 +156,7 @@ const handleRegi = () => {
   router.push("/register");
 };
 const forgotPassword = () => {
-  router.push("/forgotpassword");
+  router.push("/forgot-password");
 };
 
 const signIn = () => {

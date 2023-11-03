@@ -27,8 +27,8 @@ async function getName(email) {
 
       if (docSnap.exists()) {
         name.value = docSnap.data().name;
-        console.log(docSnap.data().name)
-        console.log(name);
+        // console.log(docSnap.data().name)
+        // console.log(name);
       } else {
         console.log("No such document!");
       }
@@ -36,7 +36,7 @@ async function getName(email) {
 getCurrentUser()
         .then((user) => {
           if (user) {
-            console.log(user)
+            // console.log(user)
             // user.value = user;
             getName(user.email);
 
@@ -65,19 +65,19 @@ function handleUserToggle() {
 }
 
 function handleLogout() {
-  signOut(auth)
+  signOut(auth);
+  router.go();
 }
 
-function handleProfile(){
-  router.push("/userprofile");
-
-}
+// function handleProfile(){
+//   router.push("/userprofile");
+// }
 </script>
 
 <template>
   <nav class="navbar navbar-expand-md sticky-top bg-black">
     <div class="container-fluid general__container px-0">
-      <a class="navbar-brand" href="./home">
+      <a class="navbar-brand" href="./">
         <b>Property</b>Hub
       </a>
 
@@ -105,12 +105,11 @@ function handleProfile(){
               <div class="d-flex justify-content-between">
                 <button class="btn p-0 border-0" data-bs-toggle="collapse" href="#userCollpase" role="button" aria-expanded="false"
                   aria-controls="userCollapse">
-                  <img class="nav__user-img rounded-circle me-3 me-md-1" src="https://source.unsplash.com/g0zwKn5vslI" />
                   <span class="text-white fw-bold pe-0 me-3">{{name}}</span>
                 </button>
 
                 <li class="nav-item">
-                  <a @click="handleLogout" class="nav-link" href="#">
+                  <a @click="handleLogout" class="nav-link">
                     <img class="nav__logout-icon" src="https://i.postimg.cc/d32r1k4G/logout.png" />
                   </a>
                 </li>
@@ -118,45 +117,43 @@ function handleProfile(){
 
               <div class="collapse mt-2" id="userCollpase">
                 <li class="nav-item">
-                  <a href="#" class="nav-link">Profile</a>
+                  <a href="/user-profile" class="nav-link">Profile</a>
                 </li>
                 <li class="nav-item">
-                  <a href="#" class="nav-link">Listings</a>
+                  <a href="/my-listings" class="nav-link">Listings</a>
                 </li>
                 <li class="nav-item">
-                  <a href="#" class="nav-link">Favorites</a>
+                  <a href="/liked-listings" class="nav-link">Likes</a>
                 </li>
               </div>
             </div>
 
             <div v-if="isLoggedIn && !isAuthLoading" class="nav-item user__container d-none d-md-block">
-              <button @click="handleUserToggle" class="btn p-0" type="button">
-                <img class="nav__user-img rounded-circle" src="https://source.unsplash.com/g0zwKn5vslI" />
+              <button @click="handleUserToggle" class="btn p-0 border-0 text-white" type="button">
+                {{ name }}
               </button>
 
               <div v-if="isUserExpanded" class="user__collapse p-3">
                 <div class="d-flex justify-content-between align-items-center">
                   <button class="btn p-0 border-0" data-bs-toggle="collapse" href="#userCollpase" role="button"
                     aria-expanded="false" aria-controls="userCollapse">
-                    <img class="nav__user-img--collapse rounded-circle me-3"
-                      src="https://source.unsplash.com/g0zwKn5vslI" />
                     <span class="user__name text-black fw-bold pe-0">{{name}}</span>
                   </button>
 
-                  <a @click="handleLogout" href="#">
+                  <a @click="handleLogout">
                     <img class="nav__logout-icon" src="https://i.postimg.cc/RCDTbKnb/logout2.png" />
                   </a>
                 </div>
 
                 <div class="collapse mt-2" id="userCollpase">
                   <li class="nav-item">
-                    <a @click="handleProfile" class="nav-link user-collapse__item text-black">Profile</a>
+                    <a href="/user-profile" class="nav-link user-collapse__item text-black px-0">Profile</a>
                   </li>
                   <li class="nav-item">
-                    <a href="#" class="nav-link user-collapse__item text-black">Listings</a>
+                    <a href="/my-listings" class="nav-link user-collapse__item text-black px-0">Listings</a>
                   </li>
                   <li class="nav-item">
-                    <a href="#" class="nav-link user-collapse__item text-black">Favorites</a>
+                    <a href="/liked-listings" class="nav-link user-collapse__item text-black px-0">Likes</a>
                   </li>
                 </div>
               </div>
@@ -207,6 +204,7 @@ function handleProfile(){
   width: 26px;
   height: 26px;
   transition: opacity 0.2s ease;
+  cursor: pointer;
 }
 
 .nav__logout-icon:hover {
@@ -229,7 +227,7 @@ function handleProfile(){
 
 .user__collapse {
   position: absolute;
-  top: 52px;
+  top: 46px;
   right: 0;
   width: 200px;
   background-color: #f0f0f0;
@@ -243,7 +241,7 @@ function handleProfile(){
 }
 
 .user__name {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .user-collapse__item:hover {
@@ -267,7 +265,7 @@ function handleProfile(){
 
 @media (min-width: 992px) and (min-height: 900px) {
   .user__collapse {
-    width: 210px;
+    width: 200px;
   }
 
   .user-collapse__item,

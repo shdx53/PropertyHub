@@ -1,9 +1,8 @@
 <script setup>
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
-import GoogleMaps from "../components/ListingDetailsView/GoogleMaps.vue";
-import ViewPurchase from "../components/OwnListings/ViewPurchase.vue";
-
+import GoogleMaps from "../components/ListingView/GoogleMaps.vue";
+import ViewPurchase from "../components/OwnListingsView/ViewPurchase.vue";
 
 import { ref } from "vue";
 let isFavorited = ref(false);

@@ -8,7 +8,7 @@ import { useRouter } from "vue-router";
 </script>
 <template>
   <Navbar />
-  <div class="mx-4">
+  <div class="general__container">
     <div class="card mt-4 mb-4">
       <h5 class="card-header">Your Balance({{ email }})</h5>
       <div class="card-body">
@@ -120,8 +120,7 @@ import { useRouter } from "vue-router";
 </template>
 
 <style>
-#footer {
-}
+
 </style>
 
 <script>

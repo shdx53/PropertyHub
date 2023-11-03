@@ -1,10 +1,5 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
-import SellView from "../views/SellView.vue";
-import BuyView from "../views/BuyView.vue";
-import ListingDetails from "../views/ListingDetailsView.vue";
-import ListingDetailsViewVue from "../views/ListingDetailsView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,29 +17,29 @@ const router = createRouter({
     {
       path: "/buy",
       name: "buy",
-      component: BuyView,
+      component: () => import("../views/BuyView.vue"),
     },
     {
-      path: "/listing-details",
+      path: "/listing",
       name: "listing-listings",
-      component: ListingDetails,
+      component: () => import("../views/ListingView.vue"),
     },
     {
       path: "/sell",
       name: "sell",
-      component: SellView,
+      component: () => import("../views/SellView.vue"),
     },
-    {
-      path: "/about",
-      name: "about",
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import("../views/AboutView.vue"),
-      meta: {
-        requiresAuth: true,
-      },
-    },
+    // {
+    //   path: "/about",
+    //   name: "about",
+    //   // route level code-splitting
+    //   // this generates a separate chunk (About.[hash].js) for this route
+    //   // which is lazy-loaded when the route is visited.
+    //   component: () => import("../views/AboutView.vue"),
+    //   meta: {
+    //     requiresAuth: true,
+    //   },
+    // },
     {
       path: "/login",
       name: "login",
@@ -62,51 +57,51 @@ const router = createRouter({
       component: () => import("../views/RegisterView.vue"),
     },
     {
-      path: "/forgotpassword",
+      path: "/forgot-password",
       name: "forgotpassword",
-      component: () => import("../views/ForgotPassword.vue"),
+      component: () => import("../views/ForgotPasswordView.vue"),
     },
     {
-      path: "/resetsuccess",
+      path: "/reset-success",
       name: "resetsuccess",
-      component: () => import("../views/ResetSuccess.vue"),
+      component: () => import("../views/ResetSuccessView.vue"),
     },
     {
-      path: "/likedlistings",
+      path: "/liked-listings",
       name: "likedlistings",
-      component: () => import("../views/LikedListings.vue"),
+      component: () => import("../views/LikedListingsView.vue"),
       meta: {
         requiresAuth: true,
       },
     },
     {
-      path: "/createlistingpage",
+      path: "/my-listings",
       name: "createlistingpage",
-      component: () => import("../views/CreateListingPage.vue"),
+      component: () => import("../views/MyListingsView.vue"),
       meta: {
         requiresAuth: true,
       },
     },
     {
-      path: "/createlisting",
+      path: "/create-listing",
       name: "createlisting",
-      component: () => import("../views/CreateListing.vue"),
+      component: () => import("../views/CreateListingView.vue"),
       meta: {
         requiresAuth: true,
       },
     },
     {
-      path: "/ownlistings",
+      path: "/own-listings",
       name: "ownlistings",
-      component: () => import("../views/OwnListings.vue"),
+      component: () => import("../views/OwnListingsView.vue"),
       meta: {
         requiresAuth: true,
       },
     },
     {
-      path: "/editlisting",
+      path: "/edit-listing",
       name: "editlisting",
-      component: () => import("../views/EditListing.vue"),
+      component: () => import("../views/EditListingView.vue"),
       meta: {
         requiresAuth: true,
       },
@@ -117,7 +112,7 @@ const router = createRouter({
     //   component: () => import("../views/brokenUserProfileView.vue"),
     // },
     {
-      path: "/userProfile",
+      path: "/user-profile",
       name: "userprofile",
       component: () => import("../views/UserProfileView.vue"),
       // meta: {

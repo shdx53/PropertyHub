@@ -7,7 +7,7 @@ import Filter from "../components/Filter.vue";
 import { ref, computed, watch } from "vue";
 import Autocomplete from "../components/Autocomplete.vue";
 import { getFirestore, collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+// import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useRoute, useRouter } from 'vue-router';
 
 let isDisplayFilter = ref(false);
@@ -125,15 +125,16 @@ function displayListings(query, listings) {
   buyListingsKey.value += 1;
 }
 
-// Rerender whenever user logs out
-const auth = getAuth();
+// // Rerender whenever user logs out
+// const auth = getAuth();
 
-onAuthStateChanged(auth, () => {
-  buyListingsKey.value += 1;
-})
+// onAuthStateChanged(auth, () => {
+//   buyListingsKey.value += 1;
+// })
 
 // Submit search
 const router = useRouter();
+const hasFilter = ref(false);
 const isSearch = ref(false);
 function handleInputChange(value) {
   addressInput.value = value;
@@ -144,6 +145,7 @@ function handleFilterResults(value) {
   filterTowns.value = value.towns;
   filterPrice.value = value.price;
   filterBedrooms.value = value.bedrooms;
+  hasFilter.value = true;
 }
 
 function handleSubmit() {
@@ -200,7 +202,7 @@ displayListings(listingsQuery, listings);
         <div class="input-group">
           <Autocomplete @inputChange="handleInputChange" />
 
-          <button @click="displayFilter" class="btn header__filter-btn" type="button">
+          <button @click="displayFilter" class="btn header__filter-btn" type="button" :class="{ 'header__filter-btn--active' : hasFilter }">
             <span class="material-symbols-outlined">tune</span>
           </button>
         </div>
@@ -300,6 +302,10 @@ displayListings(listingsQuery, listings);
   background-color: #f0f0f0;
 }
 
+.header__filter-btn--active {
+  background-color: #22bf76;
+}
+
 .header__filter-btn:hover {
   background-color: lightgray;
 }
@@ -365,7 +371,7 @@ a {
 
 @media (min-width: 992px) {
   .general__container {
-    height: calc(100vh - 68px - 84px);
+    height: calc(100vh - 65px - 84px);
   }
 
   .search__container {

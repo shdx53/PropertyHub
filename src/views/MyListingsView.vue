@@ -1,7 +1,7 @@
 <script setup>
 import Footer from "../components/Footer.vue";
 import Navbar from "../components/Navbar.vue";
-import Listing from "../components/CreateListing/Listing.vue";
+import Listing from "../components/MyListingsView/Listing.vue";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -10,7 +10,7 @@ import { getStorage, deleteObject, ref as storageRef } from "firebase/storage";
 import { query, where } from "firebase/firestore";
 const router = useRouter();
 const createlisting = () => {
-  router.push("/createlisting");
+  router.push("/create-listing");
 };
 
 const db = getFirestore();
@@ -132,12 +132,12 @@ function handleDelete() {
 
 <style scoped>
 .container{
-  width: 80%;
+  width: 90%;
   max-width: 700px;
 }
 
 .container--without-listings {
-  height: calc(100vh - 68px - 84px);
+  height: calc(100vh - 68px - 81px);
 }
 
 .createbtn:hover{

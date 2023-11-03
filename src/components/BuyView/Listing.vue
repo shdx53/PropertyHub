@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { getAuth } from "firebase/auth";
 import { doc, getFirestore, updateDoc, collection, getDoc, arrayUnion, onSnapshot } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref as storageRef } from "firebase/storage";
+import { useRouter } from "vue-router";
 
 const props = defineProps({
   listingId: String,
@@ -44,7 +45,7 @@ if (props.imgPath) {
     .catch(err => console.log(err.message))
 }
 
-// // Handle favorite toggle
+// Handle favorite toggle
 let isFavorited = ref(null);
 let favoritedListings = ref([]);
 
@@ -107,10 +108,22 @@ function handleFavorite() {
     }
   }
 }
+
+// Redirect to listing details
+const router = useRouter();
+function handleRedirect() {
+  router
+    .push({
+      path: "/listing",
+      query: {
+        listingId: props.listingId
+      }
+    })
+}
 </script>
 
 <template>
-  <div class="card">
+  <div class="card" @click="handleRedirect">
     <div class="row g-0">
       <div class="col-4">
         <img :src="imgSrc" class="card__img img-fluid rounded-start">
@@ -167,6 +180,7 @@ function handleFavorite() {
 <style scoped>
 .card {
   margin-bottom: 20px;
+  cursor: pointer;
 }
 
 .card__img {
