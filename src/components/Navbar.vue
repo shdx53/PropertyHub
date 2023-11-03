@@ -27,8 +27,8 @@ async function getName(email) {
 
       if (docSnap.exists()) {
         name.value = docSnap.data().name;
-        console.log(docSnap.data().name)
-        console.log(name);
+        // console.log(docSnap.data().name)
+        // console.log(name);
       } else {
         console.log("No such document!");
       }
@@ -36,7 +36,7 @@ async function getName(email) {
 getCurrentUser()
         .then((user) => {
           if (user) {
-            console.log(user)
+            // console.log(user)
             // user.value = user;
             getName(user.email);
 
