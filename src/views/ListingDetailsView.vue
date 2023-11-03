@@ -15,20 +15,28 @@ function handleFavorite() {
   isFavorited.value = !isFavorited.value;
 }
 
-// Fetch listing data
+// Fetch listing data from listings
 const route = useRoute();
-// const listingId = route.query.listingId; 
-// hardcoding listingId for testing purposes
-const listingId = 'OZBZ1VvgPl0EjekMceSC'
+const listingId = route.query.listingId; 
 const listing = ref(null);
+const timeslots = ref([])
 
 const db = getFirestore();
 const listingDocRef = doc(db, "listings", listingId);
-
 onSnapshot(listingDocRef, (doc) => {
-  // listing.value = listing.data();
   listing.value = doc.data()
+  timeslots.value = listing.value.viewingDates 
+  // console.log(timeslots.value)
 });
+
+
+const balanceEmail = "chasonjui@gmail.com"
+const balance = ref(null);
+const balanceDocRef = doc(db, "balance", balanceEmail)
+onSnapshot(balanceDocRef, (doc) => {
+  balance.value = doc.data()
+});
+
 
 </script>
 
@@ -85,7 +93,7 @@ onSnapshot(listingDocRef, (doc) => {
             </button>
           </div>
 
-          <div class="property-price text-muted">{{ listing.listedPrice }}</div>
+          <div class="property-price text-muted">${{ listing.listedPrice }}</div>
 
           <div class="section-divider"></div>
 
@@ -212,14 +220,14 @@ onSnapshot(listingDocRef, (doc) => {
                 src="https://source.unsplash.com/g0zwKn5vslI" width="90" height="90" />
             </div>
             <div class="col-8 d-flex flex-column justify-content-around align-items-start">
-              <div class="fw-bold fs-4">
-                {{ listing.userId }}
+              <div v-if="balance" class="fw-bold fs-4">
+                {{ balance.name }}
               </div>
               <div>
-                {User ID}
+                {{ balance.email }}
               </div>
               <div>
-                {Phone Number}
+                {{ balance.phone }}
               </div>
             </div>
           </div>
@@ -276,14 +284,14 @@ onSnapshot(listingDocRef, (doc) => {
               <div class="col-8 text-center">
                 <div class="text-start d-flex flex-column justify-content-between h-100">
                   <div>
-                    <span id="modal-property-title">220B Bedok Central</span>
+                    <span id="modal-property-title">{{ listing.address }}</span>
 
                     <!-- icons -->
                     <div id="modal-icons" class="d-flex mt-2">
                       <div class="me-3 icon-container">
                         <div class="d-flex align-items-center">
                           <span class="material-symbols-outlined me-2" style="font-size:24px">bed</span>
-                          <div class="icon-text">3</div>
+                          <div class="icon-text">{{ listing.bedrooms }}</div>
                         </div>
                         <div class="listing-info text-muted">Bedrooms</div>
                       </div>
@@ -291,7 +299,7 @@ onSnapshot(listingDocRef, (doc) => {
                       <div class="me-3 icon-container">
                         <div class="d-flex align-items-center">
                           <span class="material-symbols-outlined me-2" style="font-size:24px">bathtub</span>
-                          <div class="icon-text">2</div>
+                          <div class="icon-text">{{ listing.bathrooms }}</div>
                         </div>
                         <div class="listing-info text-muted">Bathrooms</div>
                       </div>
@@ -299,7 +307,7 @@ onSnapshot(listingDocRef, (doc) => {
                       <div>
                         <div class="d-flex align-items-center">
                           <span class="material-symbols-outlined me-2" style="font-size:24px">crop_square</span>
-                          <div class="icon-text">984 sqft</div>
+                          <div class="icon-text">{{ listing.floorSize }} sqft</div>
                         </div>
                         <div class="listing-info text-muted">Living Area</div>
                       </div>
@@ -307,13 +315,17 @@ onSnapshot(listingDocRef, (doc) => {
                   </div>
 
                   <!-- Form for TimeSlot -->
-                  <select class="form-select" aria-label="Default select example">
-                    <option selected>Timeslots</option>
-                    <option value="1" disabled>5th October, 10am - $100</option>
-                    <option value="2">6th October, 10am - $90</option>
+                  <select class="form-select" v-model="selectedOption" aria-label="Default select example">
+                    <option disabled value="">Timeslots</option>
+                    <option v-for="(option,index) in timeslots.value" :key="index" :value="option.value">
+                      {{ console.log(option.label)}}
+                    </option>
+                    <!-- <option value="1" disabled>5th October, 10am - $100</option>
+                    <option value="2">6th October, 10am - $100</option>
                     <option value="3">7th October, 10am - $80</option>
                     <option value="2">8th October, 10am - $70</option>
-                    <option value="3">9th October, 10am - $60</option>
+                    <option value="3">9th October, 10am - $60</option> -->
+
                   </select>
                 </div>
               </div>
