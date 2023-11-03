@@ -63,16 +63,40 @@ onAuthStateChanged(auth, () => {
 
 // Submit search
 const router = useRouter();
-let addressInput = ref("");
+const addressInput = ref("");
+const filterTowns = ref([]);
+const filterPrice = ref(null);
+const filterBedrooms = ref(null);
+const hasFilter = ref(false);
+
 function handleSubmit() {
-  router.push({
-    path: "/buy",
-    query: { addressInput: addressInput.value }
-  })
+  // router.push({
+  //   path: "/buy",
+  //   query: { addressInput: addressInput.value }
+  // })
+  router
+    .push({
+      path: "/buy",
+      query: {
+        addressInput: addressInput.value,
+        filterTowns: filterTowns.value,
+        filterPrice: filterPrice.value,
+        filterBedrooms: filterBedrooms.value,
+      }
+    })
 }
 
 function handleInputChange(value) {
   addressInput.value = value;
+}
+
+function handleFilterResults(value) {
+  filterTowns.value = value.towns;
+  filterPrice.value = value.price;
+  filterBedrooms.value = value.bedrooms;
+  if (filterTowns.value.length > 0 || filterPrice.value || filterBedrooms.value) {
+    hasFilter.value = true;
+  }
 }
 </script>
 
@@ -94,7 +118,7 @@ function handleInputChange(value) {
             <div class="input-group">
               <Autocomplete @inputChange="handleInputChange" />
 
-              <button @click="displayFilter" class="btn header__filter-btn" type="button">
+              <button @click="displayFilter" class="btn header__filter-btn" type="button" :class="{ 'header__filter-btn--active' : hasFilter }">
                 <span class="material-symbols-outlined">tune</span>
               </button>
             </div>
@@ -121,7 +145,8 @@ function handleInputChange(value) {
           <Listing></Listing>
         </div> -->
 
-        <div v-for="recentListing in recentListings" :key="recentListingsKey" class="col-12 mb-4 col-lg-4">
+        <div v-for="recentListing in recentListings" :key="recentListingsKey" class="col-12 mb-4 col-lg-4"
+          @click="individualListing">
           <Listing :listingId="recentListing[0]" :address="recentListing[1].address"
             :listedPrice="recentListing[1].listedPrice" :bedrooms="recentListing[1].bedrooms"
             :bathrooms="recentListing[1].bathrooms" :floorSize="recentListing[1].floorSize"
@@ -141,7 +166,8 @@ function handleInputChange(value) {
       </div>
 
       <div class="row">
-        <div v-for="popularListing in popularListings" :key="popularListingsKey" class="col-12 mb-4 col-lg-4">
+        <div v-for="popularListing in popularListings" :key="popularListingsKey" class="col-12 mb-4 col-lg-4"
+          @click="individualListing">
           <Listing :listingId="popularListing[0]" :address="popularListing[1].address"
             :listedPrice="popularListing[1].listedPrice" :bedrooms="popularListing[1].bedrooms"
             :bathrooms="popularListing[1].bathrooms" :floorSize="popularListing[1].floorSize"
@@ -155,7 +181,7 @@ function handleInputChange(value) {
 
   <!-- Filter Overlay -->
   <section v-if="isDisplayFilter" class="filter-overlay">
-    <Filter :isDisplayFilter="isDisplayFilter" :displayFilter="displayFilter" />
+    <Filter :isDisplayFilter="isDisplayFilter" :displayFilter="displayFilter" @getFilterResults="handleFilterResults" />
   </section>
 
   <!-- Footer -->
@@ -190,6 +216,10 @@ header::before {
 
 .header__filter-btn {
   background-color: #f0f0f0;
+}
+
+.header__filter-btn--active {
+  background-color: #22bf76;
 }
 
 .header__filter-btn:hover {

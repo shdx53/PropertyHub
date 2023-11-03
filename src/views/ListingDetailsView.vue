@@ -2,8 +2,12 @@
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
 import GoogleMaps from "../components/ListingDetailsView/GoogleMaps.vue";
-
+import { useRoute } from 'vue-router';
 import { ref } from "vue";
+import { getFirestore, collection, onSnapshot } from "firebase/firestore";
+import { getStorage, ref as storageRef } from "firebase/storage";
+import { query, where } from "firebase/firestore";
+
 let isFavorited = ref(false);
 
 function handleFavorite() {
@@ -11,43 +15,29 @@ function handleFavorite() {
   isFavorited.value = !isFavorited.value;
 }
 
-// firebase 
-// import { getAuth, onAuthStateChanged } from "firebase/auth";
-// import { doc, getDoc } from "firebase/firestore";
-// import {db,getCurrentUser}  from "../firebase/index.js";
+// Fetch listing data
+const route = useRoute();
+const listingId = route.query.listingId;
+const listing = ref(null);
 
-// const auth = getAuth();
-// var shownBalance = ref(null);
-// var email = ref(null);
-// async function getBalance(email) {
-//   const docRef = doc(db, "balance", email);
-//   const docSnap = await getDoc(docRef);
+const db = getFirestore();
+const listingsColRef = collection(db, "listings");
+const listingQuery = query(listingsColRef, where("listingId", "==", listingId));
 
-//   if (docSnap.exists()) {
-//     console.log("Document data:", docSnap.data());
-//     console.log(docSnap.data().balance);
-//     shownBalance.value = docSnap.data().balance;
-//   } else {
-//     // docSnap.data() will be undefined in this case
-//     console.log("No such document!");
-//   }
+function displayListings(query, listings) {
+  onSnapshot(query, snapshot => {
+    listings.value = [];
+    console.log(snapshot.docs)
+    snapshot.docs.forEach(listing => {
+      listings.value.push([listing.id, listing.data()]);
+    })
+    console.log(listings.value)
+  })
+}
 
-
-// }
-
-// getCurrentUser()
-//   .then(user => {
-//     if (user) {
-//       email.value = user.email;
-// //     // console.log(email.value);
-//     getBalance(email.value);
-//     } else {
-//       console.log("No user is currently logged in.");
-//     }
-//   })
-//   .catch(error => {
-//     console.error("Error getting current user:", error);
-//   });
+onSnapshot(listingsColRef, snapshot => {
+  displayListings(listingQuery, listing);
+});
 
 </script>
 

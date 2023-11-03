@@ -25,9 +25,7 @@ const currentuserListingsQuery = ref({});
 onAuthStateChanged(auth, user => {
   if (user) {
     userId.value = user.uid;
-    currentuserListingsQuery.value = query(listingsColRef, where("userId", "==", userId.value), orderBy("dateOfEntry", "desc"));
-  } else {
-    router.push("/home");
+    currentuserListingsQuery.value = query(listingsColRef, where("userId", "==", userId.value));
   }
 })
 
@@ -70,7 +68,7 @@ function handleDelete() {
 
 <template>
     <Navbar/>
-    <div class="container mx-auto py-5" :class="{ 'container--without-listings' : userListings.length == 0 }">
+    <div class="container mx-auto py-5" :class="{ 'container--without-listings' : userListings.length < 3 }">
         <div class="d-flex justify-content-between">
             <h2 class="mb-4 fw-bold">My Listings</h2>
             <button @click="createlisting" type="button" class="mb-4 btn btn-primary createbtn">Create Listing</button>
@@ -134,8 +132,8 @@ function handleDelete() {
 
 <style scoped>
 .container{
-    width: 80%;
-    max-width: 700px;
+  width: 80%;
+  max-width: 700px;
 }
 
 .container--without-listings {

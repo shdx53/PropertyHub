@@ -1,9 +1,10 @@
-import { getAuth } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import SellView from "../views/SellView.vue";
 import BuyView from "../views/BuyView.vue";
 import ListingDetails from "../views/ListingDetailsView.vue";
+import ListingDetailsViewVue from "../views/ListingDetailsView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -17,33 +18,21 @@ const router = createRouter({
       path: "/home",
       name: "home",
       component: HomeView,
-      meta: {
-        requiresAuth: true,
-      },
     },
     {
       path: "/buy",
       name: "buy",
       component: BuyView,
-      meta: {
-        requiresAuth: true,
-      },
     },
     {
       path: "/listing-details",
       name: "listing-listings",
       component: ListingDetails,
-      meta: {
-        requiresAuth: true,
-      },
     },
     {
       path: "/sell",
       name: "sell",
       component: SellView,
-      meta: {
-        requiresAuth: true,
-      },
     },
     {
       path: "/about",
@@ -140,12 +129,19 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (getAuth().currentUser) {
-      next();
-    } else {
-      alert("you dont have access!");
-      next("/login");
-    }
+    // if (getAuth().currentUser) {
+    //   next();
+    // } else {
+    //   alert("you dont have access!");
+    //   next("/login");
+    // }
+    onAuthStateChanged(getAuth(), user => {
+      if (user) {
+        next();
+      } else {
+        next("/login");
+      }
+    })
   } else {
     next();
   }

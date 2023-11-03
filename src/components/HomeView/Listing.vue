@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { getAuth } from "firebase/auth";
 import { doc, getFirestore, updateDoc, collection, getDoc, arrayUnion, onSnapshot } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref as storageRef } from "firebase/storage";
+import { useRouter } from "vue-router";
 
 const props = defineProps({
   listingId: String,
@@ -48,7 +49,6 @@ if (props.imgPath) {
 let isFavorited = ref(null);
 let favoritedListings = ref([]);
 
-
 const customersColRef = collection(db, "customers");
 
 updateFavorites();
@@ -77,6 +77,7 @@ function updateFavorites() {
 
 function handleFavorite() {
   event.preventDefault();
+  event.stopPropagation();
   const listingsDocRef = doc(db, "listings", props.listingId);
 
   if (isFavorited.value) {
@@ -108,63 +109,74 @@ function handleFavorite() {
     }
   }
 }
+
+// Redirect to listing details
+const router = useRouter();
+function handleRedirect() {
+  router
+    .push({
+      path: "/listing-details",
+      query: {
+        listingId: props.listingId
+      }
+    })
+}
 </script>
 
 <template>
-  <a href="#">
-    <div class="card">
-      <img ref="img" class="card-img-top card__img">
-      <div class="card-body">
-        <div class="d-flex justify-content-between">
-          <h5 class="card-title fw-bold mb-1">{{ address }}</h5>
-          <button @click="handleFavorite" class="card__favorite-btn" :class="{ 'card__favorite-btn-active': isFavorited }"
-            :disabled="!isLoggedIn">
-            <img class="card__favorite-icon me-1" src="https://i.postimg.cc/7YTKqFY1/favorite-FILL1-wght400-GRAD0-opsz24.png">
-            <span class="text-body-tertiary fw-bold" :class="{ 'card__favorite-qty': isFavorited }">{{
-              favoriteCounts
-            }}</span>
-          </button>
+  <div class="card" @click="handleRedirect">
+    <img ref="img" class="card-img-top card__img">
+    <div class="card-body">
+      <div class="d-flex justify-content-between">
+        <h5 class="card-title fw-bold mb-1">{{ address }}</h5>
+        <button @click="handleFavorite" class="card__favorite-btn" :class="{ 'card__favorite-btn-active': isFavorited }"
+          :disabled="!isLoggedIn">
+          <img class="card__favorite-icon me-1"
+            src="https://i.postimg.cc/7YTKqFY1/favorite-FILL1-wght400-GRAD0-opsz24.png">
+          <span class="text-body-tertiary fw-bold" :class="{ 'card__favorite-qty': isFavorited }">{{
+            favoriteCounts
+          }}</span>
+        </button>
+      </div>
+
+      <p class="card-text text-muted">${{ Number(listedPrice).toLocaleString() }}</p>
+      <hr class="text-black-50">
+
+      <div class="d-flex">
+        <div class="me-3">
+          <div class="d-flex">
+            <span class="material-symbols-outlined me-2">bed</span>
+            <b>{{ bedrooms }}</b>
+          </div>
+
+          <div class="card__property text-muted">Bedrooms</div>
         </div>
 
-        <p class="card-text text-muted">${{ Number(listedPrice).toLocaleString() }}</p>
-        <hr class="text-black-50">
-
-        <div class="d-flex">
-          <div class="me-3">
-            <div class="d-flex">
-              <span class="material-symbols-outlined me-2">bed</span>
-              <b>{{ bedrooms }}</b>
-            </div>
-
-            <div class="card__property text-muted">Bedrooms</div>
+        <div class="me-3">
+          <div class="d-flex">
+            <span class="material-symbols-outlined me-2">bathtub</span>
+            <b>{{ bathrooms }}</b>
           </div>
 
-          <div class="me-3">
-            <div class="d-flex">
-              <span class="material-symbols-outlined me-2">bathtub</span>
-              <b>{{ bathrooms }}</b>
-            </div>
+          <div class="card__property text-muted">Bathrooms</div>
+        </div>
 
-            <div class="card__property text-muted">Bathrooms</div>
+        <div>
+          <div class="d-flex">
+            <span class="material-symbols-outlined me-2">crop_square</span>
+            <b>{{ floorSize }}<span class="card__unit"> sqft</span></b>
           </div>
 
-          <div>
-            <div class="d-flex">
-              <span class="material-symbols-outlined me-2">crop_square</span>
-              <b>{{ floorSize }}<span class="card__unit"> sqft</span></b>
-            </div>
-
-            <div class="card__property text-muted">Living Area</div>
-          </div>
+          <div class="card__property text-muted">Living Area</div>
         </div>
       </div>
     </div>
-  </a>
+  </div>
 </template>
 
 <style scoped>
-a {
-  text-decoration: none;
+.card {
+  cursor: pointer;
 }
 
 .card__img {

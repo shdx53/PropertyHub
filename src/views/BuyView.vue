@@ -4,7 +4,7 @@ import GoogleMaps from "../components/BuyView/GoogleMaps.vue";
 import Footer from "../components/Footer.vue";
 import Listing from "../components/BuyView/Listing.vue";
 import Filter from "../components/Filter.vue";
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import Autocomplete from "../components/Autocomplete.vue";
 import { getFirestore, collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -80,6 +80,47 @@ function displayListings(query, listings) {
     snapshot.docs.forEach(listing => {
       listings.value.push([listing.id, listing.data()]);
     })
+
+    if (addressInput.value) {
+      listings.value = listings.value.filter(listing => {
+        const address = listing[1].address.toLowerCase();
+        return address.includes(addressInput.value.toLowerCase())
+      })
+    }
+
+    if (submittedFilterTowns.value) {
+      const filteredListings = [];
+      if (Array.isArray(submittedFilterTowns.value)) {
+        for (const filterTown of submittedFilterTowns.value) {
+          for (const listing of listings.value) {
+            const address = listing[1].address.toLowerCase();
+            if (address.includes(filterTown.toLowerCase())) {
+              filteredListings.push(listing);
+            }
+          }
+        }
+        listings.value = filteredListings;
+      } else {
+        listings.value = listings.value.filter(listing => {
+          const address = listing[1].address.toLowerCase();
+          return address.includes(submittedFilterTowns.value.toLowerCase())
+        })
+      }
+    }
+
+    if (submittedFilterPrice.value) {
+      listings.value = listings.value.filter(listing => {
+        const listedPrice = listing[1].listedPrice;
+        return listedPrice <= submittedFilterPrice.value
+      })
+    }
+
+    if (submittedFilterBedrooms.value) {
+      listings.value = listings.value.filter(listing => {
+        const bedrooms = listing[1].bedrooms;
+        return bedrooms == submittedFilterBedrooms.value
+      })
+    }
   })
   buyListingsKey.value += 1;
 }
@@ -93,15 +134,28 @@ onAuthStateChanged(auth, () => {
 
 // Submit search
 const router = useRouter();
+const isSearch = ref(false);
 function handleInputChange(value) {
   addressInput.value = value;
+  console.log(addressInput.value);
+}
+
+function handleFilterResults(value) {
+  filterTowns.value = value.towns;
+  filterPrice.value = value.price;
+  filterBedrooms.value = value.bedrooms;
 }
 
 function handleSubmit() {
   router
     .push({
       path: "/buy",
-      query: { addressInput: addressInput.value }
+      query: {
+        addressInput: addressInput.value,
+        filterTowns: filterTowns.value,
+        filterPrice: filterPrice.value,
+        filterBedrooms: filterBedrooms.value,
+      }
     })
     .then(() => router.go())
 }
@@ -109,26 +163,30 @@ function handleSubmit() {
 // Matched listings
 const route = useRoute();
 const addressInput = ref("");
+const filterTowns = ref([]);
+const filterPrice = ref(null);
+const filterBedrooms = ref(null);
+const submittedFilterTowns = ref([]);
+const submittedFilterPrice = ref(null);
+const submittedFilterBedrooms = ref(null);
+
 addressInput.value = route.query.addressInput;
-if (addressInput.value) {
-  const searchQuery = query(listingsColRef, where("address", "==", addressInput.value));
-  displayListings(searchQuery, listings);
-} else {
+submittedFilterTowns.value = route.query.filterTowns;
+submittedFilterPrice.value = route.query.filterPrice;
+submittedFilterBedrooms.value = route.query.filterBedrooms;
+
+if (
+  addressInput.value ||
+  submittedFilterTowns.value ||
+  submittedFilterPrice.value ||
+  submittedFilterBedrooms.value
+) {
+  isSearch.value = true;
   displayListings(listingsQuery, listings);
 }
 
-//getting data from firestore
-// import { doc, getDoc } from "firebase/firestore";
+displayListings(listingsQuery, listings);
 
-// const docRef = doc(db, "listings", "SF");
-// const docSnap = await getDoc(docRef);
-
-// if (docSnap.exists()) {
-//   console.log("Document data:", docSnap.data());
-// } else {
-//   // docSnap.data() will be undefined in this case
-//   console.log("No such document!");
-// }
 </script>
 
 <template>
@@ -138,17 +196,43 @@ if (addressInput.value) {
   <main class="general__container">
     <!-- Search -->
     <section class="search__container">
-      <div class="input-group">
-        <Autocomplete @inputChange="handleInputChange" />
+      <div class="d-flex justify-content-center">
+        <div class="input-group">
+          <Autocomplete @inputChange="handleInputChange" />
 
-        <button @click="displayFilter" class="btn header__filter-btn" type="button">
-          <span class="material-symbols-outlined">tune</span>
+          <button @click="displayFilter" class="btn header__filter-btn" type="button">
+            <span class="material-symbols-outlined">tune</span>
+          </button>
+        </div>
+
+        <button class="btn btn-primary ms-5" @click="handleSubmit">
+          <span class="material-symbols-outlined">search</span>
         </button>
       </div>
 
-      <button class="btn btn-primary ms-5" @click="handleSubmit">
-        <span class="material-symbols-outlined">search</span>
-      </button>
+      <div class="mt-2 d-flex flex-wrap">
+        <div v-if="submittedFilterTowns && isSearch" class="flair">
+          <div>
+            <span class="fw-bold">Towns: </span>
+            <span v-if="Array.isArray(submittedFilterTowns)">
+              <span v-for="filterTown in submittedFilterTowns" class="me-1">{{ filterTown }}</span>
+            </span>
+            <span v-else>{{ submittedFilterTowns }}</span>
+          </div>
+        </div>
+
+        <div v-if="submittedFilterPrice && isSearch" class="flair">
+          <div>
+            <span class="fw-bold">Max Price: </span>${{ Number(submittedFilterPrice).toLocaleString() }}
+          </div>
+        </div>
+
+        <div v-if="submittedFilterBedrooms && isSearch" class="flair">
+          <div>
+            <span class="fw-bold">Bedrooms: </span>{{ submittedFilterBedrooms }}
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Search Results -->
@@ -193,7 +277,7 @@ if (addressInput.value) {
 
   <!-- Filter Overlay -->
   <section v-if="isDisplayFilter" class="filter-overlay">
-    <Filter :isDisplayFilter="isDisplayFilter" :displayFilter="displayFilter" />
+    <Filter :isDisplayFilter="isDisplayFilter" :displayFilter="displayFilter" @getFilterResults="handleFilterResults" />
   </section>
 
   <!-- Footer -->
@@ -203,8 +287,6 @@ if (addressInput.value) {
 <style scoped>
 /* Search */
 .search__container {
-  display: flex;
-  justify-content: center;
   padding: 25px 0;
   max-width: 450px;
   margin: 0 auto;
@@ -220,6 +302,14 @@ if (addressInput.value) {
 
 .header__filter-btn:hover {
   background-color: lightgray;
+}
+
+.flair {
+  font-size: 10px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  margin-right: 10px;
+  padding: 3px 10px;
 }
 
 /* Filter Overlay */
@@ -246,7 +336,7 @@ if (addressInput.value) {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 auto;
+  margin: 0 auto 15px auto;
 }
 
 .search-results__map-container {
