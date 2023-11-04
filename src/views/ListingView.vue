@@ -26,6 +26,7 @@ const type = ref("");
 const dateOfEntry = ref("");
 const level = ref("");
 const favoriteCounts = ref("");
+const imgPath = ref("");
 
 const db = getFirestore();
 const listingDocRef = doc(db, "listings", listingId);
@@ -45,6 +46,7 @@ onSnapshot(listingDocRef, listing => {
   dateOfEntry.value = listing.value.dateOfEntry;
   level.value = listing.value.level;
   favoriteCounts.value = listing.value.favoriteCounts;
+  imgPath.value = listing.value.imgPath
 });
 
 // Checks if user is logged in
@@ -290,7 +292,7 @@ function handleFavorite() {
           <section class="mb-5">
             <div>
               <h2>Nearby Amenities</h2>
-              <GoogleMaps />
+              <GoogleMaps v-if="address && listedPrice && imgPath" :address="address" :listedPrice="listedPrice" :imgPath="imgPath"/>
             </div>
           </section>
         </div>
