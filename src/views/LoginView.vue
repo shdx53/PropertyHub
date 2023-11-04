@@ -38,7 +38,7 @@
       <!-- Password -->
       <div class="form-group">
         <label for="password" class="py-2 fw-bold">Password:</label>
-        <input type="password" class="form-control" id="password" placeholder="Enter your password" v-model="password" />
+        <input type="password" class="form-control" id="password" placeholder="Enter your password" v-model="password" v-on:keyup.enter="signIn"/>
       </div>
       <!-- Forgot Password -->
       <div class="mt-1 mb-4 py-2" style="font-size: 12px">
