@@ -45,7 +45,7 @@ if (props.imgPath) {
     .catch(err => console.log(err.message))
 }
 
-// // Handle favorite toggle
+// Handle favorite toggle
 let isFavorited = ref(null);
 let favoritedListings = ref([]);
 
@@ -115,7 +115,7 @@ const router = useRouter();
 function handleRedirect() {
   router
     .push({
-      path: "/listing-details",
+      path: "/listing",
       query: {
         listingId: props.listingId
       }
@@ -128,7 +128,7 @@ function handleRedirect() {
     <img ref="img" class="card-img-top card__img">
     <div class="card-body">
       <div class="d-flex justify-content-between">
-        <h5 class="card-title fw-bold mb-1">{{ address }}</h5>
+        <h5 class="card-title fw-bold mb-1">{{  address }}</h5>
         <button @click="handleFavorite" class="card__favorite-btn" :class="{ 'card__favorite-btn-active': isFavorited }"
           :disabled="!isLoggedIn">
           <img class="card__favorite-icon me-1"

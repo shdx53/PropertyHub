@@ -24,7 +24,8 @@
 
 <script setup>
 import { Loader } from "@googlemaps/js-api-loader";
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
+import { getDownloadURL, getStorage, ref as storageRef } from "firebase/storage";
 // import { mapsApiKey } from "../../config.js";
 
 let gmap = ref(null);
@@ -33,20 +34,48 @@ let isMallActive = ref(false);
 let isSchoolActive = ref(false);
 let amenities = ref([]);
 
+const props = defineProps({
+  address: String,
+  listedPrice: String,
+  imgPath: String
+});
+
 const loader = new Loader({
   apiKey: import.meta.env.VITE_MAPS_API_KEY,
   version: "weekly",
 });
 
-onMounted(() => {
-  handleMap("train");
-})
+handleMap("train");
 
-function handleMap(selection) {
+async function handleMap(selection) {
   loader.load().then(async () => {
     const { Map } = await google.maps.importLibrary("maps");
     const { PlacesService } = await google.maps.importLibrary("places");
-    const position = { lat: 1.3257004958559055, lng: 103.9339796539663 };
+    const geocoder = new google.maps.Geocoder();
+
+    let lat;
+    let lng;
+
+    await geocoder
+      .geocode({ address: props.address })
+      .then(res => {
+        const location = res.results[0].geometry.location;
+        lat = location.lat();
+        lng = location.lng();
+      })
+      .catch(err => console.log(err.message))
+
+    const position = { lat: lat, lng: lng };
+
+    const storage = getStorage();
+    const imgRef = storageRef(storage, props.imgPath);
+    let imgSrc;
+
+    await getDownloadURL(imgRef)
+      .then(url => {
+        imgSrc = url;
+      })
+      .catch(err => console.log(err.message))
 
     const mapInstance = new Map(gmap.value, {
       mapId: "b9bac48230daafe7",
@@ -59,7 +88,7 @@ function handleMap(selection) {
       zoom: 13.5,
     });
 
-    handleMarker("house", mapInstance, position, null, null);
+    handleMarker("house", mapInstance, position, imgSrc, null);
 
     let request = {
       location: position,
@@ -92,7 +121,7 @@ function handleMap(selection) {
       for (let i = 0; i < results.length; i++) {
         if (amenities.value.length >= 5) {
           break;
-        } 
+        }
 
         if (results[i]["business_status"] !== "OPERATIONAL") {
           continue;
@@ -141,17 +170,17 @@ function handleMarker(type, map, position, imgSrc, amenityObj) {
 
     if (type == "house") {
       markerImg.src = "https://i.postimg.cc/Kz3vZ5fw/home-Custom.png";
-      handleInfoWindow("house", map, marker, null);
+      handleInfoWindow("house", map, marker, null, imgSrc);
     } else {
       markerImg.src = imgSrc;
       markerImg.style.width = "30px";
       markerImg.style.height = "30px";
-      handleInfoWindow("amenity", map, marker, amenityObj);
+      handleInfoWindow("amenity", map, marker, amenityObj, null);
     };
   });
 };
 
-function handleInfoWindow(type, map, marker, amenityObj) {
+function handleInfoWindow(type, map, marker, amenityObj, imgSrc) {
   loader.load().then(async () => {
     const { InfoWindow } = await google.maps.importLibrary("maps");
     let infoWindow;
@@ -159,10 +188,10 @@ function handleInfoWindow(type, map, marker, amenityObj) {
     if (type == "house") {
       infoWindow = new InfoWindow({
         content: `<div style="width: 100px;">
-          <img style="width: 100%; height: 75px; object-fit: cover;" src="https://i.postimg.cc/7ZcX1kJJ/hudson-graves-n-OJag-Mq-GCp-A-unsplash.jpg">
+          <img style="width: 100%; height: 75px; object-fit: cover;" src="${imgSrc}">
           <div>
-            <div class="fw-bold my-1" style="font-size: 10px;">220B Bedok Central</div>
-            <div style="font-size: 9px;">$530,000</div>
+            <div class="fw-bold my-1" style="font-size: 10px;">${props.address}</div>
+            <div style="font-size: 9px;">$${Number(props.listedPrice).toLocaleString()}</div>
           </div>
         </div>
       `,

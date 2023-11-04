@@ -6,7 +6,7 @@ import Filter from "../components/Filter.vue";
 import Autocomplete from "../components/Autocomplete.vue";
 import { ref } from "vue";
 import { getFirestore, collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+// import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "vue-router";
 
 // Filter
@@ -53,13 +53,13 @@ onSnapshot(customersColRef, () => {
   popularListingsKey.value += 1;
 })
 
-// Rerender whenever user logs out
-const auth = getAuth();
+// // Rerender whenever user logs out
+// const auth = getAuth();
 
-onAuthStateChanged(auth, () => {
-  recentListingsKey.value += 1;
-  popularListingsKey.value += 1;
-})
+// onAuthStateChanged(auth, () => {
+//   recentListingsKey.value += 1;
+//   popularListingsKey.value += 1;
+// })
 
 // Submit search
 const router = useRouter();

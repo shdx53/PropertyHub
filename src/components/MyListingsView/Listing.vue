@@ -1,7 +1,9 @@
 <script setup>
 import { ref } from "vue";
+import { getAuth } from "firebase/auth";
+import { doc, getFirestore, updateDoc, collection, getDoc, arrayUnion, onSnapshot } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref as storageRef } from "firebase/storage";
-let isFavorited = ref(false);
+import { useRouter } from "vue-router";
 
 const props = defineProps({
   listingId: String,
@@ -14,12 +16,7 @@ const props = defineProps({
   imgPath: String
 });
 
-function handleFavorite() {
-  event.preventDefault();
-  isFavorited.value = !isFavorited.value;
-}
-
-let imagePath = ""; 
+let imagePath = "";
 
 function toggleDelete(id, imgPath) {
   document.getElementById('deleteModal').dataset.id = id;
@@ -40,15 +37,108 @@ if (props.imgPath) {
     })
     .catch(err => console.log(err.message))
 }
+
+// Redirect to listing details
+const router = useRouter();
+function handleRedirect() {
+  router
+    .push({
+      path: "/listing",
+      query: {
+        listingId: props.listingId
+      }
+    })
+}
+
+// Checks if user is logged in
+const db = getFirestore();
+const auth = getAuth();
+const userId = ref(null);
+const isLoggedIn = ref(false);
+
+let customersDocRef;
+
+if (auth.currentUser) {
+  userId.value = auth.currentUser.uid;
+  isLoggedIn.value = true;
+
+  customersDocRef = doc(db, "customers", userId.value);
+}
+
+// Handle favorite toggle
+let isFavorited = ref(null);
+let favoritedListings = ref([]);
+
+const customersColRef = collection(db, "customers");
+
+updateFavorites();
+
+onSnapshot(customersColRef, snapshot => {
+  updateFavorites();
+})
+
+function updateFavorites() {
+  if (customersDocRef) {
+    getDoc(customersDocRef)
+      .then(doc => {
+        favoritedListings.value = doc.data().favoritedListings;
+
+        if (!favoritedListings.value.includes(props.listingId)) {
+          isFavorited.value = false;
+        } else if (favoritedListings.value.includes(props.listingId)) {
+          isFavorited.value = true;
+        }
+      })
+      .catch(err => console.log(err.message))
+  } else {
+    isFavorited.value = false;
+  }
+}
+
+function handleFavorite() {
+  event.preventDefault();
+  event.stopPropagation();
+  const listingsDocRef = doc(db, "listings", props.listingId);
+
+  if (isFavorited.value) {
+    isFavorited.value = false;
+
+    updateDoc(listingsDocRef, {
+      favoriteCounts: props.favoriteCounts - 1,
+      isFavorited: false
+    })
+
+    const itemToBeRemovedIndex = favoritedListings.value.indexOf(props.listingId);
+    favoritedListings.value.splice(itemToBeRemovedIndex, 1);
+
+    updateDoc(customersDocRef, {
+      favoritedListings: favoritedListings.value
+    })
+  } else {
+    isFavorited.value = true;
+
+    updateDoc(listingsDocRef, {
+      favoriteCounts: props.favoriteCounts + 1,
+      isFavorited: true
+    })
+
+    if (!favoritedListings.value.includes(props.listingId)) {
+      updateDoc(customersDocRef, {
+        favoritedListings: arrayUnion(props.listingId)
+      })
+    }
+  }
+}
 </script>
 
 <template>
-  <div class="card">
+  <div class="card" @click="handleRedirect">
     <div class="row g-0">
       <div class="col-4">
         <img ref="img" class="card__img img-fluid rounded-start">
       </div>
-      <button class="delete-btn" data-bs-toggle="modal" data-bs-target="#deleteModal" @click="toggleDelete(props.listingId, props.imgPath)">
+      <button class="delete-btn" data-bs-toggle="modal" data-bs-target="#deleteModal"
+        @click="toggleDelete(props.listingId, props.imgPath)">
         <span class="material-symbols-outlined me-1">delete</span> Delete
       </button>
 
@@ -58,16 +148,16 @@ if (props.imgPath) {
             <h5 class="card-title fw-bold mb-0">{{ address }}</h5>
 
             <button @click="handleFavorite" class="card__favorite-btn"
-              :class="{ 'card__favorite-btn-active': isFavorited }">
+              :class="{ 'card__favorite-btn-active': isFavorited }" :disabled="!isLoggedIn">
               <img class="card__favorite-icon me-1"
-                src="../../assets/img/Listings/favorite_FILL1_wght400_GRAD0_opsz24.png">
+                src="https://i.postimg.cc/7YTKqFY1/favorite-FILL1-wght400-GRAD0-opsz24.png">
               <span class="card__favorite-qty text-body-tertiary fw-bold"
                 :class="{ 'card__favorite-qty--active': isFavorited }">{{ favoriteCounts }}</span>
             </button>
           </div>
 
           <p class="card-text text-muted mb-0">${{ Number(listedPrice).toLocaleString() }}</p>
-          <hr class="text-black-50 my-3 my-sm-4 my-lg-3">
+          <hr class="text-black-50 my-2 my-sm-3 my-lg-3">
 
           <div class="d-flex">
             <div class="me-2 me-lg-3">
@@ -103,6 +193,7 @@ if (props.imgPath) {
 <style scoped>
 .card {
   margin-bottom: 20px;
+  cursor: pointer;
 }
 
 .card__img {
@@ -140,7 +231,9 @@ if (props.imgPath) {
   background-color: transparent;
   border: 1px solid #f0f0f0;
   border-radius: 5px;
-  padding: 1px 5px;
+  padding: 3px 5px;
+  display: flex;
+  align-items: center;
 }
 
 .card__favorite-btn-active {

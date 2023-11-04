@@ -1,7 +1,7 @@
 <script setup>
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
-import Autocomplete from "../components/CreateListing/Autocomplete.vue";
+import Autocomplete from "../components/CreateListingView/Autocomplete.vue";
 import { ref } from "vue";
 import { storage, getCurrentUser } from "../firebase/index.js";
 import { ref as storageRef, uploadBytes } from "firebase/storage";
@@ -149,7 +149,7 @@ function handleSubmit() {
         })
         date.value = null;
         additionalDates.value = [];
-        router.push("/CreateListingPage");
+        router.push("/my-listings");
       })
   }
 }
@@ -293,8 +293,8 @@ function handleSubmit() {
             <label for="balcony" class="col-form-label fw-bold">Balcony:</label>
             <select class="form-select" id="balcony" required>
               <option value=""></option>
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
             </select>
             <div class="invalid-feedback">
               Field is required
