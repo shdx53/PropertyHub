@@ -2,6 +2,7 @@
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
 import GoogleMaps from "../components/ListingView/GoogleMaps.vue";
+
 import { useRoute } from 'vue-router';
 import { ref } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -63,8 +64,6 @@ onSnapshot(listingDocRef, listing => {
   // handle image storage
   const storage = getStorage();
   const storageReference = storageRef(storage, imgPath.value);
-  console.log("storageReference");
-  console.log(storageReference);
   getDownloadURL(storageReference)
     .then((url)=>{
       console.log(url);
@@ -85,12 +84,13 @@ onSnapshot(listingDocRef, listing => {
 
 });
 
-
-
 // Checks if user is logged in
 const auth = getAuth();
 const userId = ref(null);
 const isLoggedIn = ref(false);
+
+// Checks if user is seller or customer
+const userEmail = ref("");
 
 let customersDocRef;
 
@@ -103,8 +103,9 @@ onAuthStateChanged(auth, user => {
 
 if (auth.currentUser) {
   userId.value = auth.currentUser.uid;
+  userEmail.value = auth.currentUser.email;
   isLoggedIn.value = true;
-
+  
   customersDocRef = doc(db, "customers", userId.value);
 }
 
@@ -173,6 +174,17 @@ function handleFavorite() {
   }
 }
 
+// handling dashboard
+let activeTab = ref("view");
+
+function handleActiveTab(tab) {
+    if (tab == "view") {
+        activeTab.value = "view";
+    } else {
+        activeTab.value = "purchase";
+    }
+}
+
 </script>
 
 <template>
@@ -216,7 +228,7 @@ function handleFavorite() {
       </button>
     </div> <!-- End of custom-carousel -->
 
-    <!-- Property Overview | Seller Information -->
+    <!-- ListingOverview | User-CTA -->
     <div class="property-info__container my-5">
       <!-- Left column -->
       <div>
@@ -335,51 +347,159 @@ function handleFavorite() {
             </div>
           </section>
         </div>
-      </div>
+      </div> <!-- End of Left column -->
 
       <!-- Right column -->
-      <div class="seller__container py-4 ms-lg-4 border rounded">
-        <!-- Seller information -->
-        <div class="container-fluid d-flex justify-content-center">
-          <div class="row justify-content-between mb-4">
-            <div class="col-3 d-flex justify-content-center align-items-center">
-              <img id="seller-picture" class="rounded-circle d-flex object-fit-cover shadow-sm" alt="avatar1"
-                src="https://source.unsplash.com/g0zwKn5vslI" width="90" height="90" />
+      <div>
+        <!-- Dashboard if user is seller -->
+        <div v-if="userEmail == balanceEmail" class="right__container mx-2 ms-lg-4">
+          <h2 class="dashboard__title fw-bold mb-3">Your Dashboard</h2>
+            <div class="nav__bar">
+                <ul class="nav nav-tabs mb-3">
+                    <li class="nav-item">
+                        <a class="nav-link fw-bold" @click="handleActiveTab('view')"
+                            :class="{ active: activeTab == 'view' }">View</a>
+                    </li>
+                    <li class="nav-item fw-bold">
+                        <a class="nav-link" @click="handleActiveTab('purchase')"
+                            :class="{ active: activeTab == 'purchase' }">Purchase</a>
+                    </li>
+                </ul>
             </div>
-            <div class="col-8 d-flex flex-column justify-content-around align-items-start">
-              <div class="fw-bold fs-4">
-                {{balanceName}}
+            <div class="buyer__info">
+                <div v-if="activeTab == 'view'" class="view__container">
+                    <div>
+                        <!-- First set of content for the "View" tab -->
+                        <div class="user__profile mb-3">
+                            <!-- user picture -->
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <img id="viewer-picture" class="rounded-circle d-flex object-fit-cover me-3" alt="avatar1"
+                                        src="https://source.unsplash.com/g0zwKn5vslI" width="50" height="50" />
+                                    <!-- name of bidder  -->
+                                    <div>
+                                        <div class="bidder__name fw-bold mb-1">Jason</div>
+                                        <div class="bidder__phone text-body-secondary">81234567</div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="date__title fw-bold mb-1">Date:</div>
+                                    <div class="date__value text-body-secondary">30 Oct 2023, 22:00</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="user__profile mb-3">
+                            <!-- user picture -->
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <img id="viewer-picture" class="rounded-circle d-flex object-fit-cover me-3" alt="avatar1"
+                                        src="https://source.unsplash.com/g0zwKn5vslI" width="50" height="50" />
+                                    <!-- name of bidder  -->
+                                    <div>
+                                        <div class="bidder__name fw-bold mb-1">Shi Da</div>
+                                        <div class="bidder__phone text-body-secondary">81234567</div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="date__title fw-bold mb-1">Date:</div>
+                                    <div class="date__value text-body-secondary">30 Oct 2023, 22:00</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-else class="purchase__container">
+                    <!-- <h3>Bidder's profile</h3> -->
+                    <!-- First set of content for the "Purchase" tab -->
+                    <div class="user__profile mb-3">
+                        <!-- user picture -->
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <img id="viewer-picture" class="rounded-circle d-flex object-fit-cover me-3" alt="avatar1"
+                                    src="https://source.unsplash.com/g0zwKn5vslI" width="50" height="50" />
+                                <!-- name of bidder  -->
+                                <div>
+                                    <div class="bidder__name fw-bold mb-1">Jason</div>
+                                    <div class="bidder__phone text-body-secondary">81234567</div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="bid-price__title fw-bold mb-1">Bid Price:</div>
+                                <div class="bid-price__value text-body-secondary">$550,000</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="user__profile mb-3">
+                        <!-- user picture -->
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <img id="viewer-picture" class="rounded-circle d-flex object-fit-cover me-3" alt="avatar1"
+                                    src="https://source.unsplash.com/g0zwKn5vslI" width="50" height="50" />
+                                <!-- name of bidder  -->
+                                <div>
+                                    <div class="bidder__name fw-bold mb-1">Shi Da</div>
+                                    <div class="bidder__phone text-body-secondary">81234567</div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="bid-price__title fw-bold mb-1">Bid Price:</div>
+                                <div class="bid-price__value text-body-secondary">$550,000</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seller information if user is customer -->
+        <div v-else class="right__container py-4 ms-lg-4 border rounded">
+          <div class="container-fluid d-flex justify-content-center">
+            <div class="row justify-content-between mb-4">
+              <div class="col-3 d-flex justify-content-center align-items-center">
+                <img id="seller-picture" class="rounded-circle d-flex object-fit-cover shadow-sm" alt="avatar1"
+                  src="https://source.unsplash.com/g0zwKn5vslI" width="90" height="90" />
               </div>
-              <div>
-                {{balanceEmail}}
-              </div>
-              <div>
-                {{balancePhone}}
+              <div class="col-8 d-flex flex-column justify-content-around align-items-start">
+                <div class="fw-bold fs-4">
+                  {{balanceName}}
+                </div>
+                <div>
+                  {{balanceEmail}}
+                </div>
+                <div>
+                  {{balancePhone}}
+                </div>
               </div>
             </div>
           </div>
+          <!-- button for viewSlotsModal -->
+          <div class="btn-container d-flex justify-content-center my-2">
+            <button type="button" class="btn w-50 btn-primary border border-muted" data-bs-toggle="modal"
+              data-bs-target="#viewSlotsModal">
+              Viewing
+              <!-- How to add icons beside CTA?
+                <span class="material-symbols-outlined" style="font-size:20px;">schedule_send</span> -->
+            </button>
+          </div>
+          <!-- button for purchaseModal -->
+          <div class="btn-container d-flex justify-content-center my-2">
+            <button type="button" class="btn w-50 btn-primary border border-muted" data-bs-toggle="modal"
+              data-bs-target="#purchaseModal">
+              Purchase
+            </button>
+          </div>
         </div>
+      
+      </div> <!-- End of Right column -->
+    </div> <!-- End of ListingOverview | User-CTA -->
 
-        <!-- button for viewSlotsModal -->
-        <div class="btn-container d-flex justify-content-center my-2">
-          <button type="button" class="btn w-50 btn-primary border border-muted" data-bs-toggle="modal"
-            data-bs-target="#viewSlotsModal">
-            Viewing
-            <!-- How to add icons beside CTA? 
-              <span class="material-symbols-outlined" style="font-size:20px;">schedule_send</span> -->
-          </button>
-        </div>
-
-        <!-- button for purchaseModal -->
-        <div class="btn-container d-flex justify-content-center my-2">
-          <button type="button" class="btn w-50 btn-primary border border-muted" data-bs-toggle="modal"
-            data-bs-target="#purchaseModal">
-            Purchase
-          </button>
-        </div>
-      </div> <!-- End of right col -->
-
-    </div> <!-- End of row -->
   </div> <!-- End of general container  -->
 
   <!-- viewSlotsModal -->
@@ -654,7 +774,7 @@ h2 {
   border-bottom: 1px solid lightgrey;
 }
 
-.seller__container {
+.right__container {
   width: 80vw;
   max-width: 400px;
 }
@@ -675,6 +795,53 @@ h2 {
 .icon-text {
   font-size: 16px;
 }
+
+.dashboard__title {
+    font-size: 16px;
+}
+
+.nav-link {
+    color: black;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.active {
+    color: #0b5ed7 !important;
+}
+
+.bid__date-time {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.user__profile {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border: 1px solid lightgrey;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.bidder__name {
+    font-size: 16px;
+}
+
+.bidder__phone {
+    font-size: 14px;
+}
+
+.bid-price__title,
+.date__title {
+    font-size: 16px;
+}
+
+.bid-price__value,
+.date__value {
+    font-size: 14px;
+}
+
 
 /* responsiveness */
 @media (min-width: 1150px) {
@@ -698,6 +865,17 @@ h2 {
     font-size: 26px;
   }
 
+  .view__container {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+  .purchase__container {
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+}
 }
 
 @media (max-width: 585px) {
@@ -752,5 +930,21 @@ h2 {
   .modal-body .listing-info {
     font-size: 10px;
   }
+}
+
+@media (max-width:800px) {
+    .nav__bar {
+        justify-content: start;
+    }
+
+    .buyer__info {
+        justify-content: center;
+    }
+}
+
+@media (min-width: 1150px) {
+    .dashboard__title {
+        font-size: 20px;
+    }
 }
 </style>
