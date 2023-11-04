@@ -6,10 +6,10 @@ import { useRoute } from 'vue-router';
 import { ref } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, getFirestore, updateDoc, collection, getDoc, arrayUnion, onSnapshot } from "firebase/firestore";
-import { getStorage, ref as storageRef } from "firebase/storage";
+import { getStorage, ref as storageRef, getDownloadURL } from "firebase/storage";
 import { query, where } from "firebase/firestore";
 
-// Fetch listing data
+// init listing objs
 const route = useRoute();
 const listingId = route.query.listingId;
 const listing = ref(null);
@@ -27,12 +27,23 @@ const dateOfEntry = ref("");
 const level = ref("");
 const favoriteCounts = ref("");
 const imgPath = ref("");
+const viewingDates = ref([])
+const imgUrl = ref("")
 
+ // init balance objs
+const balanceEmail = ref("");
+const balanceName = ref("");
+const balancePhone = ref("");
+
+// fetch data and add it to objects
 const db = getFirestore();
 const listingDocRef = doc(db, "listings", listingId);
 
 onSnapshot(listingDocRef, listing => {
+  // console.log(listing.data())
   listing.value = listing.data();
+
+  // handle listing data
   address.value = listing.value.address;
   listedPrice.value = listing.value.listedPrice;
   about.value = listing.value.about;
@@ -46,8 +57,35 @@ onSnapshot(listingDocRef, listing => {
   dateOfEntry.value = listing.value.dateOfEntry;
   level.value = listing.value.level;
   favoriteCounts.value = listing.value.favoriteCounts;
-  imgPath.value = listing.value.imgPath
+  imgPath.value = listing.value.imgPath;
+  viewingDates.value = listing.value.viewingDates;
+
+  // handle image storage
+  const storage = getStorage();
+  const storageReference = storageRef(storage, imgPath.value);
+  console.log("storageReference");
+  console.log(storageReference);
+  getDownloadURL(storageReference)
+    .then((url)=>{
+      console.log(url);
+      imgUrl.value = url;
+
+    })
+  
+
+  // handle balance data
+  balanceEmail.value = listing.value.userEmail;
+  const balanceDocRef = doc(db, "balance", balanceEmail.value);
+
+  onSnapshot(balanceDocRef, balance => {
+    balance.value = balance.data();
+    balancePhone.value = balance.value.phone;
+    balanceName.value = balance.value.name;
+  });
+
 });
+
+
 
 // Checks if user is logged in
 const auth = getAuth();
@@ -134,6 +172,7 @@ function handleFavorite() {
     }
   }
 }
+
 </script>
 
 <template>
@@ -154,7 +193,7 @@ function handleFavorite() {
       <div class="carousel-inner">
         <!-- Elements: custom-carousel__item -->
         <div class="carousel-item active custom-carousel__item">
-          <img src="../assets/img/Listings/hudson-graves-nOJagMqGCpA-unsplash.jpg" class="d-block w-100 rounded"
+          <img :src="imgUrl" class="d-block w-100 rounded"
             alt="Slide 1">
         </div>
 
@@ -309,13 +348,13 @@ function handleFavorite() {
             </div>
             <div class="col-8 d-flex flex-column justify-content-around align-items-start">
               <div class="fw-bold fs-4">
-                Chason Jui
+                {{balanceName}}
               </div>
               <div>
-                {User ID}
+                {{balanceEmail}}
               </div>
               <div>
-                {Phone Number}
+                {{balancePhone}}
               </div>
             </div>
           </div>
@@ -367,19 +406,19 @@ function handleFavorite() {
           <div class="container-fluid">
             <div class="row">
               <div class="col-4 text-center d-flex justify-content-center align-items-center">
-                <img src="https://source.unsplash.com/EsudwXe8rB4" class="rounded" width="100%" height="150">
+                <img :src="imgUrl" class="rounded w-100 h-150">
               </div>
               <div class="col-8 text-center">
                 <div class="text-start d-flex flex-column justify-content-between h-100">
                   <div>
-                    <span id="modal-property-title">220B Bedok Central</span>
+                    <span id="modal-property-title">{{address}}</span>
 
                     <!-- icons -->
                     <div id="modal-icons" class="d-flex mt-2">
                       <div class="me-3 icon-container">
                         <div class="d-flex align-items-center">
                           <span class="material-symbols-outlined me-2" style="font-size:24px">bed</span>
-                          <div class="icon-text">3</div>
+                          <div class="icon-text">{{bedrooms}}</div>
                         </div>
                         <div class="listing-info text-muted">Bedrooms</div>
                       </div>
@@ -387,7 +426,7 @@ function handleFavorite() {
                       <div class="me-3 icon-container">
                         <div class="d-flex align-items-center">
                           <span class="material-symbols-outlined me-2" style="font-size:24px">bathtub</span>
-                          <div class="icon-text">2</div>
+                          <div class="icon-text">{{ bathrooms }}</div>
                         </div>
                         <div class="listing-info text-muted">Bathrooms</div>
                       </div>
@@ -395,7 +434,7 @@ function handleFavorite() {
                       <div>
                         <div class="d-flex align-items-center">
                           <span class="material-symbols-outlined me-2" style="font-size:24px">crop_square</span>
-                          <div class="icon-text">984 sqft</div>
+                          <div class="icon-text">{{ floorSize }} sqft</div>
                         </div>
                         <div class="listing-info text-muted">Living Area</div>
                       </div>
@@ -404,12 +443,22 @@ function handleFavorite() {
 
                   <!-- Form for TimeSlot -->
                   <select class="form-select" aria-label="Default select example">
-                    <option selected>Timeslots</option>
-                    <option value="1" disabled>5th October, 10am - $100</option>
+                    <option disabled selected>Timeslots</option>
+                    <option v-for="viewingDate in viewingDates" :value="viewingDate">
+                      {{ viewingDate.toDate().toLocaleString(undefined,{
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      }) }} -
+                      |view price|
+                    </option>
+                    <!-- <option value="1" disabled>5th October, 10am - $100</option>
                     <option value="2">6th October, 10am - $90</option>
                     <option value="3">7th October, 10am - $80</option>
                     <option value="2">8th October, 10am - $70</option>
-                    <option value="3">9th October, 10am - $60</option>
+                    <option value="3">9th October, 10am - $60</option> -->
                   </select>
                 </div>
               </div>
@@ -417,7 +466,7 @@ function handleFavorite() {
           </div>
         </div>
         <div class="modal-footer justify-content-center">
-          <button type="button" class="btn btn-primary">Submit Deposit</button>
+          <button @click="console.log('test')" type="button" class="btn btn-primary">Submit Deposit</button>
         </div>
       </div>
     </div>
@@ -448,19 +497,19 @@ function handleFavorite() {
           <div class="container-fluid">
             <div class="row">
               <div class="col-4 text-center d-flex justify-content-center align-items-center my-auto">
-                <img src="https://source.unsplash.com/EsudwXe8rB4" class="rounded" width="100%" height="150">
+                <img :src="imgUrl" class="rounded w-100 h-150">
               </div>
               <div class="col-8 text-center">
                 <div class="text-start d-flex flex-column justify-content-between h-100">
                   <div>
-                    <span id="modal-property-title">220B Bedok Central</span>
+                    <span id="modal-property-title">{{ address }}</span>
 
                     <!-- icons -->
                     <div id="modal-icons" class="d-flex mt-2">
                       <div class="me-3 icon-container">
                         <div class="d-flex align-items-center">
                           <span class="material-symbols-outlined me-2" style="font-size:24px">bed</span>
-                          <div class="icon-text">3</div>
+                          <div class="icon-text">{{ bedrooms }}</div>
                         </div>
                         <div class="listing-info text-muted">Bedrooms</div>
                       </div>
@@ -468,7 +517,7 @@ function handleFavorite() {
                       <div class="me-3 icon-container">
                         <div class="d-flex align-items-center">
                           <span class="material-symbols-outlined me-2" style="font-size:24px">bathtub</span>
-                          <div class="icon-text">2</div>
+                          <div class="icon-text">{{ bathrooms }}</div>
                         </div>
                         <div class="listing-info text-muted">Bathrooms</div>
                       </div>
@@ -476,7 +525,7 @@ function handleFavorite() {
                       <div>
                         <div class="d-flex align-items-center">
                           <span class="material-symbols-outlined me-2" style="font-size:24px">crop_square</span>
-                          <div class="icon-text">984 sqft</div>
+                          <div class="icon-text">{{floorSize}} sqft</div>
                         </div>
                         <div class="listing-info text-muted">Living Area</div>
                       </div>
@@ -487,9 +536,10 @@ function handleFavorite() {
                     <div class="input-group">
                       <span class="input-group-text" id="basic-addon1">$</span>
                       <input type="number" class="form-control" placeholder="Bid Price" aria-label="Bid Price"
-                        aria-describedby="basic-addon1">
+                        aria-describedby="basic-addon1" >
+                        <!-- :value="bid" -->
                     </div>
-                    <div class="text-start" style="font-size: 10px;">Current Highest Bid to Beat: $ </div>
+                    <div class="text-start" style="font-size: 12px;">Current Listing Price to Beat: $ </div>
                   </div>
                 </div>
               </div>
@@ -497,7 +547,7 @@ function handleFavorite() {
           </div>
         </div>
         <div class="modal-footer justify-content-center">
-          <button type="button" class="btn btn-primary">Submit Bid</button>
+          <button @click="console.log('test')" type="button" class="btn btn-primary">Submit Bid</button>
         </div>
       </div>
     </div>
