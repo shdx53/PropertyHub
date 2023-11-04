@@ -193,7 +193,7 @@ function handleActiveTab(tab) {
 
   <div class="general__container">
     <!-- Block: custom-carousel -->
-    <div id="imgCarousel" class="carousel slide mx-auto mt-4">
+    <div id="imgCarousel" class="carousel slide mt-4">
       <!-- Elements: custom-carousel__indicators -->
       <div class="carousel-indicators">
         <button type="button" data-bs-target="#imgCarousel" data-bs-slide-to="0" class="active" aria-current="true"
@@ -373,14 +373,10 @@ function handleActiveTab(tab) {
                         <div class="user__profile mb-3">
                             <!-- user picture -->
                             <div class="d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center">
-                                    <img id="viewer-picture" class="rounded-circle d-flex object-fit-cover me-3" alt="avatar1"
-                                        src="https://source.unsplash.com/g0zwKn5vslI" width="50" height="50" />
-                                    <!-- name of bidder  -->
-                                    <div>
-                                        <div class="bidder__name fw-bold mb-1">Jason</div>
-                                        <div class="bidder__phone text-body-secondary">81234567</div>
-                                    </div>
+                                <!-- name of bidder  -->
+                                <div>
+                                    <div class="bidder__name fw-bold mb-1">Jason</div>
+                                    <div class="bidder__phone text-body-secondary">81234567</div>
                                 </div>
 
                                 <div>
@@ -392,16 +388,12 @@ function handleActiveTab(tab) {
 
                         <div class="user__profile mb-3">
                             <!-- user picture -->
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center">
-                                    <img id="viewer-picture" class="rounded-circle d-flex object-fit-cover me-3" alt="avatar1"
-                                        src="https://source.unsplash.com/g0zwKn5vslI" width="50" height="50" />
-                                    <!-- name of bidder  -->
-                                    <div>
-                                        <div class="bidder__name fw-bold mb-1">Shi Da</div>
-                                        <div class="bidder__phone text-body-secondary">81234567</div>
-                                    </div>
-                                </div>
+                            <div class="d-flex justify-content-between align-items-center">  
+                                  <!-- name of bidder  -->
+                                  <div>
+                                      <div class="bidder__name fw-bold mb-1">Shi Da</div>
+                                      <div class="bidder__phone text-body-secondary">81234567</div>
+                                  </div>
 
                                 <div>
                                     <div class="date__title fw-bold mb-1">Date:</div>
@@ -418,14 +410,10 @@ function handleActiveTab(tab) {
                     <div class="user__profile mb-3">
                         <!-- user picture -->
                         <div class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex align-items-center">
-                                <img id="viewer-picture" class="rounded-circle d-flex object-fit-cover me-3" alt="avatar1"
-                                    src="https://source.unsplash.com/g0zwKn5vslI" width="50" height="50" />
-                                <!-- name of bidder  -->
-                                <div>
-                                    <div class="bidder__name fw-bold mb-1">Jason</div>
-                                    <div class="bidder__phone text-body-secondary">81234567</div>
-                                </div>
+                            <!-- name of bidder  -->
+                            <div>
+                                <div class="bidder__name fw-bold mb-1">Jason</div>
+                                <div class="bidder__phone text-body-secondary">81234567</div>
                             </div>
 
                             <div>
@@ -438,14 +426,10 @@ function handleActiveTab(tab) {
                     <div class="user__profile mb-3">
                         <!-- user picture -->
                         <div class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex align-items-center">
-                                <img id="viewer-picture" class="rounded-circle d-flex object-fit-cover me-3" alt="avatar1"
-                                    src="https://source.unsplash.com/g0zwKn5vslI" width="50" height="50" />
-                                <!-- name of bidder  -->
-                                <div>
-                                    <div class="bidder__name fw-bold mb-1">Shi Da</div>
-                                    <div class="bidder__phone text-body-secondary">81234567</div>
-                                </div>
+                            <!-- name of bidder  -->
+                            <div>
+                                <div class="bidder__name fw-bold mb-1">Shi Da</div>
+                                <div class="bidder__phone text-body-secondary">81234567</div>
                             </div>
 
                             <div>
@@ -460,13 +444,9 @@ function handleActiveTab(tab) {
 
         <!-- Seller information if user is customer -->
         <div v-else class="right__container py-4 ms-lg-4 border rounded">
-          <div class="container-fluid d-flex justify-content-center">
-            <div class="row justify-content-between mb-4">
-              <div class="col-3 d-flex justify-content-center align-items-center">
-                <img id="seller-picture" class="rounded-circle d-flex object-fit-cover shadow-sm" alt="avatar1"
-                  src="https://source.unsplash.com/g0zwKn5vslI" width="90" height="90" />
-              </div>
-              <div class="col-8 d-flex flex-column justify-content-around align-items-start">
+          <div class="container-fluid">
+            <div class="row mb-4">
+              <div class="text-center">
                 <div class="fw-bold fs-4">
                   {{balanceName}}
                 </div>
@@ -680,7 +660,7 @@ function handleActiveTab(tab) {
 <style scoped>
 /* Elements */
 .general__container {
-  width: 80%;
+  width: 90%;
   max-width: 1150px;
 }
 
@@ -776,7 +756,7 @@ h2 {
 
 .right__container {
   width: 80vw;
-  max-width: 400px;
+  max-width: 350px;
 }
 
 .modal-body {
@@ -818,10 +798,11 @@ h2 {
 .user__profile {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    margin: 0 auto;
+    width: 90%;
     border: 1px solid lightgrey;
     border-radius: 8px;
-    padding: 20px;
+    padding: 20px 30px;
 }
 
 .bidder__name {
@@ -886,16 +867,16 @@ h2 {
     align-items: center;
   } */
   .overview__description {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 700;
   }
 
   .overview__value {
-    font-size: 15px;
+    font-size: 16px;
   }
 
   .overview__unit {
-    font-size: 15px;
+    font-size: 16px;
   }
 
   .modal-dialog {
@@ -929,6 +910,24 @@ h2 {
 
   .modal-body .listing-info {
     font-size: 10px;
+  }
+}
+
+@media (max-width: 500px) {
+  .overview__description {
+    font-size: 14px;
+  }
+  
+  .overview__value {
+    font-size: 13px;
+  }
+
+  .overview__unit {
+    font-size: 13px;
+  }
+
+  .material-symbols-outlined {
+    font-size: 28px;
   }
 }
 

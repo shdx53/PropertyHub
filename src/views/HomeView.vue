@@ -190,7 +190,7 @@ function handleFilterResults(value) {
 
 <style scoped>
 header {
-  height: 500px;
+  height: 450px;
   background-image: url("https://i.imgur.com/h11kSI3.jpg");
   background-position: center;
   background-size: cover;
@@ -209,7 +209,8 @@ header::before {
 }
 
 .header__search-container {
-  width: 80%;
+  width: 90%;
+  max-width: 450px;
   margin: 0 auto;
   display: flex;
 }
@@ -253,6 +254,10 @@ header::before {
 }
 
 @media (min-width: 768px) {
+  header {
+    height: 500px;
+  }
+  
   .header__search-container {
     margin: 0;
     width: 100%;

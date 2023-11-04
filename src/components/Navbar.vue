@@ -81,7 +81,7 @@ function handleLogout() {
         <b>Property</b>Hub
       </a>
 
-      <button @click="handleNavToggle" class="navbar-toggler" type="button" data-bs-toggle="collapse"
+      <button @click="handleNavToggle" class="navbar-toggler pe-0" type="button" data-bs-toggle="collapse"
         data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
         aria-label="Toggle navigation">
         <img v-if="isNavExpanded" class="nav__close-icon" src="https://i.postimg.cc/qBspRvBQ/close.png">

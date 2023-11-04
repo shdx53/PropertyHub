@@ -69,7 +69,7 @@ function handleDelete() {
 <template>
     <Navbar/>
     <div class="container mx-auto py-5" :class="{ 'container--without-listings' : userListings.length < 3 }">
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between align-items-center">
             <h2 class="mb-4 fw-bold">My Listings</h2>
             <button @click="createlisting" type="button" class="mb-4 btn btn-primary createbtn">Create Listing</button>
         </div>
@@ -140,6 +140,10 @@ function handleDelete() {
   height: calc(100vh - 68px - 81px);
 }
 
+.createbtn {
+  font-size: 12px;
+}
+
 .createbtn:hover{
     background-color: transparent;
     color:#0d6efd;
@@ -148,6 +152,12 @@ function handleDelete() {
 
 .cancel-btn:hover {
   background-color: #f0f0f0;
+}
+
+@media (min-width: 768px) {
+  .createbtn {
+    font-size: 14px;
+  }
 }
 </style>
 

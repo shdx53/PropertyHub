@@ -80,9 +80,9 @@ onAuthStateChanged(auth, (user) => {
           </button>
         </h2>
         <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-          <div class="accordion-body">Once you have listed your home, you can customize the 5-day viewing period based on
-            your availability. Additionally, you can set a specific price for each day. Potential buyers will then bid for
-            those 5 viewing slots.</div>
+          <div class="accordion-body">Once you have listed your home, you can customize the viewing period based on
+            your availability. Potential buyers will then bid for
+            those viewing slots.</div>
         </div>
       </div>
 
@@ -119,7 +119,7 @@ onAuthStateChanged(auth, (user) => {
 
 <style scoped>
 header {
-  height: 500px;
+  height: 450px;
   background-image: url("https://i.imgur.com/UAT4jbX.jpg");
   background-position: center;
   background-size: cover;
@@ -223,6 +223,10 @@ header::before {
 }
 
 @media (min-width: 768px) {
+  header {
+    height: 500px;
+  }
+
   .card__title {
     font-size: 28px;
   }
