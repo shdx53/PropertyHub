@@ -15,7 +15,8 @@ const fileInput = ref(null);
 const form = ref(null);
 const router = useRouter();
 // Viewing window
-const date = ref(null)
+const date = ref(null);
+const viewingprice = ref(null);
 const additionalDates = ref([]);
 
 // const storage = getStorage();
@@ -69,7 +70,7 @@ const uploadFile = async (listingId) => {
 
 function generateNewDate() {
   event.preventDefault();
-  additionalDates.value.push(ref(0));
+  additionalDates.value.push({datetime: ref(null), price: ref(null)});
 }
 
 function handleSubmit() {
@@ -89,11 +90,11 @@ function handleSubmit() {
   const remainingLease = form.value["remaining-lease"].value;
   const balcony = form.value["balcony"].value;
   const viewingDate = date.value;
-  let viewingDates = [viewingDate];
+  const viewingPrice = viewingprice.value;
+  let viewingDates = [{datetime: viewingDate, price: viewingPrice, buyer: null}];
   additionalDates.value.forEach(additionalDate => {
-    console.log(additionalDate)
-    if (additionalDate.value != null && additionalDate.value != 0) {
-      viewingDates.push(additionalDate.value);
+    if (additionalDate.datetime != null && additionalDate.price != null) {
+      viewingDates.push({datetime: additionalDate.datetime, price: additionalDate.price, buyer: null});
     }
   });
 
@@ -108,20 +109,20 @@ function handleSubmit() {
       }
     } else {
       if (viewingDate == null) {
-        form.classList.add("form-control");
-        form.classList.add("is-invalid");
+        document.getElementById("viewing-date").querySelector(".dp__input").classList.add("form-control");
+        document.getElementById("viewing-date").querySelector(".dp__input").classList.add("is-invalid");
         document.getElementById("viewing-date").classList.add("is-invalid");
         isFormValid = false;
       } else if (document.getElementById("viewing-date").classList.contains("is-invalid")) {
-        form.classList.remove("form-control");
-        form.classList.remove("is-invalid");
+        document.getElementById("viewing-date").querySelector(".dp__input").classList.remove("form-control");
+        document.getElementById("viewing-date").querySelector(".dp__input").classList.remove("is-invalid");
         document.getElementById("viewing-date").classList.remove("is-invalid");
       }
     }
   })
 
   // Store listing in Firebase
-  if (!isFormValid) {
+  if (isFormValid) {
     const colRef = collection(db, "listings");
 
     addDoc(colRef, {
@@ -307,18 +308,40 @@ function handleSubmit() {
           <hr class="d-lg-none" />
           <div class="fw-bold fs-5 mb-2">Customize viewing window</div>
 
-          <div class="mb-3 d-flex flex-column">
-            <VueDatePicker v-model="date" :min-date="new Date()" id="viewing-date" class="" time-picker-inline
-              :is-24="false"></VueDatePicker>
-            <div class="invalid-feedback">
-              Field is required
+          <div class="mb-3 d-flex flex-row">
+            <div class="input-group">
+              <VueDatePicker v-model="date" :min-date="new Date()" id="viewing-date" class="" time-picker-inline
+                :is-24="false"></VueDatePicker>
+              <div class="invalid-feedback">
+                Field is required
+              </div>
             </div>
-            <button class="add-date-btn" @click="generateNewDate">+ Add new date</button>
+            <div class="input-group viewingdates-price">
+              <div class="input-group-prepend">
+                <span class="input-group-text rounded-0 rounded-start-2">$</span>
+              </div>
+              <input type="number" class="form-control" v-model="viewingprice" required />
+              <div class="invalid-feedback">
+                Field is required
+              </div>
+            </div>
           </div>
 
+          <button class="add-date-btn" @click="generateNewDate">+ Add new date</button>
+
           <div class="mb-3" id="additional-viewingdates">
-            <VueDatePicker v-for="dateItem, dateIndex in additionalDates" :key="dateIndex" v-model="dateItem.value"
+            <div class="d-flex flex-row" v-for="dateItem, dateIndex in additionalDates" :key="dateIndex">
+              <VueDatePicker v-model="dateItem.datetime"
               :min-date="new Date()" class="viewing-dates" time-picker-inline :is-24="false"></VueDatePicker>
+              <div class="input-group viewingdates-price">
+                <div class="input-group-prepend">
+                  <span class="input-group-text rounded-0 rounded-start-2">$</span>
+                </div>
+                <input type="number" class="form-control" v-model="dateItem.price" />
+              </div>
+            </div>
+            <!-- <VueDatePicker v-for="dateItem, dateIndex in additionalDates" :key="dateIndex" v-model="dateItem.value"
+              :min-date="new Date()" class="viewing-dates" time-picker-inline :is-24="false"></VueDatePicker> -->
           </div>
         </div>
       </div>
@@ -369,14 +392,32 @@ h2 {
   border-radius: 8px;
   padding: 5px 10px;
   margin-top: 5px;
+  width: 100%;
+  margin-bottom: 1rem;
 }
 
 .add-date-btn:hover {
   background-color: #f0f0f0;
 }
 
+#viewing-date.form-control.is-invalid {
+  border: 0;
+  background-image: none;
+  padding: 0;
+}
+
+.dp__pointer.is-invalid {
+  border: 1px solid #DC3545;
+}
+
 .viewing-dates {
   margin-bottom: 20px;
+}
+
+.viewingdates-price {
+  width: 55%;
+  height: 100%;
+  margin-left: 10px;
 }
 
 @media (min-width: 992px) {
@@ -390,7 +431,7 @@ h2 {
   }
 
   .customize-viewing-window__container {
-    width: 38%;
+    width: 42%;
   }
 }
 </style>
