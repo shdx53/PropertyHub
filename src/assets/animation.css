@@ -1,0 +1,41 @@
+
+/* Slide In From Left Animation */
+.slide-in-left {
+    animation-name: slideInLeft;
+    animation-duration: 1s;
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Slide In From Right Animation */
+.slide-in-right {
+    animation-name: slideInRight;
+    animation-duration: 1s;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+
+
+
+
+
+

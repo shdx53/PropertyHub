@@ -4,6 +4,7 @@ import Footer from "../components/Footer.vue";
 import { ref } from 'vue';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
+
 const auth = getAuth();
 let isSignedIn = ref(false);
 
@@ -28,7 +29,7 @@ onAuthStateChanged(auth, (user) => {
 
   <!-- Benefits -->
   <section class="general__container mb-5">
-    <div class="card__container d-sm-flex">
+    <div class="card__container d-sm-flex slide-in-left">
       <img src="https://i.postimg.cc/wj726CW6/christin-hume-Hcfwew744z4-unsplash.jpg" class="card__img mb-4 mb-sm-0">
 
       <div class="card__text-container ms-sm-3 ms-lg-4">
@@ -42,7 +43,7 @@ onAuthStateChanged(auth, (user) => {
       </div>
     </div>
 
-    <div class="card__container card__container--flex">
+    <div class="card__container card__container--flex slide-in-right">
       <div class="card__text-container me-sm-3 me-lg-4">
         <div>
           <h3 class="fw-bold card__title">16,800+</h3>
@@ -54,7 +55,7 @@ onAuthStateChanged(auth, (user) => {
       <img src="https://i.postimg.cc/908k1Y4Y/oppo-find-x5-pro-m-Cxk-ba7-CJ8-unsplash.jpg" class="card__img mb-4 mb-sm-0">
     </div>
 
-    <div class="card__container d-sm-flex">
+    <div class="card__container d-sm-flex slide-in-left">
       <img src="https://i.postimg.cc/9FbHSy9T/amos-lee-5-Rc4do-Ynu94-unsplash.jpg" class="card__img mb-4 mb-sm-0">
 
       <div class="card__text-container ms-sm-3 ms-lg-4">
@@ -118,6 +119,8 @@ onAuthStateChanged(auth, (user) => {
 </template>
 
 <style scoped>
+@import './src/assets/animation.css';
+
 header {
   height: 450px;
   background-image: url("https://i.imgur.com/UAT4jbX.jpg");
