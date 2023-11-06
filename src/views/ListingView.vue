@@ -31,7 +31,7 @@ const imgPath = ref("");
 const viewingDates = ref([])
 const imgUrl = ref("")
 
- // init balance objs
+// init balance objs
 const balanceEmail = ref("");
 const balanceName = ref("");
 const balancePhone = ref("");
@@ -65,12 +65,12 @@ onSnapshot(listingDocRef, listing => {
   const storage = getStorage();
   const storageReference = storageRef(storage, imgPath.value);
   getDownloadURL(storageReference)
-    .then((url)=>{
+    .then((url) => {
       console.log(url);
       imgUrl.value = url;
 
     })
-  
+
 
   // handle balance data
   balanceEmail.value = listing.value.userEmail;
@@ -105,7 +105,7 @@ if (auth.currentUser) {
   userId.value = auth.currentUser.uid;
   userEmail.value = auth.currentUser.email;
   isLoggedIn.value = true;
-  
+
   customersDocRef = doc(db, "customers", userId.value);
 }
 
@@ -178,11 +178,11 @@ function handleFavorite() {
 let activeTab = ref("view");
 
 function handleActiveTab(tab) {
-    if (tab == "view") {
-        activeTab.value = "view";
-    } else {
-        activeTab.value = "purchase";
-    }
+  if (tab == "view") {
+    activeTab.value = "view";
+  } else {
+    activeTab.value = "purchase";
+  }
 }
 
 </script>
@@ -205,8 +205,7 @@ function handleActiveTab(tab) {
       <div class="carousel-inner">
         <!-- Elements: custom-carousel__item -->
         <div class="carousel-item active custom-carousel__item">
-          <img :src="imgUrl" class="d-block w-100 rounded"
-            alt="Slide 1">
+          <img :src="imgUrl" class="d-block w-100 rounded" alt="Slide 1">
         </div>
 
         <!-- Add more carousel items as needed -->
@@ -343,7 +342,8 @@ function handleActiveTab(tab) {
           <section class="mb-5">
             <div>
               <h2>Nearby Amenities</h2>
-              <GoogleMaps v-if="address && listedPrice && imgPath" :address="address" :listedPrice="listedPrice" :imgPath="imgPath"/>
+              <GoogleMaps v-if="address && listedPrice && imgPath" :address="address" :listedPrice="listedPrice"
+                :imgPath="imgPath" />
             </div>
           </section>
         </div>
@@ -354,92 +354,92 @@ function handleActiveTab(tab) {
         <!-- Dashboard if user is seller -->
         <div v-if="userEmail == balanceEmail" class="right__container mx-2 ms-lg-4">
           <h2 class="dashboard__title fw-bold mb-3">Your Dashboard</h2>
-            <div class="nav__bar">
-                <ul class="nav nav-tabs mb-3">
-                    <li class="nav-item">
-                        <a class="nav-link fw-bold" @click="handleActiveTab('view')"
-                            :class="{ active: activeTab == 'view' }">View</a>
-                    </li>
-                    <li class="nav-item fw-bold">
-                        <a class="nav-link" @click="handleActiveTab('purchase')"
-                            :class="{ active: activeTab == 'purchase' }">Purchase</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="buyer__info">
-                <div v-if="activeTab == 'view'" class="view__container">
+          <div class="nav__bar">
+            <ul class="nav nav-tabs mb-3">
+              <li class="nav-item">
+                <a class="nav-link fw-bold" @click="handleActiveTab('view')"
+                  :class="{ active: activeTab == 'view' }">View</a>
+              </li>
+              <li class="nav-item fw-bold">
+                <a class="nav-link" @click="handleActiveTab('purchase')"
+                  :class="{ active: activeTab == 'purchase' }">Purchase</a>
+              </li>
+            </ul>
+          </div>
+          <div class="buyer__info">
+            <div v-if="activeTab == 'view'" class="view__container">
+              <div>
+                <!-- First set of content for the "View" tab -->
+                <div class="user__profile mb-3">
+                  <!-- user picture -->
+                  <div class="d-flex justify-content-between align-items-center">
+                    <!-- name of bidder  -->
                     <div>
-                        <!-- First set of content for the "View" tab -->
-                        <div class="user__profile mb-3">
-                            <!-- user picture -->
-                            <div class="d-flex justify-content-between align-items-center">
-                                <!-- name of bidder  -->
-                                <div>
-                                    <div class="bidder__name fw-bold mb-1">Jason</div>
-                                    <div class="bidder__phone text-body-secondary">81234567</div>
-                                </div>
-
-                                <div>
-                                    <div class="date__title fw-bold mb-1">Date:</div>
-                                    <div class="date__value text-body-secondary">30 Oct 2023, 22:00</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="user__profile mb-3">
-                            <!-- user picture -->
-                            <div class="d-flex justify-content-between align-items-center">  
-                                  <!-- name of bidder  -->
-                                  <div>
-                                      <div class="bidder__name fw-bold mb-1">Shi Da</div>
-                                      <div class="bidder__phone text-body-secondary">81234567</div>
-                                  </div>
-
-                                <div>
-                                    <div class="date__title fw-bold mb-1">Date:</div>
-                                    <div class="date__value text-body-secondary">30 Oct 2023, 22:00</div>
-                                </div>
-                            </div>
-                        </div>
+                      <div class="bidder__name fw-bold mb-1">Jason</div>
+                      <div class="bidder__phone text-body-secondary">81234567</div>
                     </div>
+
+                    <div>
+                      <div class="date__title fw-bold mb-1">Date:</div>
+                      <div class="date__value text-body-secondary">30 Oct 2023, 22:00</div>
+                    </div>
+                  </div>
                 </div>
 
-                <div v-else class="purchase__container">
-                    <!-- <h3>Bidder's profile</h3> -->
-                    <!-- First set of content for the "Purchase" tab -->
-                    <div class="user__profile mb-3">
-                        <!-- user picture -->
-                        <div class="d-flex justify-content-between align-items-center">
-                            <!-- name of bidder  -->
-                            <div>
-                                <div class="bidder__name fw-bold mb-1">Jason</div>
-                                <div class="bidder__phone text-body-secondary">81234567</div>
-                            </div>
-
-                            <div>
-                                <div class="bid-price__title fw-bold mb-1">Bid Price:</div>
-                                <div class="bid-price__value text-body-secondary">$550,000</div>
-                            </div>
-                        </div>
+                <div class="user__profile mb-3">
+                  <!-- user picture -->
+                  <div class="d-flex justify-content-between align-items-center">
+                    <!-- name of bidder  -->
+                    <div>
+                      <div class="bidder__name fw-bold mb-1">Shi Da</div>
+                      <div class="bidder__phone text-body-secondary">81234567</div>
                     </div>
 
-                    <div class="user__profile mb-3">
-                        <!-- user picture -->
-                        <div class="d-flex justify-content-between align-items-center">
-                            <!-- name of bidder  -->
-                            <div>
-                                <div class="bidder__name fw-bold mb-1">Shi Da</div>
-                                <div class="bidder__phone text-body-secondary">81234567</div>
-                            </div>
-
-                            <div>
-                                <div class="bid-price__title fw-bold mb-1">Bid Price:</div>
-                                <div class="bid-price__value text-body-secondary">$550,000</div>
-                            </div>
-                        </div>
+                    <div>
+                      <div class="date__title fw-bold mb-1">Date:</div>
+                      <div class="date__value text-body-secondary">30 Oct 2023, 22:00</div>
                     </div>
+                  </div>
                 </div>
+              </div>
             </div>
+
+            <div v-else class="purchase__container">
+              <!-- <h3>Bidder's profile</h3> -->
+              <!-- First set of content for the "Purchase" tab -->
+              <div class="user__profile mb-3">
+                <!-- user picture -->
+                <div class="d-flex justify-content-between align-items-center">
+                  <!-- name of bidder  -->
+                  <div>
+                    <div class="bidder__name fw-bold mb-1">Jason</div>
+                    <div class="bidder__phone text-body-secondary">81234567</div>
+                  </div>
+
+                  <div>
+                    <div class="bid-price__title fw-bold mb-1">Bid Price:</div>
+                    <div class="bid-price__value text-body-secondary">$550,000</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="user__profile mb-3">
+                <!-- user picture -->
+                <div class="d-flex justify-content-between align-items-center">
+                  <!-- name of bidder  -->
+                  <div>
+                    <div class="bidder__name fw-bold mb-1">Shi Da</div>
+                    <div class="bidder__phone text-body-secondary">81234567</div>
+                  </div>
+
+                  <div>
+                    <div class="bid-price__title fw-bold mb-1">Bid Price:</div>
+                    <div class="bid-price__value text-body-secondary">$550,000</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Seller information if user is customer -->
@@ -448,13 +448,13 @@ function handleActiveTab(tab) {
             <div class="row mb-4">
               <div class="text-center">
                 <div class="fw-bold fs-4">
-                  {{balanceName}}
+                  {{ balanceName }}
                 </div>
                 <div>
-                  {{balanceEmail}}
+                  {{ balanceEmail }}
                 </div>
                 <div>
-                  {{balancePhone}}
+                  {{ balancePhone }}
                 </div>
               </div>
             </div>
@@ -476,7 +476,7 @@ function handleActiveTab(tab) {
             </button>
           </div>
         </div>
-      
+
       </div> <!-- End of Right column -->
     </div> <!-- End of ListingOverview | User-CTA -->
 
@@ -508,24 +508,24 @@ function handleActiveTab(tab) {
               <div class="col-4 text-center d-flex justify-content-center align-items-center">
                 <img :src="imgUrl" class="rounded w-100 h-150">
               </div>
-              <div class="col-8 text-center">
+              <div class="col-8 text-center px-1">
                 <div class="text-start d-flex flex-column justify-content-between h-100">
                   <div>
-                    <span id="modal-property-title">{{address}}</span>
+                    <span id="modal-property-title">{{ address }}</span>
 
                     <!-- icons -->
                     <div id="modal-icons" class="d-flex mt-2">
                       <div class="me-3 icon-container">
                         <div class="d-flex align-items-center">
-                          <span class="material-symbols-outlined me-2" style="font-size:24px">bed</span>
-                          <div class="icon-text">{{bedrooms}}</div>
+                          <span class="material-symbols-outlined me-2">bed</span>
+                          <div class="icon-text">{{ bedrooms }}</div>
                         </div>
                         <div class="listing-info text-muted">Bedrooms</div>
                       </div>
 
                       <div class="me-3 icon-container">
                         <div class="d-flex align-items-center">
-                          <span class="material-symbols-outlined me-2" style="font-size:24px">bathtub</span>
+                          <span class="material-symbols-outlined me-2">bathtub</span>
                           <div class="icon-text">{{ bathrooms }}</div>
                         </div>
                         <div class="listing-info text-muted">Bathrooms</div>
@@ -533,7 +533,7 @@ function handleActiveTab(tab) {
 
                       <div>
                         <div class="d-flex align-items-center">
-                          <span class="material-symbols-outlined me-2" style="font-size:24px">crop_square</span>
+                          <span class="material-symbols-outlined me-2">crop_square</span>
                           <div class="icon-text">{{ floorSize }} sqft</div>
                         </div>
                         <div class="listing-info text-muted">Living Area</div>
@@ -545,7 +545,7 @@ function handleActiveTab(tab) {
                   <select class="form-select" aria-label="Default select example">
                     <option disabled selected>Timeslots</option>
                     <option v-for="viewingDate in viewingDates" :value="viewingDate">
-                      {{ viewingDate.toDate().toLocaleString(undefined,{
+                      {{ viewingDate.toDate().toLocaleString(undefined, {
                         day: 'numeric',
                         month: 'short',
                         year: 'numeric',
@@ -566,7 +566,7 @@ function handleActiveTab(tab) {
           </div>
         </div>
         <div class="modal-footer justify-content-center">
-          <button @click="console.log('test')" type="button" class="btn btn-primary">Submit Deposit</button>
+          <button @click="console.log('test')" type="button" class="btn btn-primary btn--submit">Submit Deposit</button>
         </div>
       </div>
     </div>
@@ -599,16 +599,16 @@ function handleActiveTab(tab) {
               <div class="col-4 text-center d-flex justify-content-center align-items-center my-auto">
                 <img :src="imgUrl" class="rounded w-100 h-150">
               </div>
-              <div class="col-8 text-center">
+              <div class="col-8 text-center px-1">
                 <div class="text-start d-flex flex-column justify-content-between h-100">
                   <div>
                     <span id="modal-property-title">{{ address }}</span>
 
                     <!-- icons -->
-                    <div id="modal-icons" class="d-flex mt-2">
+                    <div id="modal-icons" class="d-flex mt-1">
                       <div class="me-3 icon-container">
                         <div class="d-flex align-items-center">
-                          <span class="material-symbols-outlined me-2" style="font-size:24px">bed</span>
+                          <span class="material-symbols-outlined me-2">bed</span>
                           <div class="icon-text">{{ bedrooms }}</div>
                         </div>
                         <div class="listing-info text-muted">Bedrooms</div>
@@ -616,7 +616,7 @@ function handleActiveTab(tab) {
 
                       <div class="me-3 icon-container">
                         <div class="d-flex align-items-center">
-                          <span class="material-symbols-outlined me-2" style="font-size:24px">bathtub</span>
+                          <span class="material-symbols-outlined me-2">bathtub</span>
                           <div class="icon-text">{{ bathrooms }}</div>
                         </div>
                         <div class="listing-info text-muted">Bathrooms</div>
@@ -624,8 +624,8 @@ function handleActiveTab(tab) {
 
                       <div>
                         <div class="d-flex align-items-center">
-                          <span class="material-symbols-outlined me-2" style="font-size:24px">crop_square</span>
-                          <div class="icon-text">{{floorSize}} sqft</div>
+                          <span class="material-symbols-outlined me-2">crop_square</span>
+                          <div class="icon-text">{{ floorSize }} sqft</div>
                         </div>
                         <div class="listing-info text-muted">Living Area</div>
                       </div>
@@ -635,11 +635,11 @@ function handleActiveTab(tab) {
                   <div class="input-div">
                     <div class="input-group">
                       <span class="input-group-text" id="basic-addon1">$</span>
-                      <input type="number" class="form-control" placeholder="Bid Price" aria-label="Bid Price"
-                        aria-describedby="basic-addon1" >
-                        <!-- :value="bid" -->
+                      <input type="number" class="form-control input-group-value" placeholder="Bid Price"
+                        aria-label="Bid Price" aria-describedby="basic-addon1">
+                      <!-- :value="bid" -->
                     </div>
-                    <div class="text-start" style="font-size: 12px;">Current Listing Price to Beat: $ </div>
+                    <div class="text-start highest-bid">Current Listing Price to Beat: $ </div>
                   </div>
                 </div>
               </div>
@@ -647,7 +647,7 @@ function handleActiveTab(tab) {
           </div>
         </div>
         <div class="modal-footer justify-content-center">
-          <button @click="console.log('test')" type="button" class="btn btn-primary">Submit Bid</button>
+          <button @click="console.log('test')" type="button" class="btn btn-primary btn--submit">Submit Bid</button>
         </div>
       </div>
     </div>
@@ -665,7 +665,7 @@ function handleActiveTab(tab) {
 }
 
 .material-symbols-outlined {
-  font-size: 30px;
+  font-size: 22px;
   font-weight: 300;
 }
 
@@ -777,52 +777,73 @@ h2 {
 }
 
 .dashboard__title {
-    font-size: 16px;
+  font-size: 16px;
 }
 
 .nav-link {
-    color: black;
-    font-size: 12px;
-    cursor: pointer;
+  color: black;
+  font-size: 12px;
+  cursor: pointer;
 }
 
 .active {
-    color: #0b5ed7 !important;
+  color: #0b5ed7 !important;
 }
 
 .bid__date-time {
-    font-weight: bold;
-    font-size: 14px;
+  font-weight: bold;
+  font-size: 14px;
 }
 
 .user__profile {
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    width: 90%;
-    border: 1px solid lightgrey;
-    border-radius: 8px;
-    padding: 20px 30px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 90%;
+  border: 1px solid lightgrey;
+  border-radius: 8px;
+  padding: 20px 30px;
 }
 
 .bidder__name {
-    font-size: 16px;
+  font-size: 16px;
 }
 
 .bidder__phone {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .bid-price__title,
 .date__title {
-    font-size: 16px;
+  font-size: 16px;
 }
 
 .bid-price__value,
 .date__value {
-    font-size: 14px;
+  font-size: 14px;
 }
 
+.form-select,
+.btn--submit {
+  font-size: 14px;
+}
+
+.input-div {
+  max-width: 200px;
+}
+
+.highest-bid {
+  margin-top: 2px;
+}
+
+.input-group-text,
+.input-group-value {
+  font-size: 14px;
+}
+
+.highest-bid {
+  font-size: 10px;
+}
 
 /* responsiveness */
 @media (min-width: 1150px) {
@@ -850,13 +871,13 @@ h2 {
     width: 100%;
     max-width: 400px;
     margin: 0 auto;
-}
+  }
 
   .purchase__container {
     width: 100%;
     max-width: 350px;
     margin: 0 auto;
-}
+  }
 }
 
 @media (max-width: 585px) {
@@ -880,36 +901,24 @@ h2 {
   }
 
   .modal-dialog {
-    width: 80vw;
+    width: 90vw;
     margin: auto;
   }
 
-  #modal-icons {
-    justify-content: center;
-    align-items: center;
-  }
-
   .modal-body .icon-text {
-    font-size: 13px;
-  }
-
-  .modal-body .icon-container {
-    margin-left: 1rem
+    font-size: 16px;
   }
 
   .modal-body .input-group {
     justify-content: center;
   }
 
-
   .modal-body #modal-property-title {
-    font-size: 16px;
-    display: flex;
-    justify-content: center;
+    font-size: 18px;
   }
 
   .modal-body .listing-info {
-    font-size: 10px;
+    font-size: 12px;
   }
 }
 
@@ -917,7 +926,7 @@ h2 {
   .overview__description {
     font-size: 14px;
   }
-  
+
   .overview__value {
     font-size: 13px;
   }
@@ -927,23 +936,76 @@ h2 {
   }
 
   .material-symbols-outlined {
-    font-size: 28px;
+    font-size: 26px;
+  }
+
+  .icon-text {
+    font-size: 14px;
+  }
+
+  .modal-body .listing-info {
+    display: none;
+  }
+
+  .input-group-text,
+  .input-group-value {
+    font-size: 12px;
+  }
+
+  .highest-bid {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 450px) {
+  .property-title {
+    font-size: 22px;
+  }
+
+  .property-price {
+    font-size: 20px;
+  }
+
+  .material-symbols-outlined {
+    font-size: 24px;
+  }
+
+  .modal-body #modal-property-title {
+    font-size: 14px;
+  }
+
+  .modal-body .icon-text {
+    font-size: 12px;
+  }
+
+  .form-select,
+  .btn--submit {
+    font-size: 12px;
+  }
+
+  .input-div {
+    margin-top: 10px;
+    max-width: 160px;
+  }
+
+  .highest-bid {
+    font-size: 8px;
   }
 }
 
 @media (max-width:800px) {
-    .nav__bar {
-        justify-content: start;
-    }
+  .nav__bar {
+    justify-content: start;
+  }
 
-    .buyer__info {
-        justify-content: center;
-    }
+  .buyer__info {
+    justify-content: center;
+  }
 }
 
 @media (min-width: 1150px) {
-    .dashboard__title {
-        font-size: 20px;
-    }
+  .dashboard__title {
+    font-size: 20px;
+  }
 }
 </style>
