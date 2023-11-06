@@ -84,11 +84,15 @@ function displayListings(query, listings) {
     if (addressInput.value) {
       listings.value = listings.value.filter(listing => {
         const address = listing[1].address.toLowerCase();
+        if (addressInput.value.includes("Singapore")) {
+          addressInput.value = addressInput.value.split(",");
+          addressInput.value = addressInput.value[0];
+        }
         return address.includes(addressInput.value.toLowerCase())
       })
     }
 
-    if (submittedFilterTowns.value) {
+    if (submittedFilterTowns.value.length > 0) {
       const filteredListings = [];
       if (Array.isArray(submittedFilterTowns.value)) {
         for (const filterTown of submittedFilterTowns.value) {
@@ -122,6 +126,7 @@ function displayListings(query, listings) {
       })
     }
   })
+
   buyListingsKey.value += 1;
 }
 
@@ -213,7 +218,7 @@ displayListings(listingsQuery, listings);
       </div>
 
       <div class="mt-2 d-flex flex-wrap">
-        <div v-if="submittedFilterTowns && isSearch" class="flair">
+        <div v-if="submittedFilterTowns && submittedFilterTowns.length > 0 && isSearch" class="flair">
           <div>
             <span class="fw-bold">Towns: </span>
             <span v-if="Array.isArray(submittedFilterTowns)">
