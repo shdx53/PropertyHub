@@ -281,6 +281,7 @@ import Footer from "../components/Footer.vue";
 </style>
 
 <script>
+//External libraries
 import {
   getFirestore,
   getDocs,
@@ -293,11 +294,8 @@ import {
   getDoc,
   updateDoc,
 } from "firebase/firestore";
-
-// import { firebaseAuth } from "@/firebase";
 import { db, getCurrentUser } from "../firebase/index.js";
 import { loadStripe } from "@stripe/stripe-js";
-
 
 export default {
   data() {

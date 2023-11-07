@@ -1,9 +1,11 @@
 <script setup>
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
-import { ref } from 'vue';
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 import '../assets/animation.css';
+import { ref } from 'vue';
+
+//External libraries
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const auth = getAuth();
 let isSignedIn = ref(false);

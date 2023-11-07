@@ -1,5 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
+
+// External libraries
 import { Loader } from "@googlemaps/js-api-loader";
 
 let addressInput = ref(null);

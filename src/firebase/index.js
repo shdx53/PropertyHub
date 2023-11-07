@@ -1,3 +1,4 @@
+// External libraries
 // import { apiKey, messagingSenderId, appId, measurementId } from "../config.js";
 import "firebase/firestore";
 

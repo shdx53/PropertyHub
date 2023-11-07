@@ -2,8 +2,10 @@
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
 import GoogleMaps from "../components/ListingView/GoogleMaps.vue";
-import { useRoute } from 'vue-router';
 import { ref } from "vue";
+
+// External libraries
+import { useRoute } from 'vue-router';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, getFirestore, updateDoc, collection, getDoc, arrayUnion, onSnapshot } from "firebase/firestore";
 import { getStorage, ref as storageRef, getDownloadURL } from "firebase/storage";

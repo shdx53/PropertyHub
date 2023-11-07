@@ -117,8 +117,10 @@ input::placeholder {
 </style>
 
 <script setup>
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { ref } from "vue";
+
+// External libraries
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "vue-router";
 
 const email = ref("");

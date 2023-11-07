@@ -23,8 +23,10 @@
 </template>
 
 <script setup>
-import { Loader } from "@googlemaps/js-api-loader";
 import { ref } from 'vue';
+
+// External libraries
+import { Loader } from "@googlemaps/js-api-loader";
 import { getDownloadURL, getStorage, ref as storageRef } from "firebase/storage";
 
 let gmap = ref(null);
