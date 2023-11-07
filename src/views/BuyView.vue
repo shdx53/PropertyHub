@@ -4,8 +4,10 @@ import GoogleMaps from "../components/BuyView/GoogleMaps.vue";
 import Footer from "../components/Footer.vue";
 import Listing from "../components/BuyView/Listing.vue";
 import Filter from "../components/Filter.vue";
-import { ref, computed } from "vue";
 import Autocomplete from "../components/Autocomplete.vue";
+import { ref, computed } from "vue";
+
+// External libraries
 import { getFirestore, collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useRoute, useRouter } from 'vue-router';
 

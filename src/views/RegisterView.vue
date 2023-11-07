@@ -142,10 +142,12 @@ input::placeholder {
 </style>
 
 <script setup>
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 import { db } from "../firebase/index.js";
+
+// External libraries
+import { useRouter } from "vue-router";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
 
 const email = ref("");

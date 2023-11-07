@@ -3,6 +3,8 @@ import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
 import Autocomplete from "../components/CreateListingView/Autocomplete.vue";
 import { ref } from "vue";
+
+// External libraries
 import { storage, getCurrentUser } from "../firebase/index.js";
 import { ref as storageRef, uploadBytes } from "firebase/storage";
 import { doc, updateDoc, getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";

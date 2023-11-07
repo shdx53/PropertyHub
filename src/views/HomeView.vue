@@ -4,10 +4,13 @@ import Listing from "../components/HomeView/Listing.vue";
 import Footer from "../components/Footer.vue";
 import Filter from "../components/Filter.vue";
 import Autocomplete from "../components/Autocomplete.vue";
+import '../assets/animation.css';
 import { ref } from "vue";
+
+// External libraries
 import { getFirestore, collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useRouter } from "vue-router";
-import '../assets/animation.css';
+
 
 // Filter
 let isDisplayFilter = ref(false);

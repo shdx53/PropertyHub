@@ -1,19 +1,10 @@
 <script setup>
 import { ref } from 'vue';
+
+// External libraries
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { db, getCurrentUser } from "../firebase/index.js";
-import {
-  getFirestore,
-  getDocs,
-  where,
-  query,
-  collection,
-  addDoc,
-  onSnapshot,
-  doc,
-  getDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { useRouter } from "vue-router";
 
 const auth = getAuth();

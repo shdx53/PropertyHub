@@ -2,12 +2,14 @@
 import Footer from "../components/Footer.vue";
 import Navbar from "../components/Navbar.vue";
 import Listing from "../components/MyListingsView/Listing.vue";
-import { useRouter } from "vue-router";
 import { ref } from "vue";
+
+// External libraries
+import { useRouter } from "vue-router";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { doc, getFirestore, collection, onSnapshot, deleteDoc } from "firebase/firestore";
+import { doc, getFirestore, collection, onSnapshot, deleteDoc, query, where } from "firebase/firestore";
 import { getStorage, deleteObject, ref as storageRef } from "firebase/storage";
-import { query, where } from "firebase/firestore";
+
 const router = useRouter();
 const createlisting = () => {
   router.push("/create-listing");
