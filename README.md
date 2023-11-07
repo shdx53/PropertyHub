@@ -18,3 +18,18 @@ $ npm install
 # Run the app
 $ npm run dev
 ```
+## User Accounts
+Two user accounts have already been created: Chason Jui (seller) has populated listings for sale and "Lua Hua Feong" (buyer) has preset balance. Alternatively, you can create your own account.
+
+<ul>
+  <li>Chason Jui</li>
+  <ul>
+    <li>Email Address: chasonjui@gmail.com</li>
+    <li>Password: chasonjui123</li>
+  </ul>
+  <li>Lua Hua Feong</li>
+  <ul>
+    <li>Email Address: luahuafeong@gmail.com</li>
+    <li>Password: luahuafeong123</li>
+  </ul>
+</ul>
