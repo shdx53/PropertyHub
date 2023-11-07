@@ -1,10 +1,6 @@
 <script setup>
 import Navbar from "../components/Navbar.vue";
-
 import Footer from "../components/Footer.vue";
-
-import Filter from "../components/FIlter.vue";
-import { useRouter } from "vue-router";
 </script>
 <template>
   <Navbar />

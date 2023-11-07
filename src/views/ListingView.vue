@@ -2,13 +2,11 @@
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
 import GoogleMaps from "../components/ListingView/GoogleMaps.vue";
-
 import { useRoute } from 'vue-router';
 import { ref } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, getFirestore, updateDoc, collection, getDoc, arrayUnion, onSnapshot } from "firebase/firestore";
 import { getStorage, ref as storageRef, getDownloadURL } from "firebase/storage";
-import { query, where } from "firebase/firestore";
 
 // init listing objs
 const route = useRoute();
@@ -881,12 +879,12 @@ h2 {
 }
 
 @media (max-width: 585px) {
-
   /* div.property-info__container{
     width: 80%;
     margin:auto;
     align-items: center;
   } */
+
   .overview__description {
     font-size: 16px;
     font-weight: 700;

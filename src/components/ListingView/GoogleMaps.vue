@@ -26,7 +26,6 @@
 import { Loader } from "@googlemaps/js-api-loader";
 import { ref } from 'vue';
 import { getDownloadURL, getStorage, ref as storageRef } from "firebase/storage";
-// import { mapsApiKey } from "../../config.js";
 
 let gmap = ref(null);
 let isTrainActive = ref(true);

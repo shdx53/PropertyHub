@@ -6,7 +6,6 @@ import Filter from "../components/Filter.vue";
 import Autocomplete from "../components/Autocomplete.vue";
 import { ref } from "vue";
 import { getFirestore, collection, onSnapshot, orderBy, query } from "firebase/firestore";
-// import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "vue-router";
 
 // Filter

@@ -9,11 +9,6 @@ const router = createRouter({
       name: "home",
       component: () => import("../views/HomeView.vue"),
     },
-    // {
-    //   path: "/home",
-    //   name: "home",
-    //   component: HomeView,
-    // },
     {
       path: "/buy",
       name: "buy",
@@ -29,17 +24,6 @@ const router = createRouter({
       name: "sell",
       component: () => import("../views/SellView.vue"),
     },
-    // {
-    //   path: "/about",
-    //   name: "about",
-    //   // route level code-splitting
-    //   // this generates a separate chunk (About.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import("../views/AboutView.vue"),
-    //   meta: {
-    //     requiresAuth: true,
-    //   },
-    // },
     {
       path: "/login",
       name: "login",
@@ -86,22 +70,6 @@ const router = createRouter({
       path: "/create-listing",
       name: "createlisting",
       component: () => import("../views/CreateListingView.vue"),
-      meta: {
-        requiresAuth: true,
-      },
-    },
-    {
-      path: "/own-listings",
-      name: "ownlistings",
-      component: () => import("../views/OwnListingsView.vue"),
-      meta: {
-        requiresAuth: true,
-      },
-    },
-    {
-      path: "/edit-listing",
-      name: "editlisting",
-      component: () => import("../views/EditListingView.vue"),
       meta: {
         requiresAuth: true,
       },

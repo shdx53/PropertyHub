@@ -4,10 +4,9 @@ import GoogleMaps from "../components/BuyView/GoogleMaps.vue";
 import Footer from "../components/Footer.vue";
 import Listing from "../components/BuyView/Listing.vue";
 import Filter from "../components/Filter.vue";
-import { ref, computed, watch } from "vue";
+import { ref, computed } from "vue";
 import Autocomplete from "../components/Autocomplete.vue";
-import { getFirestore, collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
-// import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getFirestore, collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useRoute, useRouter } from 'vue-router';
 
 let isDisplayFilter = ref(false);

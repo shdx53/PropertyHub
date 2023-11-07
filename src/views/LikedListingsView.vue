@@ -3,7 +3,7 @@ import Footer from "../components/Footer.vue";
 import Navbar from "../components/Navbar.vue";
 import Listing from "../components/BuyView/Listing.vue";
 import { ref } from "vue";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { getDoc, doc, getFirestore, collection, onSnapshot } from "firebase/firestore";
 import { getCurrentUser } from "../firebase/index.js";
 

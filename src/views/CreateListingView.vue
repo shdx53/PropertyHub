@@ -14,6 +14,7 @@ const db = getFirestore();
 const fileInput = ref(null);
 const form = ref(null);
 const router = useRouter();
+
 // Viewing window
 const date = ref(null);
 const viewingprice = ref(null);
@@ -70,7 +71,7 @@ const uploadFile = async (listingId) => {
 
 function generateNewDate() {
   event.preventDefault();
-  additionalDates.value.push({datetime: ref(null), price: ref(null)});
+  additionalDates.value.push({ datetime: ref(null), price: ref(null) });
 }
 
 function handleSubmit() {
@@ -91,10 +92,10 @@ function handleSubmit() {
   const balcony = form.value["balcony"].value;
   const viewingDate = date.value;
   const viewingPrice = viewingprice.value;
-  let viewingDates = [{datetime: viewingDate, price: viewingPrice, buyer: null}];
+  let viewingDates = [{ datetime: viewingDate, price: viewingPrice, buyer: null }];
   additionalDates.value.forEach(additionalDate => {
     if (additionalDate.datetime != null && additionalDate.price != null) {
-      viewingDates.push({datetime: additionalDate.datetime, price: additionalDate.price, buyer: null});
+      viewingDates.push({ datetime: additionalDate.datetime, price: additionalDate.price, buyer: null });
     }
   });
 
@@ -331,8 +332,8 @@ function handleSubmit() {
 
           <div class="mb-3" id="additional-viewingdates">
             <div class="d-flex flex-row" v-for="dateItem, dateIndex in additionalDates" :key="dateIndex">
-              <VueDatePicker v-model="dateItem.datetime"
-              :min-date="new Date()" class="viewing-dates" time-picker-inline :is-24="false"></VueDatePicker>
+              <VueDatePicker v-model="dateItem.datetime" :min-date="new Date()" class="viewing-dates" time-picker-inline
+                :is-24="false"></VueDatePicker>
               <div class="input-group viewingdates-price">
                 <div class="input-group-prepend">
                   <span class="input-group-text rounded-0 rounded-start-2">$</span>

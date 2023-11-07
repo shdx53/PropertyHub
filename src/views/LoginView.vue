@@ -1,22 +1,19 @@
 <!-- 
   <template>
     <div class="container text-center">
-    <h1>Sign In</h1>
-    <p><input type="text" placeholder="Email" v-model="email" /></p>
-    <p><input type="text" placeholder="Password" v-model="password" /></p>
-    <p>
-      <button @click="signIn">Submit</button
-      ><button @click="handleRegi">Register</button>
-    </p>
-    <p><button @click="signInWithGoogle">Sign In With Google</button></p>
-    <p>{{ errMsg }}</p>
-  </div>
-
-
+      <h1>Sign In</h1>
+      <p><input type="text" placeholder="Email" v-model="email" /></p>
+      <p><input type="text" placeholder="Password" v-model="password" /></p>
+      <p>
+        <button @click="signIn">Submit</button
+        ><button @click="handleRegi">Register</button>
+      </p>
+      <p><button @click="signInWithGoogle">Sign In With Google</button></p>
+      <p>{{ errMsg }}</p>
+    </div>
 </template>
+-->
 
-  
-  -->
 <template>
   <!-- Navbar -->
   <Navbar></Navbar>
