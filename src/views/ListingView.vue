@@ -2,16 +2,20 @@
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
 import GoogleMaps from "../components/ListingView/GoogleMaps.vue";
+
 import { useRoute } from 'vue-router';
-import { ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { doc, getFirestore, updateDoc, collection, getDoc, arrayUnion, onSnapshot } from "firebase/firestore";
+import { doc, getFirestore, updateDoc, collection, getDoc, arrayUnion, onSnapshot, DocumentReference } from "firebase/firestore";
 import { getStorage, ref as storageRef, getDownloadURL } from "firebase/storage";
+import { query, where } from "firebase/firestore";
+import { getCurrentUser } from "../firebase";
+
+var msg = ref("");
 
 // init listing objs
 const route = useRoute();
 const listingId = route.query.listingId;
-const listing = ref(null);
 const address = ref("");
 const listedPrice = ref(null);
 const about = ref("");
@@ -22,17 +26,21 @@ const floorSize = ref("");
 const remainingLease = ref("");
 const tenure = ref("");
 const type = ref("");
-const dateOfEntry = ref("");
+const dateOfEntry = ref(null);
 const level = ref("");
 const favoriteCounts = ref("");
 const imgPath = ref("");
 const viewingDates = ref([])
 const imgUrl = ref("")
 
-// init balance objs
-const balanceEmail = ref("");
-const balanceName = ref("");
-const balancePhone = ref("");
+// init seller objs
+const sellerEmail = ref("");
+const sellerName = ref("");
+const sellerPhone = ref("");
+const sellerBal = ref(null);
+
+// init combined viewingDates w Buyer info
+var bidArr = ref([])
 
 // fetch data and add it to objects
 const db = getFirestore();
@@ -58,28 +66,50 @@ onSnapshot(listingDocRef, listing => {
   favoriteCounts.value = listing.value.favoriteCounts;
   imgPath.value = listing.value.imgPath;
   viewingDates.value = listing.value.viewingDates;
+  bidArr = viewingDates.value
 
   // handle image storage
   const storage = getStorage();
   const storageReference = storageRef(storage, imgPath.value);
   getDownloadURL(storageReference)
     .then((url) => {
-      console.log(url);
+      // console.log(url);
       imgUrl.value = url;
-
     })
 
-
-  // handle balance data
-  balanceEmail.value = listing.value.userEmail;
-  const balanceDocRef = doc(db, "balance", balanceEmail.value);
+  // handle seller data
+  sellerEmail.value = listing.value.userEmail;
+  const balanceDocRef = doc(db, "balance", sellerEmail.value);
 
   onSnapshot(balanceDocRef, balance => {
     balance.value = balance.data();
-    balancePhone.value = balance.value.phone;
-    balanceName.value = balance.value.name;
+
+    sellerPhone.value = balance.value.phone;
+    sellerName.value = balance.value.name;
+    sellerBal.value = balance.value.balance;
   });
 
+  // populate bidArr
+  for (let bid of bidArr){
+    // console.log('-----')
+
+    let buyerName = ref("");
+    let buyerPhone = ref("");
+    if (bid.buyer != null){
+      const bidDocRef = doc(db, "balance", bid.buyer);
+
+      if (bidDocRef) {
+        getDoc(bidDocRef)
+          .then(doc =>{
+            // console.log(doc.data())
+            bid.name = doc.data().name 
+            bid.phone = doc.data().phone 
+
+          })
+      }
+    }
+    
+  }
 });
 
 // Checks if user is logged in
@@ -87,8 +117,7 @@ const auth = getAuth();
 const userId = ref(null);
 const isLoggedIn = ref(false);
 
-// Checks if user is seller or customer
-const userEmail = ref("");
+const userEmail = ref(""); // Checks if user is seller or customer
 
 let customersDocRef;
 
@@ -96,16 +125,10 @@ onAuthStateChanged(auth, user => {
   if (user) {
     isLoggedIn.value = true;
     customersDocRef = doc(db, "customers", user.uid);
+    userId.value = auth.currentUser.uid;
+    userEmail.value = auth.currentUser.email;
   }
 })
-
-if (auth.currentUser) {
-  userId.value = auth.currentUser.uid;
-  userEmail.value = auth.currentUser.email;
-  isLoggedIn.value = true;
-
-  customersDocRef = doc(db, "customers", userId.value);
-}
 
 // Handle favorite toggle
 let isFavorited = ref(null);
@@ -182,6 +205,75 @@ function handleActiveTab(tab) {
     activeTab.value = "purchase";
   }
 }
+
+// handling bids
+let selectedViewingDate = ref(null);
+const userBal = ref(null);
+
+watch(userEmail, async () => {
+  if (userEmail.value) {
+    const balanceDocRef = doc(db, "balance", userEmail.value);
+
+    onSnapshot(balanceDocRef, balance => {
+      userBal.value = balance.data().balance
+    })
+  }
+})
+
+function handleViewingBid(){
+  // handle user data
+
+  let bid = this.selectedViewingDate;
+  // console.log(bid.price);
+  // console.log(userBal.value);
+  
+  if (userBal.value >= bid.price){
+    // bid is successful 
+
+    // subtract from user
+    userBal.value -= parseInt(bid.price);
+    const userDocRef = doc(db, "balance", userEmail.value);
+    updateDoc(userDocRef, {
+      balance: userBal.value
+    })
+
+    // add to seller
+    sellerBal.value = parseInt(sellerBal.value) + parseInt(bid.price);
+    const sellerDocRef = doc(db, "balance", sellerEmail.value);
+    updateDoc(sellerDocRef, {
+      balance: sellerBal.value
+    })
+
+    // update listing by replacing whole array
+    let newViewingDates
+    newViewingDates= viewingDates.value;
+    for (let dateObj of newViewingDates){
+      if (dateObj == this.selectedViewingDate){
+        dateObj.buyer = userEmail.value;
+      }
+    }
+    
+    const listingDocRef = doc(db, "listings", listingId);
+    // console.log(listingId)
+    // console.log(listingDocRef);
+    updateDoc(listingDocRef, {
+      viewingDates : newViewingDates
+    })
+    
+    msg.value = "Deposit submitted!"
+    return true
+  }else{
+    msg.value = "Not enough credits in balance!";
+    return false
+  }
+}
+
+function handlePurchaseBid(inp){
+  let a = inpPurchasePrice;
+  console.log(a)
+
+}
+
 
 </script>
 
@@ -329,7 +421,7 @@ function handleActiveTab(tab) {
               <div class="col-md-6">
                 <div class="row">
                   <div class="col-6 col-md-12 fw-bold">Listed On</div>
-                  <div class="col-6 col-md-12">{{ dateOfEntry }}</div>
+                  <div v-if="dateOfEntry" class="col-6 col-md-12">{{ dateOfEntry }}</div>
                 </div>
               </div>
             </div>
@@ -350,13 +442,13 @@ function handleActiveTab(tab) {
       <!-- Right column -->
       <div>
         <!-- Dashboard if user is seller -->
-        <div v-if="userEmail == balanceEmail" class="right__container mx-2 ms-lg-4">
+        <div v-if="userEmail == sellerEmail" class="right__container mx-2 ms-lg-4">
           <h2 class="dashboard__title fw-bold mb-3">Your Dashboard</h2>
           <div class="nav__bar">
             <ul class="nav nav-tabs mb-3">
               <li class="nav-item">
                 <a class="nav-link fw-bold" @click="handleActiveTab('view')"
-                  :class="{ active: activeTab == 'view' }">View</a>
+                  :class="{ active: activeTab == 'view' }">Viewing Dates</a>
               </li>
               <li class="nav-item fw-bold">
                 <a class="nav-link" @click="handleActiveTab('purchase')"
@@ -365,37 +457,32 @@ function handleActiveTab(tab) {
             </ul>
           </div>
           <div class="buyer__info">
+            <!-- View  -->
             <div v-if="activeTab == 'view'" class="view__container">
               <div>
-                <!-- First set of content for the "View" tab -->
-                <div class="user__profile mb-3">
-                  <!-- user picture -->
-                  <div class="d-flex justify-content-between align-items-center">
-                    <!-- name of bidder  -->
-                    <div>
-                      <div class="bidder__name fw-bold mb-1">Jason</div>
-                      <div class="bidder__phone text-body-secondary">81234567</div>
-                    </div>
+                <!-- Loop to iterate through viewingDates-->
+                <div v-for="bid of bidArr">
+                  <div v-if="bid.name != null" class="user__profile mb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <div class="bidder__name fw-bold mb-1">
+                          {{ bid.name }}
+                        </div>
+                        <div class="bidder__phone text-body-secondary">
+                          {{ bid.phone }}
+                        </div>
+                      </div>
 
-                    <div>
-                      <div class="date__title fw-bold mb-1">Date:</div>
-                      <div class="date__value text-body-secondary">30 Oct 2023, 22:00</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="user__profile mb-3">
-                  <!-- user picture -->
-                  <div class="d-flex justify-content-between align-items-center">
-                    <!-- name of bidder  -->
-                    <div>
-                      <div class="bidder__name fw-bold mb-1">Shi Da</div>
-                      <div class="bidder__phone text-body-secondary">81234567</div>
-                    </div>
-
-                    <div>
-                      <div class="date__title fw-bold mb-1">Date:</div>
-                      <div class="date__value text-body-secondary">30 Oct 2023, 22:00</div>
+                      <div>
+                        <div class="date__title fw-bold mb-1">Date:</div>
+                        <div class="date__value text-body-secondary">{{ bid.datetime.toDate().toLocaleString(undefined, {
+                          day: 'numeric',
+                          month: 'short',
+                          year: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        }) }} </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -446,13 +533,13 @@ function handleActiveTab(tab) {
             <div class="row mb-4">
               <div class="text-center">
                 <div class="fw-bold fs-4">
-                  {{ balanceName }}
+                  {{ sellerName }}
                 </div>
                 <div>
-                  {{ balanceEmail }}
+                  {{ sellerEmail }}
                 </div>
                 <div>
-                  {{ balancePhone }}
+                  {{ sellerPhone }}
                 </div>
               </div>
             </div>
@@ -540,23 +627,19 @@ function handleActiveTab(tab) {
                   </div>
 
                   <!-- Form for TimeSlot -->
-                  <select class="form-select" aria-label="Default select example">
-                    <option disabled selected>Timeslots</option>
-                    <option v-for="viewingDate in viewingDates" :value="viewingDate">
-                      {{ viewingDate.toDate().toLocaleString(undefined, {
+                  <select v-if="viewingDates" class="form-select" v-model="selectedViewingDate" aria-label="Default select example" placeholder="Timeslots">
+                    <option v-if="viewingDates" v-for="viewingDate in viewingDates" :value="viewingDate" :disabled="viewingDate.buyer">
+                      {{ viewingDate.datetime.toDate().toLocaleString(undefined, {
                         day: 'numeric',
                         month: 'short',
                         year: 'numeric',
                         hour: '2-digit',
                         minute: '2-digit',
-                      }) }} -
-                      |view price|
+                      }) }} - ${{ viewingDate.price }}
                     </option>
-                    <!-- <option value="1" disabled>5th October, 10am - $100</option>
-                    <option value="2">6th October, 10am - $90</option>
-                    <option value="3">7th October, 10am - $80</option>
-                    <option value="2">8th October, 10am - $70</option>
-                    <option value="3">9th October, 10am - $60</option> -->
+                  </select>
+                  <select v-else class="form-select" v-model="selectedViewingDate" aria-label="Default select example" placeholder="No Available Viewing Slots">
+
                   </select>
                 </div>
               </div>
@@ -564,7 +647,13 @@ function handleActiveTab(tab) {
           </div>
         </div>
         <div class="modal-footer justify-content-center">
-          <button @click="console.log('test')" type="button" class="btn btn-primary btn--submit">Submit Deposit</button>
+          <button @click="handleViewingBid()" type="button" class="btn btn-primary btn--submit">Submit Deposit</button>
+        </div>
+        <div v-if="msg=='Deposit submitted!'" class="mb-2 text-center text-success">
+            {{ msg }}
+        </div>
+        <div v-else class="mb-2 text-center text-danger">
+            {{ msg }}
         </div>
       </div>
     </div>
@@ -634,10 +723,10 @@ function handleActiveTab(tab) {
                     <div class="input-group">
                       <span class="input-group-text" id="basic-addon1">$</span>
                       <input type="number" class="form-control input-group-value" placeholder="Bid Price"
-                        aria-label="Bid Price" aria-describedby="basic-addon1">
+                        aria-label="Bid Price" aria-describedby="basic-addon1" v-model="inpPurchasePrice">
                       <!-- :value="bid" -->
                     </div>
-                    <div class="text-start highest-bid">Current Listing Price to Beat: $ </div>
+                    <div class="text-start highest-bid">Current Price to Beat: ${{ listedPrice }} </div>
                   </div>
                 </div>
               </div>
@@ -645,7 +734,7 @@ function handleActiveTab(tab) {
           </div>
         </div>
         <div class="modal-footer justify-content-center">
-          <button @click="console.log('test')" type="button" class="btn btn-primary btn--submit">Submit Bid</button>
+          <button @click="handlePurchaseBid(inpPurchasePrice)" type="button" class="btn btn-primary btn--submit">Submit Bid</button>
         </div>
       </div>
     </div>
@@ -879,12 +968,12 @@ h2 {
 }
 
 @media (max-width: 585px) {
+
   /* div.property-info__container{
     width: 80%;
     margin:auto;
     align-items: center;
   } */
-
   .overview__description {
     font-size: 16px;
     font-weight: 700;
