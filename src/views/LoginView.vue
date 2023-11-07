@@ -1,19 +1,3 @@
-<!-- 
-  <template>
-    <div class="container text-center">
-      <h1>Sign In</h1>
-      <p><input type="text" placeholder="Email" v-model="email" /></p>
-      <p><input type="text" placeholder="Password" v-model="password" /></p>
-      <p>
-        <button @click="signIn">Submit</button
-        ><button @click="handleRegi">Register</button>
-      </p>
-      <p><button @click="signInWithGoogle">Sign In With Google</button></p>
-      <p>{{ errMsg }}</p>
-    </div>
-</template>
--->
-
 <template>
   <div class="d-flex flex-column justify-content-between" style="height: 100vh">
     <!-- Navbar -->
@@ -39,14 +23,9 @@
           <input type="password" class="form-control" id="password" placeholder="Enter your password" v-model="password"
             v-on:keyup.enter="signIn" />
         </div>
-        <!-- Forgot Password -->
-        <div class="mt-1 mb-4 py-2" style="font-size: 12px">
-          <span @click="forgotPassword" style="color: #0275d8; text-decoration: none; cursor: pointer">Forgot
-            Password?</span>
-        </div>
         <!-- Login button -->
         <div class="d-grid gap-2">
-          <button type="submit" class="btn btn-primary mt-1" @click="signIn">
+          <button type="submit" class="btn btn-primary mt-3" @click="signIn">
             Login
           </button>
         </div>
@@ -60,6 +39,7 @@
         </p>
       </div>
     </div>
+
     <!-- Footer -->
     <Footer></Footer>
   </div>
@@ -148,10 +128,6 @@ const errMsg = ref("");
 const handleRegi = () => {
   router.push("/register");
 };
-const forgotPassword = () => {
-  router.push("/forgot-password");
-};
-
 const signIn = () => {
   const auth = getAuth();
   console.log(auth.currentUser)
@@ -179,8 +155,6 @@ const signIn = () => {
       }
     });
 };
-const signInWithGoogle = () => { };
-
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
 </script>

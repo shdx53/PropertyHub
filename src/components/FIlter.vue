@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from "vue";
+
 const townArr = {
   north: [
     "Sembawang",
