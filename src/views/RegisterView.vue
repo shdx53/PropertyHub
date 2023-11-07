@@ -1,54 +1,59 @@
 <template>
-  <!-- Navbar -->
-  <Navbar></Navbar>
+  <div class="d-flex flex-column justify-content-between" style="height: 100vh">
+    <!-- Navbar -->
+    <Navbar></Navbar>
 
-  <div class="register-container">
-    <!-- Login Image on left side -->
-    <div class="login-image">
-      <img src="../assets/img/LoginView/apartmentvector.svg" alt="Vector Image" />
+    <div class="register-container">
+      <!-- Login Image on left side -->
+      <div class="login-image">
+        <img src="../assets/img/LoginView/apartmentvector.svg" alt="Vector Image" />
+      </div>
+      <!-- Login Form on right -->
+      <div class="login-form py-3">
+        <h2 class="mb-3 fw-bold fs-4">Sign Up</h2>
+
+        <!-- Name -->
+        <div class="form-group mb-2">
+          <label for="name" class="py-2 fw-bold">Name:</label>
+          <input type="text" class="form-control" id="name" placeholder="Enter your name" v-model="name" />
+        </div>
+        <!-- Phone Number -->
+        <div class="form-group mb-2">
+          <label for="phoneno" class="py-2 fw-bold">Phone Number:</label>
+          <input type="number" class="form-control" id="phoneno" placeholder="Enter your phone number"
+            v-model="phoneno" />
+        </div>
+        <!-- Email -->
+        <div class="form-group mb-2">
+          <label for="email" class="py-2 fw-bold">Email:</label>
+          <input type="email" class="form-control" id="email" placeholder="Enter your email" v-model="email" />
+        </div>
+        <!-- Password -->
+        <div class="form-group">
+          <label for="password" class="py-2 fw-bold">Password:</label>
+          <input type="password" class="form-control" id="password" placeholder="Enter your password"
+            v-model="password" />
+        </div>
+        <!-- Sign up button -->
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-primary mt-1" @click="register">
+            Sign Up
+          </button>
+        </div>
+
+        <p class="my-2 text-danger text-center">{{ errMsg }}</p>
+
+        <!-- Sign up link -->
+        <p class="mt-3 text-center login mx-auto">
+          Already have an account?
+          <span @click="handleLogin"
+            style="color: #0d6efd; text-decoration: none; cursor: pointer; font-size: 14px;">Login</span>
+        </p>
+      </div>
     </div>
-    <!-- Login Form on right -->
-    <div class="login-form">
-      <h2 class="mb-3 fw-bold fs-4">Sign Up</h2>
-
-      <!-- Name -->
-      <div class="form-group mb-2">
-        <label for="name" class="py-2 fw-bold">Name:</label>
-        <input type="text" class="form-control" id="name" placeholder="Enter your name" v-model="name" />
-      </div>
-      <!-- Phone Number -->
-      <div class="form-group mb-2">
-        <label for="phoneno" class="py-2 fw-bold">Phone Number:</label>
-        <input type="number" class="form-control" id="phoneno" placeholder="Enter your phone number" v-model="phoneno" />
-      </div>
-      <!-- Email -->
-      <div class="form-group mb-2">
-        <label for="email" class="py-2 fw-bold">Email:</label>
-        <input type="email" class="form-control" id="email" placeholder="Enter your email" v-model="email" />
-      </div>
-      <!-- Password -->
-      <div class="form-group">
-        <label for="password" class="py-2 fw-bold">Password:</label>
-        <input type="password" class="form-control" id="password" placeholder="Enter your password" v-model="password" />
-      </div>
-      <!-- Sign up button -->
-      <div class="d-grid gap-2">
-        <button type="submit" class="btn btn-primary mt-1" @click="register">
-          Sign Up
-        </button>
-      </div>
-
-      <p class="my-2 text-danger text-center">{{ errMsg }}</p>
-
-      <!-- Sign up link -->
-      <p class="mt-3 text-center login mx-auto">
-        Already have an account?
-        <span @click="handleLogin" style="color: #0d6efd; text-decoration: none; cursor: pointer; font-size: 14px;">Login</span>
-      </p>
-    </div>
+    <!-- Footer -->
+    <Footer></Footer>
   </div>
-  <!-- Footer -->
-  <Footer></Footer>
 </template>
 
 
@@ -57,7 +62,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: calc(100vh - 68px - 84px);
   width: 85%;
   max-width: 1100px;
   margin: 0 auto;
@@ -94,7 +98,7 @@ button {
 }
 
 input {
-  padding: 10px; 
+  padding: 10px;
 }
 
 input::placeholder {
@@ -115,12 +119,6 @@ input::placeholder {
     width: 60%;
     max-width: 350px;
     min-width: unset;
-  }
-}
-
-@media (max-width: 768px) {
-  .register-container {
-    height: calc(100vh - 68px - 152px);
   }
 }
 

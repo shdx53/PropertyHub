@@ -15,51 +15,54 @@
 -->
 
 <template>
-  <!-- Navbar -->
-  <Navbar></Navbar>
+  <div class="d-flex flex-column justify-content-between" style="height: 100vh">
+    <!-- Navbar -->
+    <Navbar></Navbar>
 
-  <div class="login-container">
-    <!-- Login Image on left side -->
-    <div class="login-image">
-      <img src="../assets/img/LoginView/apartmentvector.svg" alt="Vector Image" />
+    <div class="login-container">
+      <!-- Login Image on left side -->
+      <div class="login-image">
+        <img src="../assets/img/LoginView/apartmentvector.svg" alt="Vector Image" />
+      </div>
+      <!-- Login Form on right -->
+      <div class="login-form">
+        <h2 class="mb-4 fw-bold">Login</h2>
+
+        <!-- Email -->
+        <div class="form-group mb-2">
+          <label for="email" class="py-2 fw-bold">Email:</label>
+          <input type="email" class="form-control" id="email" placeholder="Enter your email" v-model="email" />
+        </div>
+        <!-- Password -->
+        <div class="form-group">
+          <label for="password" class="py-2 fw-bold">Password:</label>
+          <input type="password" class="form-control" id="password" placeholder="Enter your password" v-model="password"
+            v-on:keyup.enter="signIn" />
+        </div>
+        <!-- Forgot Password -->
+        <div class="mt-1 mb-4 py-2" style="font-size: 12px">
+          <span @click="forgotPassword" style="color: #0275d8; text-decoration: none; cursor: pointer">Forgot
+            Password?</span>
+        </div>
+        <!-- Login button -->
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-primary mt-1" @click="signIn">
+            Login
+          </button>
+        </div>
+
+        <p class="my-2 text-danger text-center">{{ errMsg }}</p>
+
+        <!-- Sign up link -->
+        <p class="mt-3 text-center signup mx-auto">
+          Don't have an account?
+          <span @click="handleRegi" style="color: #0d6efd; text-decoration: none; cursor: pointer">Sign up</span>
+        </p>
+      </div>
     </div>
-    <!-- Login Form on right -->
-    <div class="login-form">
-      <h2 class="mb-4 fw-bold">Login</h2>
-
-      <!-- Email -->
-      <div class="form-group mb-2">
-        <label for="email" class="py-2 fw-bold">Email:</label>
-        <input type="email" class="form-control" id="email" placeholder="Enter your email" v-model="email"/>
-      </div>
-      <!-- Password -->
-      <div class="form-group">
-        <label for="password" class="py-2 fw-bold">Password:</label>
-        <input type="password" class="form-control" id="password" placeholder="Enter your password" v-model="password" v-on:keyup.enter="signIn"/>
-      </div>
-      <!-- Forgot Password -->
-      <div class="mt-1 mb-4 py-2" style="font-size: 12px">
-        <span @click="forgotPassword" style="color: #0275d8; text-decoration: none; cursor: pointer">Forgot
-          Password?</span>
-      </div>
-      <!-- Login button -->
-      <div class="d-grid gap-2">
-        <button type="submit" class="btn btn-primary mt-1" @click="signIn">
-          Login
-        </button>
-      </div>
-
-      <p class="my-2 text-danger text-center">{{ errMsg }}</p>
-
-      <!-- Sign up link -->
-      <p class="mt-3 text-center signup mx-auto">
-        Don't have an account?
-        <span @click="handleRegi" style="color: #0d6efd; text-decoration: none; cursor: pointer">Sign up</span>
-      </p>
-    </div>
+    <!-- Footer -->
+    <Footer></Footer>
   </div>
-  <!-- Footer -->
-  <Footer></Footer>
 </template>
 
 <style scoped>
@@ -67,7 +70,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: calc(100vh - 68px - 84px);
   width: 85%;
   max-width: 1100px;
   margin: 0 auto;
@@ -103,7 +105,7 @@ input::placeholder {
   .login-container {
     justify-content: center;
   }
-  
+
   .login-image {
     display: none;
   }
@@ -112,12 +114,6 @@ input::placeholder {
     width: 60%;
     max-width: 350px;
     min-width: unset;
-  }
-}
-
-@media (max-width: 768px) {
-  .login-container {
-    height: calc(100vh - 68px - 152px);
   }
 }
 

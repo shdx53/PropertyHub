@@ -36,11 +36,11 @@ async function getFavourites(uid) {
     // console.log(docSnap.data().favoritedListings);
     favouriteListings.value = [];
     for (const favourite of docSnap.data().favoritedListings) {
-        const listingRef = doc(db, "listings", favourite);
-        const listingSnap = await getDoc(listingRef);
-        if (listingSnap.exists()) {
-            favouriteListings.value.push([listingSnap.id, listingSnap.data()])
-        }
+      const listingRef = doc(db, "listings", favourite);
+      const listingSnap = await getDoc(listingRef);
+      if (listingSnap.exists()) {
+        favouriteListings.value.push([listingSnap.id, listingSnap.data()])
+      }
     }
   } else {
     console.log("No such document!");
@@ -57,36 +57,29 @@ onSnapshot(customersColRef, () => {
 </script>
 
 <template>
-    <Navbar/>
-    <div class="container mx-auto py-5" :class="{ 'container--height' : favouriteListings && favouriteListings.length < 3 }">
+  <div class="d-flex flex-column justify-content-between" style="height: 100vh;">
+    <div>
+      <Navbar />
+      <div class="container mx-auto py-5">
         <h2 class="mb-4 fw-bold fs-3">Liked Listings</h2>
         <div v-for="listing in favouriteListings" :key="listing[0]">
-            <Listing
-                  :listingId="listing[0]"
-                  :address="listing[1].address"
-                  :listedPrice="listing[1].listedPrice"
-                  :bedrooms="listing[1].bedrooms"
-                  :bathrooms="listing[1].bathrooms"
-                  :floorSize="listing[1].floorSize"
-                  :favoriteCounts="listing[1].favoriteCounts"
-                  :isFavorited="listing[1].isFavorited"
-                  :imgPath="listing[1].imgPath"
-                  :key="isLoggedIn"
-            ></Listing>
+          <Listing :listingId="listing[0]" :address="listing[1].address" :listedPrice="listing[1].listedPrice"
+            :bedrooms="listing[1].bedrooms" :bathrooms="listing[1].bathrooms" :floorSize="listing[1].floorSize"
+            :favoriteCounts="listing[1].favoriteCounts" :isFavorited="listing[1].isFavorited"
+            :imgPath="listing[1].imgPath" :key="isLoggedIn"></Listing>
         </div>
+      </div>
     </div>
+
     <Footer></Footer>
+  </div>
 </template>
 
 
 <style scoped>
-.container{
-    width: 90%;
-    max-width: 600px;
-}
-
-.container--height {
-  height: calc(100vh - 65px - 84px);
+.container {
+  width: 90%;
+  max-width: 600px;
 }
 </style>
 

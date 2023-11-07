@@ -19,7 +19,7 @@ onAuthStateChanged(auth, (user) => {
 
   <!-- Header -->
   <header class="mb-5">
-    <div class="general__container text-center">
+    <div class="general__container text-center slide-in-left">
       <h1 class="fw-bold text-white mb-2">Selling your home?</h1>
       <h2 class="text-white-50 mb-4 fs-3">Let us help you find the perfect buyer</h2>
       <a v-if="isSignedIn" class="get-started-btn bg-primary" href="/my-listings">Get started</a>
@@ -181,6 +181,12 @@ header::before {
   font-size: 22px;
 }
 
+.accordion-button {
+  font-size: 14px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
 .accordion-button:not(.collapsed) {
   background-color: transparent;
 }
@@ -188,6 +194,11 @@ header::before {
 .accordion-button:focus {
   box-shadow: none;
   border-color: rgba(0, 0, 0, .125);
+}
+
+.accordion-body {
+  padding-left: 0;
+  padding-right: 0;
 }
 
 @media (min-width: 576px) {

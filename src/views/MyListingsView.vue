@@ -67,13 +67,16 @@ function handleDelete() {
 </script>
 
 <template>
-    <Navbar/>
-    <div class="container mx-auto py-5" :class="{ 'container--without-listings' : userListings.length < 3 }">
+  <div class="d-flex flex-column justify-content-between" style="height: 100vh;">
+    <div>
+      <Navbar />
+      <div class="container mx-auto py-5">
         <div class="d-flex justify-content-between align-items-center">
-            <h2 class="mb-4 fw-bold">My Listings</h2>
-            <button @click="createlisting" type="button" class="mb-4 btn btn-primary createbtn">Create Listing</button>
+          <h2 class="mb-4 fw-bold">My Listings</h2>
+          <button @click="createlisting" type="button" class="mb-4 btn btn-primary createbtn">Create Listing</button>
         </div>
-        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true" data-id="" data-img="">
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true"
+          data-id="" data-img="">
           <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
               <!-- modal-header -->
@@ -106,48 +109,40 @@ function handleDelete() {
               </div>
               <div class="modal-footer justify-content-space-between">
                 <button type="button" class="btn cancel-btn" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" id="confirm-delete-btn" class="btn btn-primary"  @click="handleDelete">Delete</button>
+                <button type="button" id="confirm-delete-btn" class="btn btn-primary"
+                  @click="handleDelete">Delete</button>
               </div>
             </div>
           </div>
         </div>
         <div v-for="listing in userListings" :key="listing[0]">
-          <Listing :listingId="listing[0]"
-                  :address="listing[1].address"
-                  :listedPrice="listing[1].listedPrice"
-                  :bedrooms="listing[1].bedrooms"
-                  :bathrooms="listing[1].bathrooms"
-                  :floorSize="listing[1].floorSize"
-                  :favoriteCounts="listing[1].favoriteCounts"
-                  :isFavorited="listing[1].isFavorited"
-                  :imgPath="listing[1].imgPath"
-                  :key="isLoggedIn"
-          ></Listing>
+          <Listing :listingId="listing[0]" :address="listing[1].address" :listedPrice="listing[1].listedPrice"
+            :bedrooms="listing[1].bedrooms" :bathrooms="listing[1].bathrooms" :floorSize="listing[1].floorSize"
+            :favoriteCounts="listing[1].favoriteCounts" :isFavorited="listing[1].isFavorited"
+            :imgPath="listing[1].imgPath" :key="isLoggedIn"></Listing>
         </div>
-        <div v-if="userListings.length==0" class="text-center mt-3 text-black-50">You currently have no listings.</div>
+        <div v-if="userListings.length == 0" class="text-center mt-3 text-black-50">You currently have no listings.</div>
+      </div>
     </div>
+
     <Footer></Footer>
+  </div>
 </template>
 
-
 <style scoped>
-.container{
+.container {
   width: 90%;
   max-width: 700px;
-}
-
-.container--without-listings {
-  height: calc(100vh - 68px - 81px);
 }
 
 .createbtn {
   font-size: 12px;
 }
 
-.createbtn:hover{
-    background-color: transparent;
-    color:#0d6efd;
-    box-shadow: 6px 6px 20px 0px rgba(0,0,0,0.22);
+.createbtn:hover {
+  background-color: transparent;
+  color: #0d6efd;
+  box-shadow: 6px 6px 20px 0px rgba(0, 0, 0, 0.22);
 }
 
 .cancel-btn:hover {

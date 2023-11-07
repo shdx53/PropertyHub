@@ -91,7 +91,7 @@ function displayListings(query, listings) {
       })
     }
 
-    if (submittedFilterTowns.value.length > 0) {
+    if (submittedFilterTowns.value && submittedFilterTowns.value.length > 0) {
       const filteredListings = [];
       if (Array.isArray(submittedFilterTowns.value)) {
         for (const filterTown of submittedFilterTowns.value) {
@@ -196,98 +196,103 @@ displayListings(listingsQuery, listings);
 </script>
 
 <template>
-  <!-- Nav -->
-  <Navbar />
+  <div class="d-flex flex-column justify-content-between" style="height: 100vh;">
+    <div>
+      <!-- Nav -->
+      <Navbar />
 
-  <main class="general__container">
-    <!-- Search -->
-    <section class="search__container">
-      <div class="d-flex justify-content-center">
-        <div class="input-group">
-          <Autocomplete @inputChange="handleInputChange" />
+      <main class="general__container">
+        <!-- Search -->
+        <section class="search__container">
+          <div class="d-flex justify-content-center">
+            <div class="input-group">
+              <Autocomplete @inputChange="handleInputChange" />
 
-          <button @click="displayFilter" class="btn header__filter-btn" type="button" :class="{ 'header__filter-btn--active' : hasFilter }">
-            <span class="material-symbols-outlined">tune</span>
-          </button>
-        </div>
+              <button @click="displayFilter" class="btn header__filter-btn" type="button"
+                :class="{ 'header__filter-btn--active': hasFilter }">
+                <span class="material-symbols-outlined">tune</span>
+              </button>
+            </div>
 
-        <button class="btn btn-primary ms-5" @click="handleSubmit">
-          <span class="material-symbols-outlined">search</span>
-        </button>
-      </div>
-
-      <div class="mt-2 d-flex flex-wrap">
-        <div v-if="submittedFilterTowns && submittedFilterTowns.length > 0 && isSearch" class="flair">
-          <div>
-            <span class="fw-bold">Towns: </span>
-            <span v-if="Array.isArray(submittedFilterTowns)">
-              <span v-for="filterTown in submittedFilterTowns" class="me-1">{{ filterTown }}</span>
-            </span>
-            <span v-else>{{ submittedFilterTowns }}</span>
+            <button class="btn btn-primary ms-5" @click="handleSubmit">
+              <span class="material-symbols-outlined">search</span>
+            </button>
           </div>
-        </div>
 
-        <div v-if="submittedFilterPrice && isSearch" class="flair">
-          <div>
-            <span class="fw-bold">Max Price: </span>${{ Number(submittedFilterPrice).toLocaleString() }}
+          <div class="mt-2 d-flex flex-wrap">
+            <div v-if="submittedFilterTowns && submittedFilterTowns.length > 0 && isSearch" class="flair">
+              <div>
+                <span class="fw-bold">Towns: </span>
+                <span v-if="Array.isArray(submittedFilterTowns)">
+                  <span v-for="filterTown in submittedFilterTowns" class="me-1">{{ filterTown }}</span>
+                </span>
+                <span v-else>{{ submittedFilterTowns }}</span>
+              </div>
+            </div>
+
+            <div v-if="submittedFilterPrice && isSearch" class="flair">
+              <div>
+                <span class="fw-bold">Max Price: </span>${{ Number(submittedFilterPrice).toLocaleString() }}
+              </div>
+            </div>
+
+            <div v-if="submittedFilterBedrooms && isSearch" class="flair">
+              <div>
+                <span class="fw-bold">Bedrooms: </span>{{ submittedFilterBedrooms }}
+              </div>
+            </div>
           </div>
-        </div>
+        </section>
 
-        <div v-if="submittedFilterBedrooms && isSearch" class="flair">
-          <div>
-            <span class="fw-bold">Bedrooms: </span>{{ submittedFilterBedrooms }}
+        <!-- Search Results -->
+        <section class="search-results__container">
+          <div class="search-results__qty mb-2">{{ listings.length }} listings found</div>
+
+          <div class="search-results__flex">
+            <div class="search-results__listing-container">
+              <div v-for="listing in paginatedListings" :key="buyListingsKey">
+                <Listing :listingId="listing[0]" :address="listing[1].address" :listedPrice="listing[1].listedPrice"
+                  :bedrooms="listing[1].bedrooms" :bathrooms="listing[1].bathrooms" :floorSize="listing[1].floorSize"
+                  :favoriteCounts="listing[1].favoriteCounts" :imgPath="listing[1].imgPath">
+                </Listing>
+              </div>
+            </div>
+
+            <div class="search-results__map-container">
+              <GoogleMaps :listings="paginatedListings" :key="paginatedListings" />
+            </div>
           </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- Search Results -->
-    <section class="search-results__container">
-      <div class="search-results__qty mb-2">{{ listings.length }} listings found</div>
+          <nav aria-label="Page navigation" class="mb-5 mg-lg-0">
+            <ul v-if="paginatedListings" class="pagination justify-content-center">
+              <li class="page-item" :class="{ 'disabled': currentPage == 1 }" @click="specificPage(1)">
+                <a class="page-link" href="#" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li class="page-item" :class="{ 'active': currentPage == page }" v-for="page in pageNums"
+                @click="specificPage(page)">
+                <a href="#" class="page-link">{{ page }}</a>
+              </li>
+              <li class="page-item" :class="{ 'disabled': currentPage == totalPages }" @click="specificPage(totalPages)">
+                <a class="page-link" href="#" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </section>
+      </main>
+    </div>
 
-      <div class="search-results__flex">
-        <div class="search-results__listing-container">
-          <div v-for="listing in paginatedListings" :key="buyListingsKey">
-            <Listing :listingId="listing[0]" :address="listing[1].address" :listedPrice="listing[1].listedPrice"
-              :bedrooms="listing[1].bedrooms" :bathrooms="listing[1].bathrooms" :floorSize="listing[1].floorSize"
-              :favoriteCounts="listing[1].favoriteCounts" :imgPath="listing[1].imgPath">
-            </Listing>
-          </div>
-        </div>
-
-        <div class="search-results__map-container">
-          <GoogleMaps :listings="paginatedListings" :key="paginatedListings" />
-        </div>
-      </div>
-
-      <nav aria-label="Page navigation" class="mb-5 mg-lg-0">
-        <ul class="pagination justify-content-center">
-          <li class="page-item" :class="{ 'disabled': currentPage == 1 }" @click="specificPage(1)">
-            <a class="page-link" href="#" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-          </li>
-          <li class="page-item" :class="{ 'active': currentPage == page }" v-for="page in pageNums"
-            @click="specificPage(page)">
-            <a href="#" class="page-link">{{ page }}</a>
-          </li>
-          <li class="page-item" :class="{ 'disabled': currentPage == totalPages }" @click="specificPage(totalPages)">
-            <a class="page-link" href="#" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </section>
-  </main>
+    <!-- Footer -->
+    <Footer></Footer>
+  </div>
 
   <!-- Filter Overlay -->
   <section v-if="isDisplayFilter" class="filter-overlay">
     <Filter :isDisplayFilter="isDisplayFilter" :displayFilter="displayFilter" @getFilterResults="handleFilterResults" />
   </section>
-
-  <!-- Footer -->
-  <Footer></Footer>
 </template>
 
 <style scoped>
@@ -374,12 +379,8 @@ a {
 }
 
 @media (min-width: 992px) {
-  .general__container {
-    height: calc(100vh - 65px - 84px);
-  }
-
   .search__container {
-    padding: 20px 0;
+    padding: 20px 0 15px 0;
   }
 
   .header__filter-btn {
