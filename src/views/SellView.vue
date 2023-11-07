@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
 import { ref } from 'vue';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-
+import '../assets/animation.css';
 
 const auth = getAuth();
 let isSignedIn = ref(false);
@@ -119,8 +119,6 @@ onAuthStateChanged(auth, (user) => {
 </template>
 
 <style scoped>
-@import './src/assets/animation.css';
-
 header {
   height: 450px;
   background-image: url("https://i.imgur.com/UAT4jbX.jpg");
