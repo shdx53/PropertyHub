@@ -218,7 +218,7 @@ function handleFavorite() {
   align-items: center;
   border: 0;
   background-color: unset;
-  visibility: hidden;
+  /* visibility: visible; */
 }
 
 .delete-btn:hover {
@@ -226,9 +226,9 @@ function handleFavorite() {
   border-radius: 8px;
 }
 
-.card:hover .delete-btn {
+/* .card:hover .delete-btn {
   visibility: visible;
-}
+} */
 
 .card__favorite-btn {
   background-color: transparent;
