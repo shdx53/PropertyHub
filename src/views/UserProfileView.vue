@@ -3,28 +3,30 @@ import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
 </script>
 <template>
-  <div class="d-flex flex-column justify-content-between" style="height: 100vh;">
+  <div class="d-flex flex-column justify-content-between" style="height: 100vh">
     <div>
       <Navbar />
       <div class="general__container">
         <div class="balance__container">
-          <div class="d-flex justify-content-between align-items-center py-3 mb-3">
+          <div
+            class="d-flex justify-content-between align-items-center py-3 mb-3"
+          >
             <div>
               <span class="fw-bold">My Balance: </span>
               <span>${{ Number(shownBalance).toLocaleString() }}</span>
             </div>
 
             <div v-if="!showing">
-              <a @click="showTransactions" class="btn btn-primary btn--transaction">
+              <a
+                @click="showTransactions"
+                class="btn btn-primary btn--transaction"
+              >
                 View Transactions
               </a>
             </div>
             <div v-if="showing">
-              <a @click="() => {
-                this.showing = false;
-                this.transactions = [];
-              }
-                " class="btn btn-primary btn--transaction">Hide Transactions
+              <a @click="revertShowing" class="btn btn-primary btn--transaction"
+                >Hide Transactions
               </a>
             </div>
           </div>
@@ -49,7 +51,9 @@ import Footer from "../components/Footer.vue";
 
           <div class="mb-5" v-if="showing">
             <h1 class="display-4 text-center fw-bold">Transactions</h1>
-            <div class="text-center text-muted mb-4">Your past transactions with us</div>
+            <div class="text-center text-muted mb-4">
+              Your past transactions with us
+            </div>
 
             <div class="row mb-2">
               <div class="col-6 col-sm-5 d-none d-sm-block text-muted">ID</div>
@@ -58,11 +62,20 @@ import Footer from "../components/Footer.vue";
               <div class="col-2 text-muted d-none d-sm-block">Time Created</div>
             </div>
 
-            <div class="row bg-light rounded py-2 mb-3" v-for="transaction in transactions">
-              <div class="col-6 col-sm-5 d-none d-sm-block">{{ transaction.id }}</div>
+            <div
+              class="row bg-light rounded py-2 mb-3"
+              v-for="transaction in transactions"
+            >
+              <div class="col-6 col-sm-5 d-none d-sm-block">
+                {{ transaction.id }}
+              </div>
               <div class="col-6 col-sm-2">${{ transaction.amount / 100 }}</div>
-              <div class="col-6 col-sm-3">{{ transaction.items[0].description }}</div>
-              <div class="col-2 d-none d-sm-block">{{ timeStampy(transaction.created) }}</div>
+              <div class="col-6 col-sm-3">
+                {{ transaction.items[0].description }}
+              </div>
+              <div class="col-2 d-none d-sm-block">
+                {{ timeStampy(transaction.created) }}
+              </div>
             </div>
           </div>
 
@@ -95,8 +108,10 @@ import Footer from "../components/Footer.vue";
         <div class="w-100">
           <div>
             <h1 class="display-4 text-center fw-bold">Pricing</h1>
-            <div class="text-center text-muted mb-4">Get your E-credits to enjoy the best experiences that our platform
-              provides</div>
+            <div class="text-center text-muted mb-4">
+              Get your E-credits to enjoy the best experiences that our platform
+              provides
+            </div>
           </div>
 
           <!-- <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
@@ -107,28 +122,39 @@ import Footer from "../components/Footer.vue";
         </p>
       </div> -->
 
-          <div class="row pb-5 justify-content-center justify-content-lg-between">
-            <div class="plan col-12 col-lg-4 bg-light rounded p-5 p-lg-4 px-xxl-5 mb-4 mb-lg-0"
-              v-for="(product, idx) in products">
+          <div
+            class="row pb-5 justify-content-center justify-content-lg-between"
+          >
+            <div
+              class="plan col-12 col-lg-4 bg-light rounded p-5 p-lg-4 px-xxl-5 mb-4 mb-lg-0"
+              v-for="(product, idx) in products"
+            >
               <h2 class="product__name">{{ product.name }}</h2>
               <div class="product__price-container mb-2">
                 <span class="product__price fw-bold me-2">
                   ${{ product.prices[0].unit_amount / 100 }}
                 </span>
-                <span class="product__price-credits">/ {{ prod_details[idx]["1"] }}</span>
+                <span class="product__price-credits"
+                  >/ {{ prod_details[idx]["1"] }}</span
+                >
               </div>
               <div class="row mb-2">
                 <div class="col-2 pe-0">
-                  <img class="tick-icon" src="https://i.postimg.cc/Y2JWwd3S/noun-tick-801900.png">
+                  <img
+                    class="tick-icon"
+                    src="https://i.postimg.cc/Y2JWwd3S/noun-tick-801900.png"
+                  />
                 </div>
                 <div class="col-10 ps-0">
                   {{ prod_details[idx]["2"] }}
                 </div>
-
               </div>
               <div class="row mb-4">
                 <div class="col-2 pe-0">
-                  <img class="tick-icon" src="https://i.postimg.cc/Y2JWwd3S/noun-tick-801900.png">
+                  <img
+                    class="tick-icon"
+                    src="https://i.postimg.cc/Y2JWwd3S/noun-tick-801900.png"
+                  />
                 </div>
                 <div class="col-10 ps-0">
                   {{ prod_details[idx]["3"] }}
@@ -136,22 +162,31 @@ import Footer from "../components/Footer.vue";
               </div>
 
               <div v-if="isLoading == false">
-                <button type="button" @click="
-                  createSingleCheckout(
-                    product.prices[0].id,
-                    product.stripe_metadata_credits
-                  )
-                  " class="w-100 btn btn-lg btn-primary purchase__btn">
+                <button
+                  type="button"
+                  @click="
+                    createSingleCheckout(
+                      product.prices[0].id,
+                      product.stripe_metadata_credits
+                    )
+                  "
+                  class="w-100 btn btn-lg btn-primary purchase__btn"
+                >
                   Purchase Credits
                 </button>
               </div>
               <div v-else>
-                <button type="button" disabled @click="
-                  createSingleCheckout(
-                    product.prices[0].id,
-                    product.stripe_metadata_credits
-                  )
-                  " class="w-100 btn btn-lg btn-primary purchase__btn">
+                <button
+                  type="button"
+                  disabled
+                  @click="
+                    createSingleCheckout(
+                      product.prices[0].id,
+                      product.stripe_metadata_credits
+                    )
+                  "
+                  class="w-100 btn btn-lg btn-primary purchase__btn"
+                >
                   Purchase Credits
                 </button>
               </div>
@@ -325,7 +360,6 @@ export default {
       shownBalance: null,
       transactions: [],
       showing: false,
-
     };
   },
 
@@ -335,6 +369,10 @@ export default {
     console.log(this.products);
   },
   methods: {
+    revertShowing() {
+      this.showing = false;
+      this.transactions = [];
+    },
     timeStampy(unixTimestamp) {
       var date = new Date(unixTimestamp * 1000);
       var result =
@@ -361,7 +399,7 @@ export default {
         });
       });
       this.showing = true;
-      console.log(this.transactions);
+      // console.log(this.transactions);
     },
     async getBalance(email) {
       const docRef = doc(db, "balance", email);
@@ -411,7 +449,6 @@ export default {
       });
     },
     async createSingleCheckout(price, credits) {
-
       this.isLoading = true;
       this.selectedPrice = price;
       const temp_balance = this.shownBalance + parseInt(credits);
@@ -447,7 +484,7 @@ export default {
           });
           // const router = useRouter();
           // this.$router.push("/userprofile");
-          window.location.assign(url)
+          window.location.assign(url);
         }
       });
     },
