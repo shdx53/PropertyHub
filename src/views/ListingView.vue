@@ -44,6 +44,10 @@ const sellerBal = ref(null);
 // init combined viewingDates w Buyer info
 var bidArr = ref([])
 
+// price to beat and purchaseArr
+const priceToBeat = ref(0)
+var purchaseArr = []
+
 // fetch data and add it to objects
 const db = getFirestore();
 const listingDocRef = doc(db, "listings", listingId);
@@ -68,8 +72,21 @@ onSnapshot(listingDocRef, listing => {
   favoriteCounts.value = listing.value.favoriteCounts;
   imgPath.value = listing.value.imgPath;
   viewingDates.value = listing.value.viewingDates;
-  bidArr = viewingDates.value
+  bidArr = viewingDates.value;
+  priceToBeat.value = listing.value.listedPrice; // initial price = listed price
+  
+  // handle purchaseBids
+  // console.log(listing.value.purchaseBids)
+  if (listing.value.purchaseBids != null){
+    purchaseArr = listing.value.purchaseBids;
 
+    // handle updating of priceToBeat
+    for (let purchase of purchaseArr){
+      if (purchase.buyerBid > priceToBeat.value){
+        priceToBeat.value = purchase.buyerBid 
+      }
+    }
+  }
   // handle image storage
   const storage = getStorage();
   const storageReference = storageRef(storage, imgPath.value);
@@ -91,26 +108,22 @@ onSnapshot(listingDocRef, listing => {
     sellerBal.value = balance.value.balance;
   });
 
-  // populate bidArr
+  // populate bidArr for viewing
   for (let bid of bidArr){
     // console.log('-----')
-
     let buyerName = ref("");
     let buyerPhone = ref("");
     if (bid.buyer != null){
       const bidDocRef = doc(db, "balance", bid.buyer);
-
       if (bidDocRef) {
         getDoc(bidDocRef)
           .then(doc =>{
             // console.log(doc.data())
             bid.name = doc.data().name 
             bid.phone = doc.data().phone 
-
           })
       }
     }
-    
   }
 });
 
@@ -270,9 +283,47 @@ function handleViewingBid(){
   }
 }
 
+// handling input for Purchase
+let inpPurchasePrice = ref(null);
+
 function handlePurchaseBid(inp){
-  let a = inpPurchasePrice;
-  console.log(a)
+  // comparison
+  if (parseInt(inp) <= parseInt(listedPrice.value)){
+    console.log('inp <= listedPrice');
+    msg.value = "Your purchase bid is not high enough!";
+    return false
+  }else{
+    console.log('inp > listedPrice');
+
+    if (parseInt(inp) > parseInt(priceToBeat.value)){
+      priceToBeat.value = parseInt(inp);
+    }
+
+    // add bid to purchaseArr
+    const bidDocRef = doc(db, "balance", userEmail.value);
+    if (bidDocRef) {
+      getDoc(bidDocRef)
+        .then(doc =>{
+          var bid = {
+              "buyerName" : doc.data().name,
+              "buyerPhone": doc.data().phone,
+              "buyerBid": inp
+          }          
+          purchaseArr.push(bid)
+        })
+    }
+
+    // console.log(length(purchaseArr))
+
+    // update purchaseBids in Firebase
+    const listingDocRef = doc(db, "listings", listingId);
+    
+    updateDoc(listingDocRef, {
+        purchaseBids : purchaseArr
+    })
+    
+    msg.value = "Purchase bid submitted!"
+  }
 
 }
 
@@ -423,7 +474,7 @@ function handlePurchaseBid(inp){
               <div class="col-md-6">
                 <div class="row">
                   <div class="col-6 col-md-12 fw-bold">Listed On</div>
-                  <div v-if="dateOfEntry" class="col-6 col-md-12">{{ dateOfEntry }}</div>
+                  <div v-if="dateOfEntry" class="col-6 col-md-12">{{ dateOfEntry.toDate().toLocaleString() }}</div>
                 </div>
               </div>
             </div>
@@ -494,37 +545,23 @@ function handlePurchaseBid(inp){
             <div v-else class="purchase__container">
               <!-- <h3>Bidder's profile</h3> -->
               <!-- First set of content for the "Purchase" tab -->
-              <div class="user__profile mb-3">
-                <!-- user picture -->
-                <div class="d-flex justify-content-between align-items-center">
-                  <!-- name of bidder  -->
-                  <div>
-                    <div class="bidder__name fw-bold mb-1">Jason</div>
-                    <div class="bidder__phone text-body-secondary">81234567</div>
-                  </div>
-
-                  <div>
-                    <div class="bid-price__title fw-bold mb-1">Bid Price:</div>
-                    <div class="bid-price__value text-body-secondary">$550,000</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="user__profile mb-3">
-                <!-- user picture -->
-                <div class="d-flex justify-content-between align-items-center">
-                  <!-- name of bidder  -->
-                  <div>
-                    <div class="bidder__name fw-bold mb-1">Shi Da</div>
-                    <div class="bidder__phone text-body-secondary">81234567</div>
-                  </div>
-
-                  <div>
-                    <div class="bid-price__title fw-bold mb-1">Bid Price:</div>
-                    <div class="bid-price__value text-body-secondary">$550,000</div>
+              <div v-for="bid of purchaseArr">
+                <div class="user__profile mb-3">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <!-- name of bidder  -->
+                    <div>
+                      <div class="bidder__name fw-bold mb-1">{{bid.buyerName}}</div>
+                      <div class="bidder__phone text-body-secondary">{{bid.buyerPhone}}</div>
+                    </div>
+  
+                    <div>
+                      <div class="bid-price__title fw-bold mb-1">Bid Price:</div>
+                      <div class="bid-price__value text-body-secondary">${{bid.buyerBid}}</div>
+                    </div>
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
@@ -581,7 +618,7 @@ function handlePurchaseBid(inp){
                 <b class="modal-title fs-4" id="viewSlotsModalLabel">Viewing</b>
               </div>
               <div class="col-4 text-end">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" :disabled="!isLoggedIn"></button>
               </div>
             </div>
             <div class="row text-start">
@@ -724,11 +761,11 @@ function handlePurchaseBid(inp){
                   <div class="input-div">
                     <div class="input-group">
                       <span class="input-group-text" id="basic-addon1">$</span>
-                      <input type="number" class="form-control input-group-value" placeholder="Bid Price"
-                        aria-label="Bid Price" aria-describedby="basic-addon1" v-model="inpPurchasePrice">
-                      <!-- :value="bid" -->
+                      <input type="number" v-model="inpPurchasePrice" class="form-control input-group-value" placeholder="Bid Price"
+                        aria-label="Bid Price" aria-describedby="basic-addon1" >
+
                     </div>
-                    <div class="text-start highest-bid">Current Price to Beat: ${{ listedPrice }} </div>
+                    <div class="text-start highest-bid">Current Price to Beat: ${{ priceToBeat }} </div>
                   </div>
                 </div>
               </div>
@@ -736,6 +773,7 @@ function handlePurchaseBid(inp){
           </div>
         </div>
         <div class="modal-footer justify-content-center">
+          <!-- <button @click="handlePurchaseBid(inpPurchasePrice)" type="button" class="btn btn-primary btn--submit">Submit Bid</button> -->
           <button @click="handlePurchaseBid(inpPurchasePrice)" type="button" class="btn btn-primary btn--submit">Submit Bid</button>
         </div>
       </div>
