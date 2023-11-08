@@ -276,9 +276,15 @@ function handleViewingBid(){
     })
     
     msg.value = "Deposit submitted!"
+    setTimeout(() => {
+      msg.value = "";
+    }, 3000)
     return true
   }else{
     msg.value = "Not enough credits in balance!";
+    setTimeout(() => {
+      msg.value = "";
+    }, 3000)
     return false
   }
 }
@@ -291,6 +297,9 @@ function handlePurchaseBid(inp){
   if (parseInt(inp) <= parseInt(listedPrice.value)){
     console.log('inp <= listedPrice');
     msg.value = "Your bid to purchase does not meet minimum listing price!";
+    setTimeout(() => {
+      msg.value = "";
+    }, 3000);
     return false
   }else{
     console.log('inp > listedPrice');
@@ -321,11 +330,11 @@ function handlePurchaseBid(inp){
     })
     
     msg.value = "Bid to purchase submitted!"
+    setTimeout(() => {
+      msg.value = "";
+    }, 3000);
   }
-
 }
-
-
 </script>
 
 <template>
@@ -347,12 +356,6 @@ function handlePurchaseBid(inp){
         <!-- Elements: custom-carousel__item -->
         <div class="carousel-item active custom-carousel__item">
           <img :src="imgUrl" class="d-block w-100 rounded" alt="Slide 1">
-        </div>
-
-        <!-- Add more carousel items as needed -->
-        <div class="carousel-item custom-carousel__item">
-          <img src="../assets/img/Listings/hudson-graves-nOJagMqGCpA-unsplash.jpg" class="d-block w-100 rounded"
-            alt="Slide 2">
         </div>
       </div>
 
@@ -699,10 +702,10 @@ function handlePurchaseBid(inp){
         <div class="modal-footer justify-content-center">
           <button @click="handleViewingBid()" type="button" class="btn btn-primary btn--submit">Submit Deposit</button>
         </div>
-        <div v-if="msg=='Deposit submitted!'" class="mb-2 text-center text-success">
+        <div v-if="msg=='Deposit submitted!'" class="mb-3 text-center text-success" style="font-size: 13px;">
             {{ msg }}
         </div>
-        <div v-else class="mb-2 text-center text-danger">
+        <div v-else class="mb-3 text-center text-danger" style="font-size: 13px;">
             {{ msg }}
         </div>
       </div>
@@ -785,13 +788,12 @@ function handlePurchaseBid(inp){
         </div>
         <div class="modal-footer justify-content-center">
           <button @click="handlePurchaseBid(inpPurchasePrice)" type="button" class="btn btn-primary btn--submit">Submit Bid</button>
-          <div v-if="msg=='Your bid to purchase does not meet minimum listing price!'" class="mb-2 text-center text-danger">
+          <div v-if="msg=='Your bid to purchase does not meet minimum listing price!'" class="mb-3 text-center text-danger" style="font-size: 13px;">
             {{ msg }}
           </div>
-          <div v-else class="mb-2 text-center text-success">
+          <div v-else class="mb-3 text-center text-success" style="font-size: 13px;">
             {{ msg }}
           </div>
-
         </div>
       </div>
     </div>
@@ -805,7 +807,7 @@ function handlePurchaseBid(inp){
 /* Elements */
 .general__container {
   width: 90%;
-  max-width: 1150px;
+  max-width: 750px;
 }
 
 .material-symbols-outlined {
@@ -900,7 +902,7 @@ h2 {
 
 .right__container {
   width: 80vw;
-  max-width: 350px;
+  max-width: 450px;
 }
 
 .modal-body {
@@ -1001,6 +1003,10 @@ h2 {
 
 /* responsiveness */
 @media (min-width: 1150px) {
+  .general__container {
+    max-width: 1150px;
+  }
+  
   .property-info__container {
     flex-direction: row;
     align-items: start;

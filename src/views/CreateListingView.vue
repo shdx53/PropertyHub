@@ -115,7 +115,7 @@ function handleSubmit() {
   })
 
   // Store listing in Firebase
-  if (isFormValid) {
+  if (!isFormValid) {
     const colRef = collection(db, "listings");
 
     addDoc(colRef, {
