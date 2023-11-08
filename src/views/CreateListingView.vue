@@ -22,16 +22,6 @@ const date = ref(null);
 const viewingprice = ref(null);
 const additionalDates = ref([]);
 
-// const storage = getStorage();
-// const storageRef = s_Ref(storage, "listings");
-
-// 'file' comes from the Blob or File API
-
-// function uploadFile() {
-//   uploadBytes(storageRef, this.$ref.myfile).then((snapshot) => {
-//     console.log("Uploaded a blob or file!");
-//   });
-// }
 
 const userEmail = ref(null);
 const userId = ref(null);
@@ -144,7 +134,8 @@ function handleSubmit() {
       balcony: balcony,
       viewingDates: viewingDates,
       favoriteCounts: 0,
-      dateOfEntry: serverTimestamp()
+      dateOfEntry: serverTimestamp(),
+      purchaseBids: []
     })
       .then(docRef => {
         uploadFile(docRef.id);
@@ -153,9 +144,20 @@ function handleSubmit() {
         })
         date.value = null;
         additionalDates.value = [];
-        router.push("/my-listings");
+        setTimeout(function(){
+          router.push("/my-listings");
+   },2000);
       })
   }
+}
+
+//format date
+const format = (date) => {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  return `Selected: ${day}/${month}/${year}`;
 }
 </script>
 
@@ -180,9 +182,13 @@ function handleSubmit() {
           </div>
 
           <div class="mb-3">
-            <label for="insertphoto" class="col-form-label fw-bold">Insert Photo(s):</label>
-            <input type="file" name="image" accept="image/png, image/jpeg" multiple ref="fileInput" id="insertphoto" />
+            <label for="insertphoto" class="col-form-label fw-bold">Insert Photo(s):&nbsp; &nbsp; &nbsp;</label>
+            <input type="file" name="image" accept="image/png, image/jpeg" multiple ref="fileInput" id="insertphoto" required/>
+            <div class="invalid-feedback">
+                Field is required
+              </div>
           </div>
+
 
           <div class="mb-3">
             <label for="about" class="col-form-label fw-bold">About the Property</label>
@@ -226,12 +232,6 @@ function handleSubmit() {
             </div>
           </div>
 
-          <!-- <div class="mb-3">
-                <label for="leasecommence" class="col-form-label fw-bold"
-                  >Lease commencement year:</label
-                >
-                <input type="number" min="1920" class="form-control" id="leasecommence" />
-              </div> -->
 
           <div class="mb-3">
             <label for="bedrooms" class="col-form-label fw-bold">Number of Bedrooms:</label>
@@ -314,7 +314,7 @@ function handleSubmit() {
           <div class="mb-3 d-flex flex-row">
             <div class="input-group">
               <VueDatePicker v-model="date" :min-date="new Date()" id="viewing-date" class="" time-picker-inline
-                :is-24="false"></VueDatePicker>
+                :is-24="false" :format="format"></VueDatePicker>
               <div class="invalid-feedback">
                 Field is required
               </div>
@@ -335,7 +335,7 @@ function handleSubmit() {
           <div class="mb-3" id="additional-viewingdates">
             <div class="d-flex flex-row" v-for="dateItem, dateIndex in additionalDates" :key="dateIndex">
               <VueDatePicker v-model="dateItem.datetime" :min-date="new Date()" class="viewing-dates" time-picker-inline
-                :is-24="false"></VueDatePicker>
+                :is-24="false" :format="format"></VueDatePicker>
               <div class="input-group viewingdates-price">
                 <div class="input-group-prepend">
                   <span class="input-group-text rounded-0 rounded-start-2">$</span>
@@ -369,7 +369,7 @@ function handleSubmit() {
 }
 
 input::file-selector-button {
-  margin-left: 20px;
+  margin-left: 0px;
   margin-right: 20px;
   padding: 0.5em;
   border: none;
@@ -435,6 +435,7 @@ h2 {
 
   .customize-viewing-window__container {
     width: 42%;
+    margin-left: 20px;
   }
 }
 </style>
