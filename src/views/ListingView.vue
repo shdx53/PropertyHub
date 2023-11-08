@@ -43,8 +43,7 @@ const sellerBal = ref(null);
 var bidArr = ref([])
 const bidArrCheck = ref(false);
 
-
-// price to beat and purchaseArr
+// priceToBeat and purchaseArr
 const priceToBeat = ref(0)
 var purchaseArr = ref([])
 
@@ -128,8 +127,6 @@ onSnapshot(listingDocRef, listing => {
     sellerName.value = balance.value.name;
     sellerBal.value = balance.value.balance;
   });
-
-
 });
 
 // Checks if user is logged in
@@ -245,7 +242,7 @@ async function handlePurchaseBid() {
     const bidDocRef = doc(db, "balance", userEmail.value);
     if (bidDocRef) {
       await getDoc(bidDocRef)
-        .then(doc => {
+        .then(doc =>{
           var bid = {};
           bid['buyerName'] = doc.data().name;
           bid['buyerPhone'] = doc.data().phone;
@@ -282,7 +279,7 @@ watch(userEmail, async () => {
   }
 })
 
-function handleViewingBid() {
+async function handleViewingBid(){
   // handle user data
 
   // let bid = selectedViewingDate;
@@ -293,14 +290,14 @@ function handleViewingBid() {
     // subtract from user
     userBal.value -= parseInt(selectedViewingDate.price);
     const userDocRef = doc(db, "balance", userEmail.value);
-    updateDoc(userDocRef, {
+    await updateDoc(userDocRef, {
       balance: userBal.value
     })
 
     // add to seller
     sellerBal.value = parseInt(sellerBal.value) + parseInt(selectedViewingDate.price);
     const sellerDocRef = doc(db, "balance", sellerEmail.value);
-    updateDoc(sellerDocRef, {
+    await updateDoc(sellerDocRef, {
       balance: sellerBal.value
     })
 
@@ -312,8 +309,8 @@ function handleViewingBid() {
     }
 
     const listingDocRef = doc(db, "listings", listingId);
-    updateDoc(listingDocRef, {
-      viewingDates: viewingDates.value
+    await updateDoc(listingDocRef, {
+      viewingDates : viewingDates.value
     })
 
     msg.value = "Deposit submitted!"
@@ -576,7 +573,7 @@ function handleViewingBid() {
                 </div>
               </div>
 
-              <div v-else class="text-muted text-center my-5">
+              <div v-else class="text-muted text-center my-5"> 
                 No bids to purchase have been made
               </div>
             </div>
