@@ -43,13 +43,10 @@ const sellerBal = ref(null);
 
 // init combined viewingDates w Buyer info
 var bidArr = ref([])
-const checkBidArr = ref(false);
 
 // price to beat and purchaseArr
 const priceToBeat = ref(0)
 var purchaseArr = []
-const checkPurchaseArr = ref(false);
-
 
 // fetch data and add it to objects
 const db = getFirestore();
@@ -57,8 +54,6 @@ const listingDocRef = doc(db, "listings", listingId);
 const listing = ref({});
 
 onSnapshot(listingDocRef, listing => {
-  console.log(listing.data())
-  console.log(listing.value)
   listing.value = listing.data();
 
   // handle listing data
@@ -82,30 +77,19 @@ onSnapshot(listingDocRef, listing => {
 
   priceToBeat.value = listing.value.listedPrice; // initial price = listed price
 
-  console.log('----testing of populating only bidArr----')
-  console.log(bidArr)
-  console.log(viewingDates.value)
   // populate bidArr for viewing
-  console.log('populating bidArr in progress...')
   for (let bid of bidArr){
-    // console.log(bid)
     if (bid.buyer != null){
-      // console.log('not null here!!!')
       const bidDocRef = doc(db, "balance", bid.buyer);
       if (bidDocRef) {
         getDoc(bidDocRef)
           .then(doc =>{
-            // console.log(doc.data())
             bid.name = doc.data().name 
             bid.phone = doc.data().phone 
           })
       }
     }
-  }
-  console.log(bidArr)
-  console.log(viewingDates.value)
-  console.log('----end of testing of populating only bidArr----')
-  
+  }  
   
   // handle purchaseBids
   if (listing.value.purchaseBids != null){
@@ -123,7 +107,6 @@ onSnapshot(listingDocRef, listing => {
   const storageReference = storageRef(storage, imgPath.value);
   getDownloadURL(storageReference)
     .then((url) => {
-      // console.log(url);
       imgUrl.value = url;
     })
 
@@ -254,8 +237,6 @@ function handleViewingBid(){
   // handle user data
 
   let bid = this.selectedViewingDate;
-  // console.log(bid.price);
-  // console.log(userBal.value);
   
   if (userBal.value >= bid.price){
     // bid is successful 
@@ -274,26 +255,13 @@ function handleViewingBid(){
       balance: sellerBal.value
     })
 
-
-    console.log('-----testing of updating firebase viewingDates-----')
     // update listing by replacing whole array
-    console.log('viewingDates.value here:')
-    console.log(viewingDates.value)
 
-    // let newViewingDates = ref([]);
-    // newViewingDates.value = viewingDates.value;
-    // console.log('newViewingDates.value here:');
-    // console.log(newViewingDates.value);
-
-    console.log('before loop...')
     for (let dateObj of viewingDates.value){
       if (dateObj == this.selectedViewingDate){
         dateObj.buyer = userEmail.value;
       }
     }
-    console.log('after loop...')
-    console.log('viewingDates.value here:')
-    console.log(viewingDates.value)
 
     const listingDocRef = doc(db, "listings", listingId);
     updateDoc(listingDocRef, {
@@ -320,15 +288,12 @@ let inpPurchasePrice = ref(null);
 function handlePurchaseBid(inp){
   // comparison
   if (parseInt(inp) <= parseInt(listedPrice.value)){
-    console.log('inp <= listedPrice');
     msg.value = "Your bid to purchase does not meet minimum listing price!";
     setTimeout(() => {
       msg.value = "";
     }, 3000);
     return false
   }else{
-    console.log('inp > listedPrice');
-
     if (parseInt(inp) > parseInt(priceToBeat.value)){
       priceToBeat.value = parseInt(inp);
     }
@@ -355,9 +320,9 @@ function handlePurchaseBid(inp){
     })
     
     msg.value = "Bid to purchase submitted!"
-    setTimeout(() => {
-      msg.value = "";
-    }, 3000);
+    // setTimeout(() => {
+    //   msg.value = "";
+    // }, 3000);
   }
 }
 </script>
@@ -547,59 +512,65 @@ function handlePurchaseBid(inp){
               <div>
                 <!-- Loop to iterate through viewingDates-->
                 
-                <div v-if="!checkBidArr" class="text-muted text-center my-5">
-                  You have no appointments scheduled
-                </div>
-                <div v-for="bid of bidArr">
-                  <div v-if="bid.name != null" class="user__profile mb-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                      <div>
-                        <div class="bidder__name fw-bold mb-1">
-                          {{ bid.name }}
+                <div v-if="bidArr.length!=0" class="text-center my-5">
+                  <div v-for="bid of bidArr">
+                    <div v-if="bid.name != null" class="user__profile mb-3">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                          <div class="bidder__name fw-bold mb-1">
+                            {{ bid.name }}
+                          </div>
+                          <div class="bidder__phone text-body-secondary">
+                            {{ bid.phone }}
+                          </div>
                         </div>
-                        <div class="bidder__phone text-body-secondary">
-                          {{ bid.phone }}
-                        </div>
-                      </div>
 
-                      <div>
-                        <div class="date__title fw-bold mb-1">Date:</div>
-                        <div class="date__value text-body-secondary">{{ bid.datetime.toDate().toLocaleString(undefined, {
-                          day: 'numeric',
-                          month: 'short',
-                          year: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        }) }} </div>
+                        <div>
+                          <div class="date__title fw-bold mb-1">Date:</div>
+                          <div class="date__value text-body-secondary">{{ bid.datetime.toDate().toLocaleString(undefined, {
+                            day: 'numeric',
+                            month: 'short',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          }) }} </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+                <div v-else class="text-muted">
+                  You have no appointments scheduled
+                </div>
+                
               </div>
             </div>
 
             <div v-else class="purchase__container">
               <!-- Loop to iterate through purchaseBids -->
             
-              <div v-if="!purchaseArr" class="text-muted text-center my-5">
-                  No bids have been made so far
-              </div>
-              <div v-else v-for="bid of purchaseArr">
-                <div class="user__profile mb-3">
-                  <div class="d-flex justify-content-between align-items-center">
-                    <!-- name of bidder  -->
-                    <div>
-                      <div class="bidder__name fw-bold mb-1">{{bid.buyerName}}</div>
-                      <div class="bidder__phone text-body-secondary">{{bid.buyerPhone}}</div>
-                    </div>
-  
-                    <div>
-                      <div class="bid-price__title fw-bold mb-1">Bid Price:</div>
-                      <div class="bid-price__value text-body-secondary">${{bid.buyerBid}}</div>
+              <div v-if="purchaseArr.length!=0" class="text-center my-5">
+                <div v-for="bid of purchaseArr">
+                  <div class="user__profile mb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <!-- name of bidder  -->
+                      <div>
+                        <div class="bidder__name fw-bold mb-1">{{bid.buyerName}}</div>
+                        <div class="bidder__phone text-body-secondary">{{bid.buyerPhone}}</div>
+                      </div>
+    
+                      <div>
+                        <div class="bid-price__title fw-bold mb-1">Bid Price:</div>
+                        <div class="bid-price__value text-body-secondary">${{bid.buyerBid}}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <div v-else class="text-muted"> 
+                No bids have been made so far
+              </div>
+
 
             </div>
           </div>
@@ -724,7 +695,7 @@ function handlePurchaseBid(inp){
             </div>
           </div>
         </div>
-        <div class="modal-footer justify-content-center">
+        <div class="modal-footer flex-column justify-content-center">
           <button @click="handleViewingBid()" type="button" class="btn btn-primary btn--submit">Submit Deposit</button>
         </div>
         <div v-if="msg=='Deposit submitted!'" class="mb-3 text-center text-success" style="font-size: 13px;">
@@ -811,13 +782,12 @@ function handlePurchaseBid(inp){
             </div>
           </div>
         </div>
-        <div class="modal-footer justify-content-center">
+        <div class="modal-footer flex-column justify-content-center">
           <button @click="handlePurchaseBid(inpPurchasePrice)" type="button" class="btn btn-primary btn--submit">Submit Bid</button>
           <div v-if="msg=='Your bid to purchase does not meet minimum listing price!'" class="mb-2 text-center text-danger" style="font-size: 13px;">
             {{ msg }}
           </div>
           <div v-else class="mb-2 text-center text-success" style="font-size: 13px;">
-            <br>
             {{ msg }}
           </div>
         </div>
