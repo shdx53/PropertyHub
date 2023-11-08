@@ -366,7 +366,7 @@ export default {
   mounted() {
     this.fetchProducts();
     this.getUserPrice();
-    // console.log(this.products);
+    console.log(this.products);
   },
   methods: {
     revertShowing() {
@@ -449,6 +449,7 @@ export default {
       });
     },
     async createSingleCheckout(price, credits) {
+      console.log(price,credits);
       this.isLoading = true;
       this.selectedPrice = price;
       const temp_balance = this.shownBalance + parseInt(credits);
