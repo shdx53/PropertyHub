@@ -496,7 +496,7 @@ function handleViewingBid(){
         <div v-if="userEmail == sellerEmail" class="right__container mx-2 ms-lg-4">
           <h2 class="dashboard__title fw-bold mb-3">Your Dashboard</h2>
           <div class="nav__bar">
-            <ul class="nav nav-tabs mb-3">
+            <ul class="nav nav-tabs">
               <li class="nav-item">
                 <a class="nav-link fw-bold" @click="handleActiveTab('view')"
                   :class="{ active: activeTab == 'view' }">Viewing Dates</a>
@@ -516,7 +516,7 @@ function handleViewingBid(){
                 <div v-if="bidArrCheck" class="text-center my-5">
                   <div v-for="bid of bidArr">
                     <div v-if="bid.name != null" class="user__profile mb-3">
-                      <div class="d-flex justify-content-between align-items-center">
+                      <div class="d-flex justify-content-between align-items-center text-start">
                         <div>
                           <div class="bidder__name fw-bold mb-1">
                             {{ bid.name }}
@@ -554,7 +554,7 @@ function handleViewingBid(){
               <div v-if="purchaseArr.length>0" class="text-center my-5">
                 <div v-for="bid of purchaseArr">
                   <div class="user__profile mb-3">
-                    <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex justify-content-between align-items-center text-start">
                       <!-- name of bidder  -->
                       <div>
                         <div class="bidder__name fw-bold mb-1">{{bid.buyerName}}</div>
@@ -574,8 +574,6 @@ function handleViewingBid(){
                 {{console.log(purchaseArr)}}
                 No bids to purchase have been made
               </div>
-
-
             </div>
           </div>
         </div>
