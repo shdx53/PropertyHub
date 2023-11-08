@@ -1,3 +1,5 @@
+/* code reference from https://stackoverflow.com/questions/12991164/maintaining-the-final-state-at-end-of-a-css-animation */
+
 /* Slide In From Left Animation */
 .slide-in-left {
     animation-name: slideInLeft;
