@@ -70,6 +70,7 @@ onSnapshot(customersColRef, () => {
             :favoriteCounts="listing[1].favoriteCounts" :isFavorited="listing[1].isFavorited"
             :imgPath="listing[1].imgPath" :key="isLoggedIn"></Listing>
         </div>
+        <div v-if="favouriteListings.length == 0" class="text-center mt-3 text-black-50">You currently have no liked listings.</div>
       </div>
     </div>
 
