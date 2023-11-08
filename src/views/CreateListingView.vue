@@ -134,7 +134,8 @@ function handleSubmit() {
       balcony: balcony,
       viewingDates: viewingDates,
       favoriteCounts: 0,
-      dateOfEntry: serverTimestamp()
+      dateOfEntry: serverTimestamp(),
+      purchaseBids: []
     })
       .then(docRef => {
         uploadFile(docRef.id);
