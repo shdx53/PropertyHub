@@ -3,15 +3,13 @@ import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
 import GoogleMaps from "../components/ListingView/GoogleMaps.vue";
 
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 
 // External libraries
 import { useRoute } from 'vue-router';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { doc, getFirestore, updateDoc, collection, getDoc, arrayUnion, onSnapshot, DocumentReference } from "firebase/firestore";
+import { doc, getFirestore, updateDoc, collection, getDoc, arrayUnion, onSnapshot } from "firebase/firestore";
 import { getStorage, ref as storageRef, getDownloadURL } from "firebase/storage";
-import { query, where } from "firebase/firestore";
-import { getCurrentUser } from "../firebase";
 
 var msg = ref("");
 
@@ -223,30 +221,30 @@ function handleActiveTab(tab) {
 }
 
 // handling purchase bids
-let inpPurchasePrice = ref(null);
-function handlePurchaseBid(inp){
+let inpPurchasePrice;
+async function handlePurchaseBid(){
   // comparison
-  if (parseInt(inp) <= parseInt(listedPrice.value)){
+  if (parseInt(inpPurchasePrice) <= parseInt(listedPrice.value)){
     msg.value = "Your bid to purchase does not meet minimum listing price!";
     setTimeout(() => {
       msg.value = "";
     }, 3000);
     return false
-  }else{
-    if (parseInt(inp) > parseInt(priceToBeat.value)){
-      priceToBeat.value = parseInt(inp);
+  } else{
+    if (parseInt(inpPurchasePrice) > parseInt(priceToBeat.value)){
+      priceToBeat.value = parseInt(inpPurchasePrice);
     }
 
     // add bid to purchaseArr
     const bidDocRef = doc(db, "balance", userEmail.value);
     if (bidDocRef) {
-      getDoc(bidDocRef)
+      await getDoc(bidDocRef)
         .then(doc =>{
           console.log(doc.data())
           var bid = {};
           bid['buyerName'] = doc.data().name;
           bid['buyerPhone'] = doc.data().phone;
-          bid['buyerBid'] = inp;
+          bid['buyerBid'] = inpPurchasePrice;
 
           purchaseArr.value.push(bid);
           // console.log(purchaseArr.value)
@@ -328,8 +326,6 @@ function handleViewingBid(){
     return false
   }
 }
-
-
 </script>
 
 <template>
@@ -791,7 +787,7 @@ function handleViewingBid(){
           </div>
         </div>
         <div class="modal-footer flex-column justify-content-center">
-          <button @click="handlePurchaseBid(inpPurchasePrice)" type="button" class="btn btn-primary btn--submit">Submit Bid</button>
+          <button @click="handlePurchaseBid()" type="button" class="btn btn-primary btn--submit">Submit Bid</button>
           <div v-if="msg=='Your bid to purchase does not meet minimum listing price!'" class="mb-2 text-center text-danger" style="font-size: 13px;">
             {{ msg }}
           </div>
