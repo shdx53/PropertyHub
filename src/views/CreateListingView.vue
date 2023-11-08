@@ -22,7 +22,6 @@ const date = ref(null);
 const viewingprice = ref(null);
 const additionalDates = ref([]);
 
-
 const userEmail = ref(null);
 const userId = ref(null);
 getCurrentUser()

@@ -43,8 +43,7 @@ const sellerBal = ref(null);
 var bidArr = ref([])
 const bidArrCheck = ref(false);
 
-
-// price to beat and purchaseArr
+// priceToBeat and purchaseArr
 const priceToBeat = ref(0)
 var purchaseArr = ref([])
 
@@ -122,8 +121,6 @@ onSnapshot(listingDocRef, listing => {
     sellerName.value = balance.value.name;
     sellerBal.value = balance.value.balance;
   });
-
-  
 });
 
 // Checks if user is logged in
@@ -240,14 +237,12 @@ async function handlePurchaseBid(){
     if (bidDocRef) {
       await getDoc(bidDocRef)
         .then(doc =>{
-          console.log(doc.data())
           var bid = {};
           bid['buyerName'] = doc.data().name;
           bid['buyerPhone'] = doc.data().phone;
           bid['buyerBid'] = inpPurchasePrice;
 
           purchaseArr.value.push(bid);
-          // console.log(purchaseArr.value)
         })
     }
 
@@ -308,7 +303,6 @@ function handleViewingBid(){
     }
 
     const listingDocRef = doc(db, "listings", listingId);
-    console.log(viewingDates.value)
     updateDoc(listingDocRef, {
       viewingDates : viewingDates.value
     })
@@ -571,7 +565,6 @@ function handleViewingBid(){
               </div>
 
               <div v-else class="text-muted text-center my-5"> 
-                {{console.log(purchaseArr)}}
                 No bids to purchase have been made
               </div>
             </div>
