@@ -46,7 +46,7 @@ var bidArr = ref([])
 
 // price to beat and purchaseArr
 const priceToBeat = ref(0)
-var purchaseArr = []
+var purchaseArr = ref([])
 
 // fetch data and add it to objects
 const db = getFirestore();
@@ -93,10 +93,10 @@ onSnapshot(listingDocRef, listing => {
   
   // handle purchaseBids
   if (listing.value.purchaseBids != null){
-    purchaseArr = listing.value.purchaseBids;
+    purchaseArr.value = listing.value.purchaseBids;
 
     // handle updating of priceToBeat
-    for (let purchase of purchaseArr){
+    for (let purchase of purchaseArr.value){
       if (purchase.buyerBid > priceToBeat.value){
         priceToBeat.value = purchase.buyerBid 
       }
@@ -219,7 +219,50 @@ function handleActiveTab(tab) {
   }
 }
 
-// handling bids
+// handling purchase bids
+function handlePurchaseBid(inp){
+  // comparison
+  if (parseInt(inp) <= parseInt(listedPrice.value)){
+    msg.value = "Your bid to purchase does not meet minimum listing price!";
+    setTimeout(() => {
+      msg.value = "";
+    }, 3000);
+    return false
+  }else{
+    if (parseInt(inp) > parseInt(priceToBeat.value)){
+      priceToBeat.value = parseInt(inp);
+    }
+
+    // add bid to purchaseArr
+    const bidDocRef = doc(db, "balance", userEmail.value);
+    if (bidDocRef) {
+      getDoc(bidDocRef)
+        .then(doc =>{
+          console.log(doc.data())
+          var bid = {};
+          bid['buyerName'] = doc.data().name;
+          bid['buyerPhone'] = doc.data().phone;
+          bid['buyerBid'] = inp;
+
+          purchaseArr.value.push(bid);
+          // console.log(purchaseArr.value)
+        })
+    }
+
+    // update purchaseBids in Firebase
+    const listingDocRef = doc(db, "listings", listingId);
+    updateDoc(listingDocRef, {
+        purchaseBids : purchaseArr.value
+    })
+  
+    msg.value = "Purchase bid submitted!"
+    setTimeout(() => {
+      msg.value = "";
+    }, 3000);
+  }
+}
+
+// handling viewing bids
 let selectedViewingDate = ref(null);
 const userBal = ref(null);
 
@@ -256,7 +299,6 @@ function handleViewingBid(){
     })
 
     // update listing by replacing whole array
-
     for (let dateObj of viewingDates.value){
       if (dateObj == this.selectedViewingDate){
         dateObj.buyer = userEmail.value;
@@ -264,6 +306,7 @@ function handleViewingBid(){
     }
 
     const listingDocRef = doc(db, "listings", listingId);
+    console.log(viewingDates.value)
     updateDoc(listingDocRef, {
       viewingDates : viewingDates.value
     })
@@ -282,49 +325,7 @@ function handleViewingBid(){
   }
 }
 
-// handling input for Purchase
-let inpPurchasePrice = ref(null);
 
-function handlePurchaseBid(inp){
-  // comparison
-  if (parseInt(inp) <= parseInt(listedPrice.value)){
-    msg.value = "Your bid to purchase does not meet minimum listing price!";
-    setTimeout(() => {
-      msg.value = "";
-    }, 3000);
-    return false
-  }else{
-    if (parseInt(inp) > parseInt(priceToBeat.value)){
-      priceToBeat.value = parseInt(inp);
-    }
-
-    // add bid to purchaseArr
-    const bidDocRef = doc(db, "balance", userEmail.value);
-    if (bidDocRef) {
-      getDoc(bidDocRef)
-        .then(doc =>{
-          var bid = {
-              "buyerName" : doc.data().name,
-              "buyerPhone": doc.data().phone,
-              "buyerBid": inp
-          }          
-          purchaseArr.push(bid)
-        })
-    }
-
-    // update purchaseBids in Firebase
-    const listingDocRef = doc(db, "listings", listingId);
-    
-    updateDoc(listingDocRef, {
-        purchaseBids : purchaseArr
-    })
-    
-    msg.value = "Bid to purchase submitted!"
-    // setTimeout(() => {
-    //   msg.value = "";
-    // }, 3000);
-  }
-}
 </script>
 
 <template>
@@ -540,7 +541,6 @@ function handlePurchaseBid(inp){
                     </div>
                   </div>
                 </div>
-
                 <!-- v-else -->
                 <div  class="text-muted">
                   You have no appointments scheduled
@@ -571,9 +571,9 @@ function handlePurchaseBid(inp){
                   </div>
                 </div>
               </div>
-              <!-- v-else -->
+              <!-- v-else --> 
               <div  class="text-muted"> 
-                No bids have been made so far
+                No bids to purchase have been made
               </div>
 
 
