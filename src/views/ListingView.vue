@@ -290,7 +290,7 @@ function handlePurchaseBid(inp){
   // comparison
   if (parseInt(inp) <= parseInt(listedPrice.value)){
     console.log('inp <= listedPrice');
-    msg.value = "Your purchase bid is not high enough!";
+    msg.value = "Your bid to purchase does not meet minimum listing price!";
     return false
   }else{
     console.log('inp > listedPrice');
@@ -313,8 +313,6 @@ function handlePurchaseBid(inp){
         })
     }
 
-    // console.log(length(purchaseArr))
-
     // update purchaseBids in Firebase
     const listingDocRef = doc(db, "listings", listingId);
     
@@ -322,7 +320,7 @@ function handlePurchaseBid(inp){
         purchaseBids : purchaseArr
     })
     
-    msg.value = "Purchase bid submitted!"
+    msg.value = "Bid to purchase submitted!"
   }
 
 }
@@ -474,7 +472,13 @@ function handlePurchaseBid(inp){
               <div class="col-md-6">
                 <div class="row">
                   <div class="col-6 col-md-12 fw-bold">Listed On</div>
-                  <div v-if="dateOfEntry" class="col-6 col-md-12">{{ dateOfEntry.toDate().toLocaleString() }}</div>
+                  <div v-if="dateOfEntry" class="col-6 col-md-12">
+                  {{ dateOfEntry.toDate().toLocaleString(undefined, {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                  }) }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -514,7 +518,11 @@ function handlePurchaseBid(inp){
             <div v-if="activeTab == 'view'" class="view__container">
               <div>
                 <!-- Loop to iterate through viewingDates-->
-                <div v-for="bid of bidArr">
+                
+                <div v-if="!bidArr" class="text-muted text-center my-5">
+                  You have no appointments scheduled
+                </div>
+                <div v-else v-for="bid of bidArr">
                   <div v-if="bid.name != null" class="user__profile mb-3">
                     <div class="d-flex justify-content-between align-items-center">
                       <div>
@@ -543,9 +551,12 @@ function handlePurchaseBid(inp){
             </div>
 
             <div v-else class="purchase__container">
-              <!-- <h3>Bidder's profile</h3> -->
-              <!-- First set of content for the "Purchase" tab -->
-              <div v-for="bid of purchaseArr">
+              <!-- Loop to iterate through purchaseBids -->
+            
+              <div v-if="!purchaseArr" class="text-muted text-center my-5">
+                  No bids have been made so far
+              </div>
+              <div v-else v-for="bid of purchaseArr">
                 <div class="user__profile mb-3">
                   <div class="d-flex justify-content-between align-items-center">
                     <!-- name of bidder  -->
@@ -586,7 +597,7 @@ function handlePurchaseBid(inp){
           <!-- button for viewSlotsModal -->
           <div class="btn-container d-flex justify-content-center my-2">
             <button type="button" class="btn w-50 btn-primary border border-muted" data-bs-toggle="modal"
-              data-bs-target="#viewSlotsModal">
+              data-bs-target="#viewSlotsModal" :disabled="!isLoggedIn">
               Viewing
               <!-- How to add icons beside CTA?
                 <span class="material-symbols-outlined" style="font-size:20px;">schedule_send</span> -->
@@ -595,7 +606,7 @@ function handlePurchaseBid(inp){
           <!-- button for purchaseModal -->
           <div class="btn-container d-flex justify-content-center my-2">
             <button type="button" class="btn w-50 btn-primary border border-muted" data-bs-toggle="modal"
-              data-bs-target="#purchaseModal">
+              data-bs-target="#purchaseModal" :disabled="!isLoggedIn">
               Purchase
             </button>
           </div>
@@ -618,7 +629,7 @@ function handlePurchaseBid(inp){
                 <b class="modal-title fs-4" id="viewSlotsModalLabel">Viewing</b>
               </div>
               <div class="col-4 text-end">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" :disabled="!isLoggedIn"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
             </div>
             <div class="row text-start">
@@ -773,8 +784,14 @@ function handlePurchaseBid(inp){
           </div>
         </div>
         <div class="modal-footer justify-content-center">
-          <!-- <button @click="handlePurchaseBid(inpPurchasePrice)" type="button" class="btn btn-primary btn--submit">Submit Bid</button> -->
           <button @click="handlePurchaseBid(inpPurchasePrice)" type="button" class="btn btn-primary btn--submit">Submit Bid</button>
+          <div v-if="msg=='Your bid to purchase does not meet minimum listing price!'" class="mb-2 text-center text-danger">
+            {{ msg }}
+          </div>
+          <div v-else class="mb-2 text-center text-success">
+            {{ msg }}
+          </div>
+
         </div>
       </div>
     </div>
@@ -1135,4 +1152,11 @@ h2 {
     font-size: 20px;
   }
 }
+
+@media (max-width: 1150px) {
+  .dashboard__title {
+    text-align: center
+  }
+}
+
 </style>
