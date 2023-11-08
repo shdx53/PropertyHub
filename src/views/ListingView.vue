@@ -1039,6 +1039,10 @@ h2 {
     max-width: 350px;
     margin: 0 auto;
   }
+
+  .right__container {
+    max-width: 400px;
+  }
 }
 
 @media (max-width: 585px) {
