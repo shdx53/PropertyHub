@@ -41,7 +41,7 @@ if (props.listings) {
 
     for (const listing of props.listings) {
       const address = listing[1].address;
-      const imgPath = listing[1].imgPath;
+      const imgPath = listing[1].imgPath[0];
       const listedPrice = Number(listing[1].listedPrice).toLocaleString();
 
       const imgSrc = ref(null);

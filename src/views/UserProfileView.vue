@@ -4,34 +4,28 @@ import Footer from "../components/Footer.vue";
 </script>
 <template>
   <div class="d-flex flex-column justify-content-between" style="height: 100vh">
-    <div>
-      <Navbar />
-      <div class="general__container">
-        <div class="balance__container">
-          <div
-            class="d-flex justify-content-between align-items-center py-3 mb-3"
-          >
-            <div>
-              <span class="fw-bold">My Balance: </span>
-              <span>${{ Number(shownBalance).toLocaleString() }}</span>
-            </div>
 
-            <div v-if="!showing">
-              <a
-                @click="showTransactions"
-                class="btn btn-primary btn--transaction"
-              >
-                View Transactions
-              </a>
-            </div>
-            <div v-if="showing">
-              <a @click="revertShowing" class="btn btn-primary btn--transaction"
-                >Hide Transactions
-              </a>
-            </div>
+    <Navbar />
+    <div class="general__container">
+      <div class="balance__container">
+        <div class="d-flex justify-content-between align-items-center py-3" :class="{ 'mb-3' : showing, 'mb-5' : !showing }">
+          <div>
+            <span class="fw-bold">My Balance: </span>
+            <span>${{ Number(shownBalance).toLocaleString() }}</span>
           </div>
 
-          <!-- <div class="card mt-4 mb-4">
+          <div v-if="!showing">
+            <a @click="showTransactions" class="btn btn-primary btn--transaction">
+              View Transactions
+            </a>
+          </div>
+          <div v-if="showing">
+            <a @click="revertShowing" class="btn btn-primary btn--transaction">Hide Transactions
+            </a>
+          </div>
+        </div>
+
+        <!-- <div class="card mt-4 mb-4">
         <h5 class="card-header">Your Balance({{ email }})</h5>
         <div class="card-body">
           <h5 class="card-title">Current Amount:</h5>
@@ -49,37 +43,34 @@ import Footer from "../components/Footer.vue";
         </div>
       </div> -->
 
-          <div class="mb-5" v-if="showing">
-            <h1 class="display-4 text-center fw-bold">Transactions</h1>
-            <div class="text-center text-muted mb-4">
-              Your past transactions with us
-            </div>
-
-            <div class="row mb-2">
-              <div class="col-6 col-sm-5 d-none d-sm-block text-muted">ID</div>
-              <div class="col-6 col-sm-2 text-muted">Amount Paid</div>
-              <div class="col-6 col-sm-3 text-muted">Package</div>
-              <div class="col-2 text-muted d-none d-sm-block">Time Created</div>
-            </div>
-
-            <div
-              class="row bg-light rounded py-2 mb-3"
-              v-for="transaction in transactions"
-            >
-              <div class="col-6 col-sm-5 d-none d-sm-block">
-                {{ transaction.id }}
-              </div>
-              <div class="col-6 col-sm-2">${{ transaction.amount / 100 }}</div>
-              <div class="col-6 col-sm-3">
-                {{ transaction.items[0].description }}
-              </div>
-              <div class="col-2 d-none d-sm-block">
-                {{ timeStampy(transaction.created) }}
-              </div>
-            </div>
+        <div class="mb-5" v-if="showing">
+          <h1 class="display-4 text-center fw-bold">Transactions</h1>
+          <div class="text-center text-muted mb-4">
+            Your past transactions with us
           </div>
 
-          <!-- <div v-if="showing">
+          <div class="row mb-2">
+            <div class="col-6 col-sm-5 d-none d-sm-block text-muted">ID</div>
+            <div class="col-6 col-sm-2 text-muted">Amount Paid</div>
+            <div class="col-6 col-sm-3 text-muted">Package</div>
+            <div class="col-2 text-muted d-none d-sm-block">Time Created</div>
+          </div>
+
+          <div class="row bg-light rounded py-2 mb-3" v-for="transaction in transactions">
+            <div class="col-6 col-sm-5 d-none d-sm-block">
+              {{ transaction.id }}
+            </div>
+            <div class="col-6 col-sm-2">${{ transaction.amount / 100 }}</div>
+            <div class="col-6 col-sm-3">
+              {{ transaction.items[0].description }}
+            </div>
+            <div class="col-2 d-none d-sm-block">
+              {{ timeStampy(transaction.created) }}
+            </div>
+          </div>
+        </div>
+
+        <!-- <div v-if="showing">
         <h1 class="display-4 fw-normal text-center">Transactions</h1>
         <p class="fs-5 text-muted text-center">
           Your past transactions with us
@@ -103,18 +94,18 @@ import Footer from "../components/Footer.vue";
           </tbody>
         </table>
       </div> -->
+      </div>
+
+      <div class="w-100">
+        <div>
+          <h1 class="display-4 text-center fw-bold">Pricing</h1>
+          <div class="text-center text-muted mb-4">
+            Get your E-credits to enjoy the best experiences that our platform
+            provides
+          </div>
         </div>
 
-        <div class="w-100">
-          <div>
-            <h1 class="display-4 text-center fw-bold">Pricing</h1>
-            <div class="text-center text-muted mb-4">
-              Get your E-credits to enjoy the best experiences that our platform
-              provides
-            </div>
-          </div>
-
-          <!-- <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+        <!-- <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
         <h1 class="display-4 fw-normal">Pricing</h1>
         <p class="fs-5 text-muted">
           Get your E-credits to enjoy the best experiences that our platform
@@ -122,78 +113,57 @@ import Footer from "../components/Footer.vue";
         </p>
       </div> -->
 
-          <div
-            class="row pb-5 justify-content-center justify-content-lg-between"
-          >
-            <div
-              class="plan col-12 col-lg-4 bg-light rounded p-5 p-lg-4 px-xxl-5 mb-4 mb-lg-0"
-              v-for="(product, idx) in products"
-            >
-              <h2 class="product__name">{{ product.name }}</h2>
-              <div class="product__price-container mb-2">
-                <span class="product__price fw-bold me-2">
-                  ${{ product.prices[0].unit_amount / 100 }}
-                </span>
-                <span class="product__price-credits"
-                  >/ {{ prod_details[idx]["1"] }}</span
-                >
+        <div class="row pb-5 justify-content-center justify-content-lg-between">
+          <div class="plan col-12 col-lg-4 bg-light rounded p-5 p-lg-4 px-xxl-5 mb-4 mb-lg-0"
+            v-for="(product, idx) in products">
+            <h2 class="product__name">{{ product.name }}</h2>
+            <div class="product__price-container mb-2">
+              <span class="product__price fw-bold me-2">
+                ${{ product.prices[0].unit_amount / 100 }}
+              </span>
+              <span class="product__price-credits">/ {{ prod_details[idx]["1"] }}</span>
+            </div>
+            <div class="row mb-2">
+              <div class="col-2 pe-0">
+                <img class="tick-icon" src="https://i.postimg.cc/Y2JWwd3S/noun-tick-801900.png" />
               </div>
-              <div class="row mb-2">
-                <div class="col-2 pe-0">
-                  <img
-                    class="tick-icon"
-                    src="https://i.postimg.cc/Y2JWwd3S/noun-tick-801900.png"
-                  />
-                </div>
-                <div class="col-10 ps-0">
-                  {{ prod_details[idx]["2"] }}
-                </div>
-              </div>
-              <div class="row mb-4">
-                <div class="col-2 pe-0">
-                  <img
-                    class="tick-icon"
-                    src="https://i.postimg.cc/Y2JWwd3S/noun-tick-801900.png"
-                  />
-                </div>
-                <div class="col-10 ps-0">
-                  {{ prod_details[idx]["3"] }}
-                </div>
-              </div>
-
-              <div v-if="isLoading == false">
-                <button
-                  type="button"
-                  @click="
-                    createSingleCheckout(
-                      product.prices[0].id,
-                      product.stripe_metadata_credits
-                    )
-                  "
-                  class="w-100 btn btn-lg btn-primary purchase__btn"
-                >
-                  Purchase Credits
-                </button>
-              </div>
-              <div v-else>
-                <button
-                  type="button"
-                  disabled
-                  @click="
-                    createSingleCheckout(
-                      product.prices[0].id,
-                      product.stripe_metadata_credits
-                    )
-                  "
-                  class="w-100 btn btn-lg btn-primary purchase__btn"
-                >
-                  Purchase Credits
-                </button>
+              <div class="col-10 ps-0">
+                {{ prod_details[idx]["2"] }}
               </div>
             </div>
-          </div>
+            <div class="row mb-4">
+              <div class="col-2 pe-0">
+                <img class="tick-icon" src="https://i.postimg.cc/Y2JWwd3S/noun-tick-801900.png" />
+              </div>
+              <div class="col-10 ps-0">
+                {{ prod_details[idx]["3"] }}
+              </div>
+            </div>
 
-          <!-- <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+            <div v-if="isLoading == false">
+              <button type="button" @click="
+                createSingleCheckout(
+                  product.prices[0].id,
+                  product.stripe_metadata_credits
+                )
+                " class="w-100 btn btn-lg btn-primary purchase__btn">
+                Purchase Credits
+              </button>
+            </div>
+            <div v-else>
+              <button type="button" disabled @click="
+                createSingleCheckout(
+                  product.prices[0].id,
+                  product.stripe_metadata_credits
+                )
+                " class="w-100 btn btn-lg btn-primary purchase__btn">
+                Purchase Credits
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
         <div class="col-3" v-for="(product, idx) in products">
           <div class="card mb-4 rounded-3 shadow-sm">
             <div class="card-header py-3">
@@ -230,20 +200,19 @@ import Footer from "../components/Footer.vue";
           </div>
         </div>
       </div> -->
-        </div>
       </div>
     </div>
 
-    <div class="mt-auto">
+
+    <div>
       <Footer id="footer" />
     </div>
-  </div>
-</template>
+  </div></template>
 
 <style scoped>
 .general__container {
   width: 85%;
-  max-width: 1200px;
+  max-width: 1400px;
 }
 
 .balance__container {
@@ -449,7 +418,7 @@ export default {
       });
     },
     async createSingleCheckout(price, credits) {
-      console.log(price,credits);
+      console.log(price, credits);
       this.isLoading = true;
       this.selectedPrice = price;
       const temp_balance = this.shownBalance + parseInt(credits);

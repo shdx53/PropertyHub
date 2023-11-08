@@ -38,7 +38,7 @@ if (auth.currentUser) {
 const imgSrc = ref("");
 if (props.imgPath) {
   const storage = getStorage();
-  const imgRef = storageRef(storage, props.imgPath);
+  const imgRef = storageRef(storage, props.imgPath[0]);
 
   getDownloadURL(imgRef)
     .then(url => {

@@ -39,25 +39,50 @@ getCurrentUser()
     console.error("Error getting current user:", error);
   });
 
-const uploadFile = async (listingId) => {
-  if (fileInput.value && fileInput.value.files.length > 0) {
-    const files = fileInput.value.files;
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      const imgPath = `listings/${userEmail.value}/${listingId}/${file.name}`;
-      const storageReference = storageRef(storage, imgPath);
-      try {
-        const snapshot = await uploadBytes(storageReference, file);
-        console.log("Uploaded a blob or file!", snapshot);
+function handleImg() {
+  fileInput.value = event.target.files;
+}
 
-        const listingsDocRef = doc(db, "listings", listingId);
-        updateDoc(listingsDocRef, {
-          imgPath: imgPath
-        })
-      } catch (error) {
-        console.error("Error uploading file:", error);
+const uploadFile = async (listingId) => {
+  if (fileInput.value && fileInput.value.length > 0) {
+    const files = fileInput.value;
+    let imgPaths = [];
+    // for (let i = 0; i < files.length; i++) {
+    //   const file = files[i];
+    //   const imgPath = `listings/${userEmail.value}/${listingId}/${file.name}`
+    //   imgPaths.push(imgPath);
+    //   const storageReference = storageRef(storage, imgPath);
+    //   try {
+    //     const snapshot = await uploadBytes(storageReference, file);
+    //     console.log("Uploaded a blob or file!", snapshot);
+
+
+    //   } catch (error) {
+    //     console.error("Error uploading file:", error);
+    //   }
+    // }
+
+    for (const fileKey in files) {
+      console.log(fileKey)
+      if (fileKey.length == 1) {
+        const file = files[fileKey]
+        const fileName = file.name;
+        const imgPath = `listings/${userEmail.value}/${listingId}/${fileName}`
+        imgPaths.push(imgPath);
+        const storageReference = storageRef(storage, imgPath);
+        try {
+          const snapshot = uploadBytes(storageReference, file);
+          console.log("Uploaded a blob or file!", snapshot);
+        } catch (error) {
+          console.error("Error uploading file:", error);
+        }
       }
     }
+
+    const listingsDocRef = doc(db, "listings", listingId);
+    updateDoc(listingsDocRef, {
+      imgPath: imgPaths
+    })
   }
 };
 
@@ -144,9 +169,9 @@ function handleSubmit() {
         })
         date.value = null;
         additionalDates.value = [];
-        setTimeout(function(){
+        setTimeout(function () {
           router.push("/my-listings");
-   },2000);
+        }, 2000);
       })
   }
 }
@@ -183,10 +208,11 @@ const format = (date) => {
 
           <div class="mb-3">
             <label for="insertphoto" class="col-form-label fw-bold">Insert Photo(s):&nbsp; &nbsp; &nbsp;</label>
-            <input type="file" name="image" accept="image/png, image/jpeg" multiple ref="fileInput" id="insertphoto" required/>
+            <input type="file" name="image" accept="image/png, image/jpeg" multiple id="insertphoto"
+              @change="handleImg" required />
             <div class="invalid-feedback">
-                Field is required
-              </div>
+              Field is required
+            </div>
           </div>
 
 

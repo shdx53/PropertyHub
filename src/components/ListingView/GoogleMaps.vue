@@ -69,7 +69,7 @@ async function handleMap(selection) {
     const position = { lat: lat, lng: lng };
 
     const storage = getStorage();
-    const imgRef = storageRef(storage, props.imgPath);
+    const imgRef = storageRef(storage, props.imgPath[0]);
     let imgSrc;
 
     await getDownloadURL(imgRef)

@@ -31,7 +31,7 @@ const level = ref("");
 const favoriteCounts = ref("");
 const imgPath = ref("");
 const viewingDates = ref([])
-const imgUrl = ref("")
+const imgUrl = ref([])
 
 // init seller objs
 const sellerEmail = ref("");
@@ -55,6 +55,7 @@ const listing = ref({});
 
 onSnapshot(listingDocRef, listing => {
   listing.value = listing.data();
+  console.log(listing.value.imgPath);
 
   // handle listing data
   address.value = listing.value.address;
@@ -78,38 +79,43 @@ onSnapshot(listingDocRef, listing => {
   priceToBeat.value = listing.value.listedPrice; // initial price = listed price
 
   // populate bidArr for viewing
-  for (let bid of bidArr){
-    if (bid.buyer != null){
+  for (let bid of bidArr) {
+    if (bid.buyer != null) {
       const bidDocRef = doc(db, "balance", bid.buyer);
       if (bidDocRef) {
         getDoc(bidDocRef)
-          .then(doc =>{
-            bid.name = doc.data().name 
-            bid.phone = doc.data().phone 
+          .then(doc => {
+            bid.name = doc.data().name
+            bid.phone = doc.data().phone
           })
       }
       bidArrCheck.value = true;
     }
-  }  
-  
+  }
+
   // handle purchaseBids
-  if (listing.value.purchaseBids != null){
+  if (listing.value.purchaseBids != null) {
     purchaseArr.value = listing.value.purchaseBids;
 
     // handle updating of priceToBeat
-    for (let purchase of purchaseArr.value){
-      if (purchase.buyerBid > priceToBeat.value){
-        priceToBeat.value = purchase.buyerBid 
+    for (let purchase of purchaseArr.value) {
+      if (purchase.buyerBid > priceToBeat.value) {
+        priceToBeat.value = purchase.buyerBid
       }
     }
   }
+
   // handle image storage
   const storage = getStorage();
-  const storageReference = storageRef(storage, imgPath.value);
-  getDownloadURL(storageReference)
-    .then((url) => {
-      imgUrl.value = url;
-    })
+  console.log(imgPath.value);
+  for (let imagePath of imgPath.value) {
+    const storageReference = storageRef(storage, imagePath);
+    getDownloadURL(storageReference)
+      .then((url) => {
+        imgUrl.value.push(url);
+      })
+  }
+  console.log(imgUrl.value);
 
   // handle seller data
   sellerEmail.value = listing.value.userEmail;
@@ -123,7 +129,7 @@ onSnapshot(listingDocRef, listing => {
     sellerBal.value = balance.value.balance;
   });
 
-  
+
 });
 
 // Checks if user is logged in
@@ -222,16 +228,16 @@ function handleActiveTab(tab) {
 
 // handling purchase bids
 let inpPurchasePrice;
-async function handlePurchaseBid(){
+async function handlePurchaseBid() {
   // comparison
-  if (parseInt(inpPurchasePrice) <= parseInt(listedPrice.value)){
+  if (parseInt(inpPurchasePrice) <= parseInt(listedPrice.value)) {
     msg.value = "Your bid to purchase does not meet minimum listing price!";
     setTimeout(() => {
       msg.value = "";
     }, 3000);
     return false
-  } else{
-    if (parseInt(inpPurchasePrice) > parseInt(priceToBeat.value)){
+  } else {
+    if (parseInt(inpPurchasePrice) > parseInt(priceToBeat.value)) {
       priceToBeat.value = parseInt(inpPurchasePrice);
     }
 
@@ -239,24 +245,22 @@ async function handlePurchaseBid(){
     const bidDocRef = doc(db, "balance", userEmail.value);
     if (bidDocRef) {
       await getDoc(bidDocRef)
-        .then(doc =>{
-          console.log(doc.data())
+        .then(doc => {
           var bid = {};
           bid['buyerName'] = doc.data().name;
           bid['buyerPhone'] = doc.data().phone;
           bid['buyerBid'] = inpPurchasePrice;
 
           purchaseArr.value.push(bid);
-          // console.log(purchaseArr.value)
         })
     }
 
     // update purchaseBids in Firebase
     const listingDocRef = doc(db, "listings", listingId);
     updateDoc(listingDocRef, {
-        purchaseBids : purchaseArr.value
+      purchaseBids: purchaseArr.value
     })
-  
+
     msg.value = "Purchase bid submitted!"
     setTimeout(() => {
       msg.value = "";
@@ -278,12 +282,12 @@ watch(userEmail, async () => {
   }
 })
 
-function handleViewingBid(){
+function handleViewingBid() {
   // handle user data
 
   // let bid = selectedViewingDate;
-  
-  if (userBal.value >= selectedViewingDate.price){
+
+  if (userBal.value >= selectedViewingDate.price) {
     // bid is successful 
 
     // subtract from user
@@ -301,24 +305,23 @@ function handleViewingBid(){
     })
 
     // update listing by replacing whole array
-    for (let dateObj of viewingDates.value){
-      if (dateObj == selectedViewingDate){
+    for (let dateObj of viewingDates.value) {
+      if (dateObj == selectedViewingDate) {
         dateObj.buyer = userEmail.value;
       }
     }
 
     const listingDocRef = doc(db, "listings", listingId);
-    console.log(viewingDates.value)
     updateDoc(listingDocRef, {
-      viewingDates : viewingDates.value
+      viewingDates: viewingDates.value
     })
-    
+
     msg.value = "Deposit submitted!"
     setTimeout(() => {
       msg.value = "";
     }, 3000)
     return true
-  }else{
+  } else {
     msg.value = "Not enough credits in balance!";
     setTimeout(() => {
       msg.value = "";
@@ -336,30 +339,32 @@ function handleViewingBid(){
     <!-- Block: custom-carousel -->
     <div id="imgCarousel" class="carousel slide mt-4">
       <!-- Elements: custom-carousel__indicators -->
-      <div class="carousel-indicators">
+      <!-- <div class="carousel-indicators">
         <button type="button" data-bs-target="#imgCarousel" data-bs-slide-to="0" class="active" aria-current="true"
           aria-label="Slide 1"></button>
         <button type="button" data-bs-target="#imgCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      </div>
+      </div> -->
 
       <!-- Block: custom-carousel__inner -->
       <div class="carousel-inner">
         <!-- Elements: custom-carousel__item -->
-        <div class="carousel-item active custom-carousel__item">
-          <img :src="imgUrl" class="d-block w-100 rounded" alt="Slide 1">
+        <div v-for="imageUrl in imgUrl" class="carousel-item active custom-carousel__item">
+          <img :src="imageUrl" class="d-block w-100 rounded" alt="Slide 1">
         </div>
       </div>
 
       <!-- Controls -->
-      <button class="carousel-control-prev" type="button" data-bs-target="#imgCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
+      <div v-if="imgUrl && imgUrl.length > 1">
+        <button class="carousel-control-prev" type="button" data-bs-target="#imgCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
 
-      <button class="carousel-control-next" type="button" data-bs-target="#imgCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#imgCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
     </div> <!-- End of custom-carousel -->
 
     <!-- ListingOverview | User-CTA -->
@@ -467,11 +472,11 @@ function handleViewingBid(){
                 <div class="row">
                   <div class="col-6 col-md-12 fw-bold">Listed On</div>
                   <div v-if="dateOfEntry" class="col-6 col-md-12">
-                  {{ dateOfEntry.toDate().toLocaleString(undefined, {
-                        day: 'numeric',
-                        month: 'short',
-                        year: 'numeric',
-                  }) }}
+                    {{ dateOfEntry.toDate().toLocaleString(undefined, {
+                      day: 'numeric',
+                      month: 'short',
+                      year: 'numeric',
+                    }) }}
                   </div>
                 </div>
               </div>
@@ -512,7 +517,7 @@ function handleViewingBid(){
             <div v-if="activeTab == 'view'" class="view__container">
               <div>
                 <!-- Loop to iterate through viewingDates-->
-                
+
                 <div v-if="bidArrCheck" class="text-center my-5">
                   <div v-for="bid of bidArr">
                     <div v-if="bid.name != null" class="user__profile mb-3">
@@ -528,50 +533,50 @@ function handleViewingBid(){
 
                         <div>
                           <div class="date__title fw-bold mb-1">Date:</div>
-                          <div class="date__value text-body-secondary">{{ bid.datetime.toDate().toLocaleString(undefined, {
-                            day: 'numeric',
-                            month: 'short',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                          }) }} </div>
+                          <div class="date__value text-body-secondary">{{ bid.datetime.toDate().toLocaleString(undefined,
+                            {
+                              day: 'numeric',
+                              month: 'short',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            }) }} </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                
+
                 <div v-else class="text-muted text-center my-5">
                   You have no appointments scheduled
                 </div>
-                
+
               </div>
             </div>
 
             <div v-else class="purchase__container">
               <!-- Loop to iterate through purchaseBids -->
-              
-              <div v-if="purchaseArr.length>0" class="text-center my-5">
+
+              <div v-if="purchaseArr.length > 0" class="text-center my-5">
                 <div v-for="bid of purchaseArr">
                   <div class="user__profile mb-3">
                     <div class="d-flex justify-content-between align-items-center text-start">
                       <!-- name of bidder  -->
                       <div>
-                        <div class="bidder__name fw-bold mb-1">{{bid.buyerName}}</div>
-                        <div class="bidder__phone text-body-secondary">{{bid.buyerPhone}}</div>
+                        <div class="bidder__name fw-bold mb-1">{{ bid.buyerName }}</div>
+                        <div class="bidder__phone text-body-secondary">{{ bid.buyerPhone }}</div>
                       </div>
-    
+
                       <div>
                         <div class="bid-price__title fw-bold mb-1">Bid Price:</div>
-                        <div class="bid-price__value text-body-secondary">${{bid.buyerBid}}</div>
+                        <div class="bid-price__value text-body-secondary">${{ bid.buyerBid }}</div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div v-else class="text-muted text-center my-5"> 
-                {{console.log(purchaseArr)}}
+              <div v-else class="text-muted text-center my-5">
                 No bids to purchase have been made
               </div>
             </div>
@@ -642,7 +647,7 @@ function handleViewingBid(){
           <div class="container-fluid">
             <div class="row">
               <div class="col-4 text-center d-flex justify-content-center align-items-center">
-                <img :src="imgUrl" class="rounded modal_img">
+                <img :src="imgUrl[0]" class="rounded modal_img">
               </div>
               <div class="col-8 text-center px-1">
                 <div class="text-start d-flex flex-column justify-content-between h-100">
@@ -678,8 +683,10 @@ function handleViewingBid(){
                   </div>
 
                   <!-- Form for TimeSlot -->
-                  <select v-if="viewingDates" class="form-select" v-model="selectedViewingDate" aria-label="Default select example" placeholder="Timeslots">
-                    <option v-if="viewingDates" v-for="viewingDate in viewingDates" :value="viewingDate" :disabled="viewingDate.buyer" style="font-size: 12px;">
+                  <select v-if="viewingDates" class="form-select" v-model="selectedViewingDate"
+                    aria-label="Default select example" placeholder="Timeslots">
+                    <option v-if="viewingDates" v-for="viewingDate in viewingDates" :value="viewingDate"
+                      :disabled="viewingDate.buyer" style="font-size: 12px;">
                       {{ viewingDate.datetime.toDate().toLocaleString(undefined, {
                         day: 'numeric',
                         month: 'short',
@@ -689,7 +696,8 @@ function handleViewingBid(){
                       }) }} - ${{ viewingDate.price }}
                     </option>
                   </select>
-                  <select v-else class="form-select" v-model="selectedViewingDate" aria-label="Default select example" placeholder="No Available Viewing Slots">
+                  <select v-else class="form-select" v-model="selectedViewingDate" aria-label="Default select example"
+                    placeholder="No Available Viewing Slots">
 
                   </select>
                 </div>
@@ -700,11 +708,11 @@ function handleViewingBid(){
         <div class="modal-footer flex-column justify-content-center">
           <button @click="handleViewingBid()" type="button" class="btn btn-primary btn--submit">Submit Deposit</button>
         </div>
-        <div v-if="msg=='Deposit submitted!'" class="mb-3 text-center text-success" style="font-size: 13px;">
-            {{ msg }}
+        <div v-if="msg == 'Deposit submitted!'" class="mb-3 text-center text-success" style="font-size: 13px;">
+          {{ msg }}
         </div>
         <div v-else class="mb-3 text-center text-danger" style="font-size: 13px;">
-            {{ msg }}
+          {{ msg }}
         </div>
       </div>
     </div>
@@ -735,7 +743,7 @@ function handleViewingBid(){
           <div class="container-fluid">
             <div class="row">
               <div class="col-4 text-center d-flex justify-content-center align-items-center my-auto">
-                <img :src="imgUrl" class="rounded modal_img">
+                <img :src="imgUrl[0]" class="rounded modal_img">
               </div>
               <div class="col-8 text-center px-1">
                 <div class="text-start d-flex flex-column justify-content-between h-100">
@@ -773,8 +781,8 @@ function handleViewingBid(){
                   <div class="input-div">
                     <div class="input-group">
                       <span class="input-group-text" id="basic-addon1">$</span>
-                      <input type="number" v-model="inpPurchasePrice" class="form-control input-group-value" placeholder="Bid Price"
-                        aria-label="Bid Price" aria-describedby="basic-addon1" >
+                      <input type="number" v-model="inpPurchasePrice" class="form-control input-group-value"
+                        placeholder="Bid Price" aria-label="Bid Price" aria-describedby="basic-addon1">
 
                     </div>
                     <div class="text-start highest-bid">Current Price to Beat: ${{ priceToBeat }} </div>
@@ -786,7 +794,8 @@ function handleViewingBid(){
         </div>
         <div class="modal-footer flex-column justify-content-center">
           <button @click="handlePurchaseBid()" type="button" class="btn btn-primary btn--submit">Submit Bid</button>
-          <div v-if="msg=='Your bid to purchase does not meet minimum listing price!'" class="mb-2 text-center text-danger" style="font-size: 13px;">
+          <div v-if="msg == 'Your bid to purchase does not meet minimum listing price!'"
+            class="mb-2 text-center text-danger" style="font-size: 13px;">
             {{ msg }}
           </div>
           <div v-else class="mb-2 text-center text-success" style="font-size: 13px;">
@@ -1004,7 +1013,7 @@ h2 {
   .general__container {
     max-width: 1150px;
   }
-  
+
   .property-info__container {
     flex-direction: row;
     align-items: start;
@@ -1176,5 +1185,4 @@ h2 {
     text-align: center
   }
 }
-
 </style>
