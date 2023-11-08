@@ -220,6 +220,7 @@ function handleActiveTab(tab) {
 }
 
 // handling purchase bids
+let inpPurchasePrice = ref(null);
 function handlePurchaseBid(inp){
   // comparison
   if (parseInt(inp) <= parseInt(listedPrice.value)){
@@ -263,7 +264,7 @@ function handlePurchaseBid(inp){
 }
 
 // handling viewing bids
-let selectedViewingDate = ref(null);
+let selectedViewingDate = "";
 const userBal = ref(null);
 
 watch(userEmail, async () => {
@@ -279,7 +280,7 @@ watch(userEmail, async () => {
 function handleViewingBid(){
   // handle user data
 
-  let bid = this.selectedViewingDate;
+  let bid = selectedViewingDate;
   
   if (userBal.value >= bid.price){
     // bid is successful 
@@ -300,7 +301,7 @@ function handleViewingBid(){
 
     // update listing by replacing whole array
     for (let dateObj of viewingDates.value){
-      if (dateObj == this.selectedViewingDate){
+      if (dateObj == selectedViewingDate){
         dateObj.buyer = userEmail.value;
       }
     }
@@ -573,6 +574,7 @@ function handleViewingBid(){
               </div>
               <!-- v-else --> 
               <div  class="text-muted"> 
+                {{console.log(purchaseArr)}}
                 No bids to purchase have been made
               </div>
 
