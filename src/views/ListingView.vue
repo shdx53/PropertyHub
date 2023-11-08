@@ -3,15 +3,13 @@ import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
 import GoogleMaps from "../components/ListingView/GoogleMaps.vue";
 
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 
 // External libraries
 import { useRoute } from 'vue-router';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { doc, getFirestore, updateDoc, collection, getDoc, arrayUnion, onSnapshot, DocumentReference } from "firebase/firestore";
+import { doc, getFirestore, updateDoc, collection, getDoc, arrayUnion, onSnapshot } from "firebase/firestore";
 import { getStorage, ref as storageRef, getDownloadURL } from "firebase/storage";
-import { query, where } from "firebase/firestore";
-import { getCurrentUser } from "../firebase";
 
 var msg = ref("");
 
@@ -43,6 +41,8 @@ const sellerBal = ref(null);
 
 // init combined viewingDates w Buyer info
 var bidArr = ref([])
+const bidArrCheck = ref(false);
+
 
 // price to beat and purchaseArr
 const priceToBeat = ref(0)
@@ -88,6 +88,7 @@ onSnapshot(listingDocRef, listing => {
             bid.phone = doc.data().phone 
           })
       }
+      bidArrCheck.value = true;
     }
   }  
   
@@ -220,30 +221,30 @@ function handleActiveTab(tab) {
 }
 
 // handling purchase bids
-let inpPurchasePrice = ref(null);
-function handlePurchaseBid(inp){
+let inpPurchasePrice;
+async function handlePurchaseBid(){
   // comparison
-  if (parseInt(inp) <= parseInt(listedPrice.value)){
+  if (parseInt(inpPurchasePrice) <= parseInt(listedPrice.value)){
     msg.value = "Your bid to purchase does not meet minimum listing price!";
     setTimeout(() => {
       msg.value = "";
     }, 3000);
     return false
-  }else{
-    if (parseInt(inp) > parseInt(priceToBeat.value)){
-      priceToBeat.value = parseInt(inp);
+  } else{
+    if (parseInt(inpPurchasePrice) > parseInt(priceToBeat.value)){
+      priceToBeat.value = parseInt(inpPurchasePrice);
     }
 
     // add bid to purchaseArr
     const bidDocRef = doc(db, "balance", userEmail.value);
     if (bidDocRef) {
-      getDoc(bidDocRef)
+      await getDoc(bidDocRef)
         .then(doc =>{
           console.log(doc.data())
           var bid = {};
           bid['buyerName'] = doc.data().name;
           bid['buyerPhone'] = doc.data().phone;
-          bid['buyerBid'] = inp;
+          bid['buyerBid'] = inpPurchasePrice;
 
           purchaseArr.value.push(bid);
           // console.log(purchaseArr.value)
@@ -325,8 +326,6 @@ function handleViewingBid(){
     return false
   }
 }
-
-
 </script>
 
 <template>
@@ -514,8 +513,7 @@ function handleViewingBid(){
               <div>
                 <!-- Loop to iterate through viewingDates-->
                 
-                <!-- v-if="bidArr.length!=0" -->
-                <div  class="text-center my-5">
+                <div v-if="bidArrCheck" class="text-center my-5">
                   <div v-for="bid of bidArr">
                     <div v-if="bid.name != null" class="user__profile mb-3">
                       <div class="d-flex justify-content-between align-items-center">
@@ -542,8 +540,8 @@ function handleViewingBid(){
                     </div>
                   </div>
                 </div>
-                <!-- v-else -->
-                <div  class="text-muted">
+                
+                <div v-else class="text-muted text-center my-5">
                   You have no appointments scheduled
                 </div>
                 
@@ -553,8 +551,7 @@ function handleViewingBid(){
             <div v-else class="purchase__container">
               <!-- Loop to iterate through purchaseBids -->
               
-              <!-- v-if="purchaseArr.length!=0" -->
-              <div  class="text-center my-5">
+              <div v-if="purchaseArr.length>0" class="text-center my-5">
                 <div v-for="bid of purchaseArr">
                   <div class="user__profile mb-3">
                     <div class="d-flex justify-content-between align-items-center">
@@ -572,8 +569,8 @@ function handleViewingBid(){
                   </div>
                 </div>
               </div>
-              <!-- v-else --> 
-              <div  class="text-muted"> 
+
+              <div v-else class="text-muted text-center my-5"> 
                 {{console.log(purchaseArr)}}
                 No bids to purchase have been made
               </div>
@@ -790,7 +787,7 @@ function handleViewingBid(){
           </div>
         </div>
         <div class="modal-footer flex-column justify-content-center">
-          <button @click="handlePurchaseBid(inpPurchasePrice)" type="button" class="btn btn-primary btn--submit">Submit Bid</button>
+          <button @click="handlePurchaseBid()" type="button" class="btn btn-primary btn--submit">Submit Bid</button>
           <div v-if="msg=='Your bid to purchase does not meet minimum listing price!'" class="mb-2 text-center text-danger" style="font-size: 13px;">
             {{ msg }}
           </div>
