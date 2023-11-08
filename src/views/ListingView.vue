@@ -641,7 +641,7 @@ function handlePurchaseBid(inp){
           <div class="container-fluid">
             <div class="row">
               <div class="col-4 text-center d-flex justify-content-center align-items-center">
-                <img :src="imgUrl" class="rounded w-100 h-150">
+                <img :src="imgUrl" class="rounded modal_img">
               </div>
               <div class="col-8 text-center px-1">
                 <div class="text-start d-flex flex-column justify-content-between h-100">
@@ -678,7 +678,7 @@ function handlePurchaseBid(inp){
 
                   <!-- Form for TimeSlot -->
                   <select v-if="viewingDates" class="form-select" v-model="selectedViewingDate" aria-label="Default select example" placeholder="Timeslots">
-                    <option v-if="viewingDates" v-for="viewingDate in viewingDates" :value="viewingDate" :disabled="viewingDate.buyer">
+                    <option v-if="viewingDates" v-for="viewingDate in viewingDates" :value="viewingDate" :disabled="viewingDate.buyer" style="font-size: 12px;">
                       {{ viewingDate.datetime.toDate().toLocaleString(undefined, {
                         day: 'numeric',
                         month: 'short',
@@ -734,7 +734,7 @@ function handlePurchaseBid(inp){
           <div class="container-fluid">
             <div class="row">
               <div class="col-4 text-center d-flex justify-content-center align-items-center my-auto">
-                <img :src="imgUrl" class="rounded w-100 h-150">
+                <img :src="imgUrl" class="rounded modal_img">
               </div>
               <div class="col-8 text-center px-1">
                 <div class="text-start d-flex flex-column justify-content-between h-100">
@@ -972,6 +972,10 @@ h2 {
   font-size: 14px;
 }
 
+.form-select {
+  max-width: 250px;
+}
+
 .input-div {
   max-width: 200px;
 }
@@ -987,6 +991,12 @@ h2 {
 
 .highest-bid {
   font-size: 10px;
+}
+
+.modal_img {
+  width: 100%;
+  object-fit: cover;
+  aspect-ratio: 1;
 }
 
 /* responsiveness */

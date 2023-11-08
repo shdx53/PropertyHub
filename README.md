@@ -27,9 +27,9 @@ Two user accounts have already been created: Chason Jui (seller) has populated l
     <li>Email Address: chasonjui@gmail.com</li>
     <li>Password: chasonjui123</li>
   </ul>
-  <li>Lua Hua Feong</li>
+  <li>Lwa Hua Feong</li>
   <ul>
-    <li>Email Address: luahuafeong@gmail.com</li>
-    <li>Password: luahuafeong123</li>
+    <li>Email Address: lwahuafeong@gmail.com</li>
+    <li>Password: lwahuafeong123</li>
   </ul>
 </ul>
