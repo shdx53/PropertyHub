@@ -43,6 +43,8 @@ const sellerBal = ref(null);
 
 // init combined viewingDates w Buyer info
 var bidArr = ref([])
+const bidArrCheck = ref(false);
+
 
 // price to beat and purchaseArr
 const priceToBeat = ref(0)
@@ -88,6 +90,7 @@ onSnapshot(listingDocRef, listing => {
             bid.phone = doc.data().phone 
           })
       }
+      bidArrCheck.value = true;
     }
   }  
   
@@ -514,8 +517,7 @@ function handleViewingBid(){
               <div>
                 <!-- Loop to iterate through viewingDates-->
                 
-                <!-- v-if="bidArr.length!=0" -->
-                <div  class="text-center my-5">
+                <div v-if="bidArrCheck" class="text-center my-5">
                   <div v-for="bid of bidArr">
                     <div v-if="bid.name != null" class="user__profile mb-3">
                       <div class="d-flex justify-content-between align-items-center">
@@ -542,8 +544,8 @@ function handleViewingBid(){
                     </div>
                   </div>
                 </div>
-                <!-- v-else -->
-                <div  class="text-muted">
+                
+                <div v-else class="text-muted text-center my-5">
                   You have no appointments scheduled
                 </div>
                 
@@ -553,8 +555,7 @@ function handleViewingBid(){
             <div v-else class="purchase__container">
               <!-- Loop to iterate through purchaseBids -->
               
-              <!-- v-if="purchaseArr.length!=0" -->
-              <div  class="text-center my-5">
+              <div v-if="purchaseArr.length>0" class="text-center my-5">
                 <div v-for="bid of purchaseArr">
                   <div class="user__profile mb-3">
                     <div class="d-flex justify-content-between align-items-center">
@@ -572,8 +573,8 @@ function handleViewingBid(){
                   </div>
                 </div>
               </div>
-              <!-- v-else --> 
-              <div  class="text-muted"> 
+
+              <div v-else class="text-muted text-center my-5"> 
                 {{console.log(purchaseArr)}}
                 No bids to purchase have been made
               </div>
