@@ -43,17 +43,22 @@ const sellerBal = ref(null);
 
 // init combined viewingDates w Buyer info
 var bidArr = ref([])
+const checkBidArr = ref(false);
 
 // price to beat and purchaseArr
 const priceToBeat = ref(0)
 var purchaseArr = []
+const checkPurchaseArr = ref(false);
+
 
 // fetch data and add it to objects
 const db = getFirestore();
 const listingDocRef = doc(db, "listings", listingId);
+const listing = ref({});
 
 onSnapshot(listingDocRef, listing => {
-  // console.log(listing.data())
+  console.log(listing.data())
+  console.log(listing.value)
   listing.value = listing.data();
 
   // handle listing data
@@ -71,12 +76,38 @@ onSnapshot(listingDocRef, listing => {
   level.value = listing.value.level;
   favoriteCounts.value = listing.value.favoriteCounts;
   imgPath.value = listing.value.imgPath;
-  viewingDates.value = listing.value.viewingDates;
-  bidArr = viewingDates.value;
+
+  bidArr = listing.value.viewingDates;
+  viewingDates.value = listing.data().viewingDates;
+
   priceToBeat.value = listing.value.listedPrice; // initial price = listed price
+
+  console.log('----testing of populating only bidArr----')
+  console.log(bidArr)
+  console.log(viewingDates.value)
+  // populate bidArr for viewing
+  console.log('populating bidArr in progress...')
+  for (let bid of bidArr){
+    // console.log(bid)
+    if (bid.buyer != null){
+      // console.log('not null here!!!')
+      const bidDocRef = doc(db, "balance", bid.buyer);
+      if (bidDocRef) {
+        getDoc(bidDocRef)
+          .then(doc =>{
+            // console.log(doc.data())
+            bid.name = doc.data().name 
+            bid.phone = doc.data().phone 
+          })
+      }
+    }
+  }
+  console.log(bidArr)
+  console.log(viewingDates.value)
+  console.log('----end of testing of populating only bidArr----')
+  
   
   // handle purchaseBids
-  // console.log(listing.value.purchaseBids)
   if (listing.value.purchaseBids != null){
     purchaseArr = listing.value.purchaseBids;
 
@@ -108,23 +139,7 @@ onSnapshot(listingDocRef, listing => {
     sellerBal.value = balance.value.balance;
   });
 
-  // populate bidArr for viewing
-  for (let bid of bidArr){
-    // console.log('-----')
-    let buyerName = ref("");
-    let buyerPhone = ref("");
-    if (bid.buyer != null){
-      const bidDocRef = doc(db, "balance", bid.buyer);
-      if (bidDocRef) {
-        getDoc(bidDocRef)
-          .then(doc =>{
-            // console.log(doc.data())
-            bid.name = doc.data().name 
-            bid.phone = doc.data().phone 
-          })
-      }
-    }
-  }
+  
 });
 
 // Checks if user is logged in
@@ -259,20 +274,30 @@ function handleViewingBid(){
       balance: sellerBal.value
     })
 
+
+    console.log('-----testing of updating firebase viewingDates-----')
     // update listing by replacing whole array
-    let newViewingDates
-    newViewingDates= viewingDates.value;
-    for (let dateObj of newViewingDates){
+    console.log('viewingDates.value here:')
+    console.log(viewingDates.value)
+
+    // let newViewingDates = ref([]);
+    // newViewingDates.value = viewingDates.value;
+    // console.log('newViewingDates.value here:');
+    // console.log(newViewingDates.value);
+
+    console.log('before loop...')
+    for (let dateObj of viewingDates.value){
       if (dateObj == this.selectedViewingDate){
         dateObj.buyer = userEmail.value;
       }
     }
-    
+    console.log('after loop...')
+    console.log('viewingDates.value here:')
+    console.log(viewingDates.value)
+
     const listingDocRef = doc(db, "listings", listingId);
-    // console.log(listingId)
-    // console.log(listingDocRef);
     updateDoc(listingDocRef, {
-      viewingDates : newViewingDates
+      viewingDates : viewingDates.value
     })
     
     msg.value = "Deposit submitted!"
@@ -522,10 +547,10 @@ function handlePurchaseBid(inp){
               <div>
                 <!-- Loop to iterate through viewingDates-->
                 
-                <div v-if="!bidArr" class="text-muted text-center my-5">
+                <div v-if="!checkBidArr" class="text-muted text-center my-5">
                   You have no appointments scheduled
                 </div>
-                <div v-else v-for="bid of bidArr">
+                <div v-for="bid of bidArr">
                   <div v-if="bid.name != null" class="user__profile mb-3">
                     <div class="d-flex justify-content-between align-items-center">
                       <div>
@@ -788,10 +813,11 @@ function handlePurchaseBid(inp){
         </div>
         <div class="modal-footer justify-content-center">
           <button @click="handlePurchaseBid(inpPurchasePrice)" type="button" class="btn btn-primary btn--submit">Submit Bid</button>
-          <div v-if="msg=='Your bid to purchase does not meet minimum listing price!'" class="mb-3 text-center text-danger" style="font-size: 13px;">
+          <div v-if="msg=='Your bid to purchase does not meet minimum listing price!'" class="mb-2 text-center text-danger" style="font-size: 13px;">
             {{ msg }}
           </div>
-          <div v-else class="mb-3 text-center text-success" style="font-size: 13px;">
+          <div v-else class="mb-2 text-center text-success" style="font-size: 13px;">
+            <br>
             {{ msg }}
           </div>
         </div>
