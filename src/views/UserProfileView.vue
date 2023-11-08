@@ -366,7 +366,7 @@ export default {
   mounted() {
     this.fetchProducts();
     this.getUserPrice();
-    console.log(this.products);
+    // console.log(this.products);
   },
   methods: {
     revertShowing() {
@@ -392,7 +392,7 @@ export default {
       paymentsQuerySnap.forEach(async (doc) => {
         // const pricesRef = collection(db, "products", doc.id, "prices");
         // const pricesQuerySnap = await getDocs(pricesRef);
-        console.log(doc);
+        // console.log(doc);
         this.transactions.push({
           id: doc.id,
           ...doc.data(),
