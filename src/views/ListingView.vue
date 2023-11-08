@@ -512,7 +512,8 @@ function handlePurchaseBid(inp){
               <div>
                 <!-- Loop to iterate through viewingDates-->
                 
-                <div v-if="bidArr.length!=0" class="text-center my-5">
+                <!-- v-if="bidArr.length!=0" -->
+                <div  class="text-center my-5">
                   <div v-for="bid of bidArr">
                     <div v-if="bid.name != null" class="user__profile mb-3">
                       <div class="d-flex justify-content-between align-items-center">
@@ -539,7 +540,9 @@ function handlePurchaseBid(inp){
                     </div>
                   </div>
                 </div>
-                <div v-else class="text-muted">
+
+                <!-- v-else -->
+                <div  class="text-muted">
                   You have no appointments scheduled
                 </div>
                 
@@ -548,8 +551,9 @@ function handlePurchaseBid(inp){
 
             <div v-else class="purchase__container">
               <!-- Loop to iterate through purchaseBids -->
-            
-              <div v-if="purchaseArr.length!=0" class="text-center my-5">
+              
+              <!-- v-if="purchaseArr.length!=0" -->
+              <div  class="text-center my-5">
                 <div v-for="bid of purchaseArr">
                   <div class="user__profile mb-3">
                     <div class="d-flex justify-content-between align-items-center">
@@ -567,7 +571,8 @@ function handlePurchaseBid(inp){
                   </div>
                 </div>
               </div>
-              <div v-else class="text-muted"> 
+              <!-- v-else -->
+              <div  class="text-muted"> 
                 No bids have been made so far
               </div>
 
