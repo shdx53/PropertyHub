@@ -21,6 +21,7 @@ const props = defineProps({
 let imagePath = "";
 
 function toggleDelete(id, imgPath) {
+  event.stopPropagation();
   document.getElementById('deleteModal').dataset.id = id;
   document.getElementById('deleteModal').dataset.img = imgPath;
 }

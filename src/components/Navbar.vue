@@ -111,7 +111,7 @@ function handleLogout() {
                   <a href="/user-profile" class="nav-link">Profile</a>
                 </li>
                 <li class="nav-item">
-                  <a href="/my-listings" class="nav-link">Listings</a>
+                  <a href="/my-listings" class="nav-link">My Listings</a>
                 </li>
                 <li class="nav-item">
                   <a href="/liked-listings" class="nav-link">Likes</a>
@@ -141,7 +141,7 @@ function handleLogout() {
                     <a href="/user-profile" class="nav-link user-collapse__item text-black px-0">Profile</a>
                   </li>
                   <li class="nav-item">
-                    <a href="/my-listings" class="nav-link user-collapse__item text-black px-0">Listings</a>
+                    <a href="/my-listings" class="nav-link user-collapse__item text-black px-0">My Listings</a>
                   </li>
                   <li class="nav-item">
                     <a href="/liked-listings" class="nav-link user-collapse__item text-black px-0">Likes</a>
