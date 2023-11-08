@@ -273,7 +273,7 @@ watch(userEmail, async () => {
   }
 })
 
-function handleViewingBid(){
+async function handleViewingBid(){
   // handle user data
 
   // let bid = selectedViewingDate;
@@ -284,14 +284,14 @@ function handleViewingBid(){
     // subtract from user
     userBal.value -= parseInt(selectedViewingDate.price);
     const userDocRef = doc(db, "balance", userEmail.value);
-    updateDoc(userDocRef, {
+    await updateDoc(userDocRef, {
       balance: userBal.value
     })
 
     // add to seller
     sellerBal.value = parseInt(sellerBal.value) + parseInt(selectedViewingDate.price);
     const sellerDocRef = doc(db, "balance", sellerEmail.value);
-    updateDoc(sellerDocRef, {
+    await updateDoc(sellerDocRef, {
       balance: sellerBal.value
     })
 
@@ -303,7 +303,7 @@ function handleViewingBid(){
     }
 
     const listingDocRef = doc(db, "listings", listingId);
-    updateDoc(listingDocRef, {
+    await updateDoc(listingDocRef, {
       viewingDates : viewingDates.value
     })
     
