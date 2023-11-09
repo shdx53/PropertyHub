@@ -136,12 +136,12 @@ const isLoggedIn = ref(false);
 
 const userEmail = ref(""); // Checks if user is seller or customer
 
-let customersDocRef;
+let balanceDocRef;
 
 onAuthStateChanged(auth, user => {
   if (user) {
     isLoggedIn.value = true;
-    customersDocRef = doc(db, "customers", user.uid);
+    balanceDocRef = doc(db, "balance", user.email);
     userId.value = auth.currentUser.uid;
     userEmail.value = auth.currentUser.email;
   }
@@ -151,17 +151,17 @@ onAuthStateChanged(auth, user => {
 let isFavorited = ref(null);
 let favoritedListings = ref([]);
 
-const customersColRef = collection(db, "customers");
+const balanceColRef = collection(db, "balance");
 
 updateFavorites();
 
-onSnapshot(customersColRef, snapshot => {
+onSnapshot(balanceColRef, snapshot => {
   updateFavorites();
 })
 
 function updateFavorites() {
-  if (customersDocRef) {
-    getDoc(customersDocRef)
+  if (balanceDocRef) {
+    getDoc(balanceDocRef)
       .then(doc => {
         favoritedListings.value = doc.data().favoritedListings;
 
@@ -193,7 +193,7 @@ function handleFavorite() {
     const itemToBeRemovedIndex = favoritedListings.value.indexOf(listingId);
     favoritedListings.value.splice(itemToBeRemovedIndex, 1);
 
-    updateDoc(customersDocRef, {
+    updateDoc(balanceDocRef, {
       favoritedListings: favoritedListings.value
     })
   } else {
@@ -205,7 +205,7 @@ function handleFavorite() {
     })
 
     if (!favoritedListings.value.includes(listingId)) {
-      updateDoc(customersDocRef, {
+      updateDoc(balanceDocRef, {
         favoritedListings: arrayUnion(listingId)
       })
     }
