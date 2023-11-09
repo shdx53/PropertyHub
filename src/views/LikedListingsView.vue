@@ -13,12 +13,12 @@ const db = getFirestore();
 
 // Checks if user is logged in
 const auth = getAuth();
-const userId = ref("");
+const userEmail = ref("");
 getCurrentUser()
   .then(user => {
     if (user) {
       // console.log(user);
-      userId.value = user.uid;
+      userEmail.value = user.email;
     } else {
       console.log("No user is currently logged in.");
     }
@@ -29,13 +29,14 @@ getCurrentUser()
 
 let favouriteListings = ref([]);
 
-async function getFavourites(uid) {
-  const docRef = doc(db, "customers", uid);
+async function getFavourites(userEmail) {
+  const docRef = doc(db, "balance", userEmail);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
     // console.log("Document data:", docSnap.data());
     // console.log(docSnap.data().favoritedListings);
+    console.log(docSnap.data());
     favouriteListings.value = [];
     for (const favourite of docSnap.data().favoritedListings) {
       const listingRef = doc(db, "listings", favourite);
@@ -49,11 +50,11 @@ async function getFavourites(uid) {
   }
 }
 
-const customersColRef = collection(db, "customers");
+const balanceColRef = collection(db, "balance");
 
-onSnapshot(customersColRef, () => {
-  if (userId.value) {
-    getFavourites(userId.value);
+onSnapshot(balanceColRef, () => {
+  if (userEmail.value) {
+    getFavourites(userEmail.value);
   }
 })
 </script>

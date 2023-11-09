@@ -167,7 +167,8 @@ async function createUserDocument(email, id, name, phoneno) {
     id: id,
     balance: 0,
     phone: phoneno,
-    name: name
+    name: name,
+    favoritedListings: []
   })
   return docRef;
 

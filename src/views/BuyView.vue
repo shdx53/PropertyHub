@@ -255,7 +255,7 @@ displayListings(listingsQuery, listings);
               <div v-for="listing in paginatedListings" :key="buyListingsKey">
                 <Listing :listingId="listing[0]" :address="listing[1].address" :listedPrice="listing[1].listedPrice"
                   :bedrooms="listing[1].bedrooms" :bathrooms="listing[1].bathrooms" :floorSize="listing[1].floorSize"
-                  :favoriteCounts="listing[1].favoriteCounts" :imgPath="listing[1].imgPath">
+                  :favoriteCounts="listing[1].favoriteCounts" :imgPath="listing[1].imgPath" :userEmail="listing[1].userEmail">
                 </Listing>
               </div>
             </div>

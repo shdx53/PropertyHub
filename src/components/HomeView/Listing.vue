@@ -15,7 +15,8 @@ const props = defineProps({
   bathrooms: String,
   floorSize: String,
   favoriteCounts: Number,
-  imgPath: String
+  imgPath: String,
+  userEmail: String
 });
 
 const db = getFirestore();
@@ -25,13 +26,13 @@ const auth = getAuth();
 const userId = ref(null);
 const isLoggedIn = ref(false);
 
-let customersDocRef;
+let balanceDocRef;
 
 if (auth.currentUser) {
   userId.value = auth.currentUser.uid;
   isLoggedIn.value = true;
 
-  customersDocRef = doc(db, "customers", userId.value);
+  balanceDocRef = doc(db, "balance", props.userEmail);
 }
 
 // Display listing image
@@ -51,17 +52,17 @@ if (props.imgPath) {
 let isFavorited = ref(null);
 let favoritedListings = ref([]);
 
-const customersColRef = collection(db, "customers");
+const balanceColRef = collection(db, "balance");
 
 updateFavorites();
 
-onSnapshot(customersColRef, snapshot => {
+onSnapshot(balanceColRef, snapshot => {
   updateFavorites();
 })
 
 function updateFavorites() {
-  if (customersDocRef) {
-    getDoc(customersDocRef)
+  if (balanceDocRef) {
+    getDoc(balanceDocRef)
       .then(doc => {
         favoritedListings.value = doc.data().favoritedListings;
 
@@ -93,7 +94,7 @@ function handleFavorite() {
     const itemToBeRemovedIndex = favoritedListings.value.indexOf(props.listingId);
     favoritedListings.value.splice(itemToBeRemovedIndex, 1);
 
-    updateDoc(customersDocRef, {
+    updateDoc(balanceDocRef, {
       favoritedListings: favoritedListings.value
     })
   } else {
@@ -105,7 +106,7 @@ function handleFavorite() {
     })
 
     if (!favoritedListings.value.includes(props.listingId)) {
-      updateDoc(customersDocRef, {
+      updateDoc(balanceDocRef, {
         favoritedListings: arrayUnion(props.listingId)
       })
     }

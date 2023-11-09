@@ -157,7 +157,7 @@ function handleFilterResults(value) {
               <Listing :listingId="recentListing[0]" :address="recentListing[1].address"
                 :listedPrice="recentListing[1].listedPrice" :bedrooms="recentListing[1].bedrooms"
                 :bathrooms="recentListing[1].bathrooms" :floorSize="recentListing[1].floorSize"
-                :favoriteCounts="recentListing[1].favoriteCounts" :imgPath="recentListing[1].imgPath">
+                :favoriteCounts="recentListing[1].favoriteCounts" :imgPath="recentListing[1].imgPath" :userEmail="recentListing[1].userEmail">
               </Listing>
             </div>
           </div>
