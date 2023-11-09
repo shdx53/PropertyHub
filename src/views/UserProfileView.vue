@@ -11,7 +11,7 @@ import Footer from "../components/Footer.vue";
         <div class="d-flex justify-content-between align-items-center py-3" :class="{ 'mb-3' : showing, 'mb-5' : !showing }">
           <div>
             <span class="fw-bold">My Balance: </span>
-            <span>${{ Number(shownBalance).toLocaleString() }}</span>
+            <span>{{ Number(shownBalance).toLocaleString() }} credits</span>
           </div>
 
           <div v-if="!showing">
