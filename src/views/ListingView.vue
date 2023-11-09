@@ -8,7 +8,7 @@ import { ref, watch } from "vue";
 // External libraries
 import { useRoute } from 'vue-router';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { doc, getFirestore, updateDoc, collection, getDoc, arrayUnion, onSnapshot } from "firebase/firestore";
+import { doc, getFirestore, updateDoc, collection, getDoc, arrayUnion, onSnapshot, orderBy } from "firebase/firestore";
 import { getStorage, ref as storageRef, getDownloadURL } from "firebase/storage";
 
 var msg = ref("");
@@ -54,7 +54,6 @@ const listing = ref({});
 
 onSnapshot(listingDocRef, listing => {
   listing.value = listing.data();
-  console.log(listing.value.imgPath);
 
   // handle listing data
   address.value = listing.value.address;
@@ -72,13 +71,28 @@ onSnapshot(listingDocRef, listing => {
   favoriteCounts.value = listing.value.favoriteCounts;
   imgPath.value = listing.value.imgPath;
 
-  bidArr = listing.value.viewingDates;
+  // handle viewingDates and bidarr
+  bidArr.value = listing.value.viewingDates;
   viewingDates.value = listing.data().viewingDates;
 
   priceToBeat.value = listing.value.listedPrice; // initial price = listed price
 
-  // populate bidArr for viewing
-  for (let bid of bidArr) {
+  // handle purchaseBids
+  if (listing.value.purchaseBids != null) {
+    purchaseArr.value = listing.value.purchaseBids;
+    purchaseArr.value.sort((a, b) => b.buyerBid - a.buyerBid)
+
+    // handle updating of priceToBeat
+    for (let purchase of purchaseArr.value) {
+      if (purchase.buyerBid > priceToBeat.value) {
+        priceToBeat.value = purchase.buyerBid
+      }
+    }
+  }
+
+  // populating bidArr
+  for (let bid of bidArr.value) {
+    console.log(bid)
     if (bid.buyer != null) {
       const bidDocRef = doc(db, "balance", bid.buyer);
       if (bidDocRef) {
@@ -91,22 +105,9 @@ onSnapshot(listingDocRef, listing => {
       bidArrCheck.value = true;
     }
   }
-
-  // handle purchaseBids
-  if (listing.value.purchaseBids != null) {
-    purchaseArr.value = listing.value.purchaseBids;
-
-    // handle updating of priceToBeat
-    for (let purchase of purchaseArr.value) {
-      if (purchase.buyerBid > priceToBeat.value) {
-        priceToBeat.value = purchase.buyerBid
-      }
-    }
-  }
-
+  
   // handle image storage
   const storage = getStorage();
-  console.log(imgPath.value);
   for (let imagePath of imgPath.value) {
     const storageReference = storageRef(storage, imagePath);
     getDownloadURL(storageReference)
@@ -114,7 +115,6 @@ onSnapshot(listingDocRef, listing => {
         imgUrl.value.push(url);
       })
   }
-  console.log(imgUrl.value);
 
   // handle seller data
   sellerEmail.value = listing.value.userEmail;
@@ -256,7 +256,7 @@ async function handlePurchaseBid() {
     const listingDocRef = doc(db, "listings", listingId);
     updateDoc(listingDocRef, {
       purchaseBids: purchaseArr.value
-    })
+    })    
 
     msg.value = "Purchase bid submitted!"
     setTimeout(() => {
@@ -265,7 +265,9 @@ async function handlePurchaseBid() {
   }
 }
 
+
 // handling viewing bids
+
 let selectedViewingDate = "";
 const userBal = ref(null);
 
@@ -281,8 +283,6 @@ watch(userEmail, async () => {
 
 async function handleViewingBid(){
   // handle user data
-
-  // let bid = selectedViewingDate;
 
   if (userBal.value >= selectedViewingDate.price) {
     // bid is successful 
@@ -326,6 +326,8 @@ async function handleViewingBid(){
     return false
   }
 }
+
+
 </script>
 
 <template>
@@ -566,7 +568,7 @@ async function handleViewingBid(){
 
                       <div>
                         <div class="bid-price__title fw-bold mb-1">Bid Price:</div>
-                        <div class="bid-price__value text-body-secondary">${{ bid.buyerBid }}</div>
+                        <div class="bid-price__value text-body-secondary">${{ Number(bid.buyerBid).toLocaleString() }}</div>
                       </div>
                     </div>
                   </div>
@@ -690,7 +692,7 @@ async function handleViewingBid(){
                         year: 'numeric',
                         hour: '2-digit',
                         minute: '2-digit',
-                      }) }} - ${{ viewingDate.price }}
+                      }) }} - {{ viewingDate.price }}credits 
                     </option>
                   </select>
                   <select v-else class="form-select" v-model="selectedViewingDate" aria-label="Default select example"
@@ -782,7 +784,7 @@ async function handleViewingBid(){
                         placeholder="Bid Price" aria-label="Bid Price" aria-describedby="basic-addon1">
 
                     </div>
-                    <div class="text-start highest-bid">Current Price to Beat: ${{ priceToBeat }} </div>
+                    <div class="text-start highest-bid">Current Price to Beat: ${{ Number(priceToBeat).toLocaleString() }} </div>
                   </div>
                 </div>
               </div>
@@ -1173,12 +1175,13 @@ h2 {
 
 @media (min-width: 1150px) {
   .dashboard__title {
-    font-size: 20px;
+    font-size: 25px;
   }
 }
 
 @media (max-width: 1150px) {
   .dashboard__title {
+    font-size:20px ;
     text-align: center
   }
 }
