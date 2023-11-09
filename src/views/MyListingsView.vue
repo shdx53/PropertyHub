@@ -54,18 +54,29 @@ function handleDelete() {
 
   // Delete image
   const storage = getStorage();
-  const imageRef = storageRef(storage, imgPath);
+  console.log(imgPath);
+  const imgArray = imgPath.split(",");
+  console.log(imgArray);
+  for( var i in imgArray){
+    console.log(imgArray[i]);
+    let image = imgArray[i];
+    const imageRef = storageRef(storage, image);
+    deleteObject(imageRef);    
+  }
+  deleteDoc(doc(db, "listings", id));}
+  
 
-  deleteObject(imageRef).then(() => {
-    console.log("File deleted successfully");
-    // Delete listing from db
-    deleteDoc(doc(db, "listings", id)).then(() => {
-      console.log("Listing deleted successfully");
-    });
-  }).catch((error) => {
-    console.error("Whoops image not deleted:", error);
-  });
-}
+
+//   deleteObject(imageRef).then(() => {
+//     console.log("File deleted successfully");
+//     // Delete listing from db
+//     deleteDoc(doc(db, "listings", id)).then(() => {
+//       console.log("Listing deleted successfully");
+//     });
+//   }).catch((error) => {
+//     console.error("Whoops image not deleted:", error);
+//   });
+// }
 </script>
 
 <template>
