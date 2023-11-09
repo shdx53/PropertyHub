@@ -31,8 +31,10 @@ let balanceDocRef;
 if (auth.currentUser) {
   userId.value = auth.currentUser.uid;
   isLoggedIn.value = true;
-
-  balanceDocRef = doc(db, "balance", props.userEmail);
+  
+  if (props.userEmail) {
+    balanceDocRef = doc(db, "balance", props.userEmail);
+  }
 }
 
 // Display listing image

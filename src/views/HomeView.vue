@@ -49,9 +49,9 @@ displayListings(recentListingsQuery, recentListings);
 displayListings(popularListingsQuery, popularListings);
 
 // Rerender whenever user favorite/unfavorite a listing
-const customersColRef = collection(db, "customers");
+const balanceColRef = collection(db, "balance");
 
-onSnapshot(customersColRef, () => {
+onSnapshot(balanceColRef, () => {
   recentListingsKey.value += 1;
   popularListingsKey.value += 1;
 })
