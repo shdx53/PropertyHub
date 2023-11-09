@@ -132,7 +132,7 @@ function handleDelete() {
           <Listing :listingId="listing[0]" :address="listing[1].address" :listedPrice="listing[1].listedPrice"
             :bedrooms="listing[1].bedrooms" :bathrooms="listing[1].bathrooms" :floorSize="listing[1].floorSize"
             :favoriteCounts="listing[1].favoriteCounts" :isFavorited="listing[1].isFavorited"
-            :imgPath="listing[1].imgPath" :key="isLoggedIn"></Listing>
+            :imgPath="listing[1].imgPath" :userEmail="listing[1].userEmail" :key="isLoggedIn"></Listing>
         </div>
         <div v-if="userListings.length == 0" class="text-center mt-3 text-black-50">You currently have no listings.</div>
       </div>
