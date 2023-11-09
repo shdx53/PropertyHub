@@ -19,7 +19,7 @@ $ npm install
 $ npm run dev
 ```
 ## User Accounts
-Two user accounts have already been created: Chason Jui (seller) has populated listings for sale and Lua Hua Feong (buyer) has preset balance. Alternatively, you can create your own account.
+Two user accounts have already been created: Chason Jui (seller) has populated listings for sale and Lwa Hua Feong (buyer) has preset balance. Alternatively, you can create your own account.
 
 <ul>
   <li>Chason Jui</li>
