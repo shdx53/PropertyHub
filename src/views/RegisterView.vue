@@ -32,7 +32,7 @@
         <div class="form-group">
           <label for="password" class="py-2 fw-bold">Password:</label>
           <input type="password" class="form-control" id="password" placeholder="Enter your password"
-            v-model="password" />
+            v-model="password"  v-on:keyup.enter="register"/>
         </div>
         <!-- Sign up button -->
         <div class="d-grid gap-2">
