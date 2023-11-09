@@ -33,3 +33,9 @@ Two user accounts have already been created: Chason Jui (seller) has populated l
     <li>Password: lwahuafeong123</li>
   </ul>
 </ul>
+
+## Paying with Stripe
+Use the following card information:
+<ul>
+  <li>4242 4242 4242 4242</li>
+</ul>

@@ -36,7 +36,6 @@ async function getFavourites(userEmail) {
   if (docSnap.exists()) {
     // console.log("Document data:", docSnap.data());
     // console.log(docSnap.data().favoritedListings);
-    console.log(docSnap.data());
     favouriteListings.value = [];
     for (const favourite of docSnap.data().favoritedListings) {
       const listingRef = doc(db, "listings", favourite);
